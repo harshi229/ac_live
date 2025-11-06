@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /vendor/
+Disallow: /database/
+Disallow: /user/auth/
+Disallow: /api/
+Disallow: /*.php$
+Disallow: /test_*
+
+# Allow important files
+Allow: /public/
+Allow: /css/
+Allow: /js/
+Allow: /img/
+Allow: /uploads/
+
+# Sitemap location
+Sitemap: http://localhost/ac/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1

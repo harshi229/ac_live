@@ -1,0 +1,5 @@
+/* Inter Font - Fallback to System Fonts */
+/* This file provides a fallback font stack that mimics Inter's characteristics */
+
+/* Inter is a modern, clean font. We'll use system fonts that are similar */
+/* The font-family in admin-modern.css will handle the fallback chain */

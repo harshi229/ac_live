@@ -1,0 +1,58 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Configuration files with sensitive data
+/includes/config/.production_url
+/.env
+.env.local
+.env.*.local
+# Note: database.php is kept as it's environment-aware and uses local/production configs
+
+# Logs
+/logs/*.log
+/logs/*.txt
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE Files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.phpstorm.meta.php
+
+# Cache and temporary files
+/cache/
+/tmp/
+*.tmp
+*.cache
+
+# Uploads (optional - uncomment if you don't want to track uploads)
+# /public/img/uploads/*
+# !/public/img/uploads/.gitkeep
+
+# Database dumps
+*.sql
+*.dump
+
+# Composer
+composer.phar
+composer.lock
+
+# Backup files
+*.bak
+*.backup
+*_backup.*
+
+# Security
+/includes/config/security.php
+/includes/config/email_config.php
+/includes/config/google_oauth.php
+

@@ -1,0 +1,136 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# RewriteBase: Use root for production (akashaircon.com), /public_html/ for local development
+# When deploying to production, ensure files are in document root and RewriteBase is /
+# For local development with XAMPP in /public_html/ subdirectory, change this to: RewriteBase /public_html/
+RewriteBase /
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options SAMEORIGIN
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Prevent caching of PHP files (general rule - comes first)
+    <FilesMatch "\.php$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+        Header unset ETag
+        Header unset Last-Modified
+    </FilesMatch>
+    
+    # Cache headers for image.php (override general rule - must come AFTER)
+    # Note: ETag and Last-Modified are set by PHP, so we don't unset them here
+    <FilesMatch "image\.php$">
+        Header always unset Cache-Control
+        Header always unset Pragma
+        Header always unset Expires
+        # Don't override ETag and Last-Modified - let PHP handle them
+        Header always set Cache-Control "public, max-age=31536000"
+        Header always set Expires "Thu, 31 Dec 2025 23:59:59 GMT"
+    </FilesMatch>
+    
+    # Cache headers for sitemap.php (override general rule - must come AFTER)
+    <FilesMatch "sitemap\.php$">
+        Header always unset Cache-Control
+        Header always unset Pragma
+        Header always unset Expires
+        Header always set Cache-Control "public, max-age=3600"
+        Header always set Expires "access plus 1 hour"
+    </FilesMatch>
+    
+    # Cache headers for static images
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg)$">
+        Header set Cache-Control "public, max-age=31536000"
+        Header set Expires "Thu, 31 Dec 2025 23:59:59 GMT"
+    </FilesMatch>
+</IfModule>
+
+# Handle image.php requests - serve dynamic images
+# Handle both /public/image.php and /public_html/public/image.php paths
+RewriteRule ^(public_html/)?public/image\.php$ public/image.php [L,QSA]
+
+# Handle uploads directory - ensure direct access to files
+RewriteRule ^public/img/uploads/(.*)$ public/img/uploads/$1 [L]
+
+# Handle static images - ensure direct access
+RewriteRule ^public/img/(.*)$ public/img/$1 [L]
+
+# Handle search page specifically to preserve query parameters
+RewriteRule ^user/search$ user/search.php [L,QSA]
+
+# Handle admin order details with ID parameter
+RewriteRule ^admin/orders/details/([0-9]+)$ admin/orders/details.php?id=$1 [L,QSA]
+
+# Handle other admin pages with parameters (if needed)
+RewriteRule ^admin/orders/([a-zA-Z0-9_-]+)/([0-9]+)$ admin/orders/$1.php?id=$2 [L,QSA]
+
+# Handle admin search - redirect to products index with search parameters
+RewriteRule ^admin/products/search$ admin/products/index.php [L,QSA]
+
+# Handle admin search with q parameter - redirect to products index
+RewriteRule ^admin/products/search\.php$ admin/products/index.php [L,QSA]
+
+# Handle admin search API
+RewriteRule ^admin/search$ admin/search.php [L,QSA]
+
+# SEO-friendly URLs - Only rewrite if file doesn't exist and .php version exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_URI} !^/public_html/public/
+RewriteCond %{REQUEST_URI} !^/user/search\.php
+RewriteCond %{REQUEST_URI} !^/public_html/user/search\.php
+RewriteRule ^(.*)$ $1.php [L,QSA]
+
+# Sitemap redirect
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# Prevent access to sensitive files
+<Files ~ "\.(htaccess|htpasswd|ini|log|sh|inc|bak|sql)$">
+    Require all denied
+</Files>
+
+# Allow image.php to serve files
+<Files "image.php">
+    Require all granted
+</Files>
+
+# Cache static files
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images - cache for 1 year
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    
+    # CSS and JS - cache for 1 month
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # Other files
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/font-woff "access plus 1 month"
+    ExpiresByType application/font-woff2 "access plus 1 month"
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
