@@ -2197,6 +2197,27 @@ setTimeout(() => {
 
 <!-- Carousel initialization is handled in homepage-enhancements.js -->
 
+<!-- Expose PHP constants to JavaScript -->
+<script>
+    // Expose application constants to JavaScript
+    window.BASE_URL = '<?php echo BASE_URL; ?>';
+    window.PUBLIC_URL = '<?php echo PUBLIC_URL; ?>';
+    window.IMG_URL = '<?php echo IMG_URL; ?>';
+    window.CSS_URL = '<?php echo CSS_URL; ?>';
+    window.JS_URL = '<?php echo JS_URL; ?>';
+    window.USER_URL = '<?php echo USER_URL; ?>';
+    <?php 
+    // Calculate APP_BASE_PATH from BASE_URL
+    $appBasePath = '';
+    $baseUrlPath = parse_url(BASE_URL, PHP_URL_PATH);
+    if ($baseUrlPath && $baseUrlPath !== '/') {
+        $appBasePath = $baseUrlPath;
+    }
+    ?>
+    window.APP_BASE_PATH = '<?php echo $appBasePath; ?>';
+    window.APP_VERSION = '<?php echo APP_VERSION; ?>';
+</script>
+
 <!-- Include homepage enhancements JavaScript -->
 <script src="<?php echo JS_URL; ?>/homepage-enhancements.js?v=<?php echo APP_VERSION; ?>"></script>
 

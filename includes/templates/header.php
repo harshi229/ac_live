@@ -82,6 +82,8 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
             max-width: 1400px;
             margin: 0 auto;
             gap: 1rem;
+            position: relative;
+            overflow: visible;
         }
 
         /* Logo */
@@ -114,6 +116,8 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
             gap: 0.5rem;
             flex: 1;
             justify-content: center;
+            position: relative;
+            overflow: visible;
         }
 
         .nav-link {
@@ -157,16 +161,41 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
             min-width: 200px;
             opacity: 0;
             visibility: hidden;
+            display: block;
             transform: translateY(-10px);
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             margin-top: 0.5rem;
+            z-index: 1001;
+            pointer-events: none;
         }
 
-        .nav-dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .nav-dropdown:hover .dropdown-menu,
+        .nav-dropdown.open .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
+        }
+
+        /* Ensure dropdown menu is visible when open class is present */
+        .nav-dropdown.open > .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
+        }
+
+        /* Bridge gap between toggle and menu for smooth hover */
+        .nav-dropdown::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 0.5rem;
         }
 
         .dropdown-item {
@@ -690,7 +719,7 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
                     About
                 </a>
                 <div class="nav-dropdown">
-                    <div class="nav-link dropdown-toggle <?= strpos($_SERVER['REQUEST_URI'], '/products/') !== false ? 'active' : ''; ?>">
+                    <div class="nav-link dropdown-toggle <?= strpos($_SERVER['REQUEST_URI'], '/products/') !== false ? 'active' : ''; ?>" role="button" aria-haspopup="true" aria-expanded="false">
                         Products 
                     </div>
                     <div class="dropdown-menu">
@@ -908,6 +937,87 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
             item.classList.toggle('open');
             dropdown.classList.toggle('open');
         }
+
+        // Toggle desktop dropdown (click support)
+        function toggleDesktopDropdown(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            const dropdown = e ? e.target.closest('.nav-dropdown') : null;
+            if (!dropdown) {
+                console.warn('toggleDesktopDropdown: No dropdown found');
+                return;
+            }
+            
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            const isOpen = dropdown.classList.contains('open');
+            
+            // Close other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(item => {
+                if (item !== dropdown) {
+                    item.classList.remove('open');
+                    const otherToggle = item.querySelector('.dropdown-toggle');
+                    if (otherToggle) {
+                        otherToggle.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            });
+            
+            // Toggle current dropdown
+            if (isOpen) {
+                dropdown.classList.remove('open');
+                if (toggle) toggle.setAttribute('aria-expanded', 'false');
+            } else {
+                dropdown.classList.add('open');
+                if (toggle) toggle.setAttribute('aria-expanded', 'true');
+            }
+            
+            // Debug: Check if dropdown menu is visible
+            const menu = dropdown.querySelector('.dropdown-menu');
+            if (menu) {
+                console.log('Dropdown menu state:', {
+                    hasOpenClass: dropdown.classList.contains('open'),
+                    computedDisplay: window.getComputedStyle(menu).display,
+                    computedVisibility: window.getComputedStyle(menu).visibility,
+                    computedOpacity: window.getComputedStyle(menu).opacity,
+                    computedTransform: window.getComputedStyle(menu).transform,
+                    zIndex: window.getComputedStyle(menu).zIndex
+                });
+            }
+        }
+
+        // Add event listeners as backup (remove onclick to avoid double-firing)
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggles = document.querySelectorAll('.nav-dropdown .dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                // Remove onclick attribute to use addEventListener instead
+                toggle.removeAttribute('onclick');
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const dropdown = this.closest('.nav-dropdown');
+                    if (dropdown) {
+                        toggleDesktopDropdown(e);
+                    }
+                });
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            // Don't close if clicking anywhere inside the dropdown (toggle or menu)
+            const clickedDropdown = e.target.closest('.nav-dropdown');
+            if (clickedDropdown) {
+                return; // Click is inside a dropdown, don't close
+            }
+            
+            // Close all dropdowns when clicking outside
+            document.querySelectorAll('.nav-dropdown').forEach(item => {
+                item.classList.remove('open');
+            });
+        });
 
         // Toggle search overlay
         function toggleSearch() {

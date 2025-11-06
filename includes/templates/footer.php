@@ -25,19 +25,19 @@
                             <div class="contact-icon-wrapper">
                                 <i class="fas fa-phone"></i>
                             </div>
-                            <span>+91 12345 67890</span>
+                            <span>+91 98792 35475 /+91 98252 11063</span>
                         </a>
-                        <a href="mailto:info@akashent.com" class="footer-contact-item">
+                        <a href="mailto:support@akashent.com" class="footer-contact-item">
                             <div class="contact-icon-wrapper">
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span>info@akashent.com</span>
+                            <span>aakashjamnagar@gmail.com</span>
                         </a>
                         <div class="footer-contact-item">
                             <div class="contact-icon-wrapper">
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
-                            <span>Your City, State - 123456</span>
+                            <span>Jamnagar, Gujarat-361008, India</span>
                         </div>
                     </div>
 
