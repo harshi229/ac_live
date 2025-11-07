@@ -295,6 +295,51 @@ try {
         border-bottom: none;
     }
     
+    /* Display Options Styling */
+    .display-options {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .display-option-form {
+        margin: 0;
+    }
+    
+    .display-options .form-check {
+        margin: 0;
+        padding: 2px 0;
+    }
+    
+    .display-options .form-check-input {
+        margin-top: 0.35em;
+        cursor: pointer;
+    }
+    
+    .display-options .form-check-label {
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 4px;
+    }
+    
+    .display-options .form-check-label i {
+        font-size: 0.75rem;
+        opacity: 0.8;
+    }
+    
+    .display-options .form-check-input:checked + .form-check-label {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .display-options .form-check-input:checked + .form-check-label i {
+        opacity: 1;
+        color: var(--primary-color);
+    }
+    
     @keyframes slideDown {
         from {
             opacity: 0;
@@ -616,6 +661,11 @@ try {
                                     <i class="fas fa-sort sort-icon"></i>
                                 </div>
                             </th>
+                            <th width="12%">
+                                <div class="th-content">
+                                    <span>Display Options</span>
+                                </div>
+                            </th>
                             <th class="sortable" data-column="created_at" width="10%">
                                 <div class="th-content">
                                     <span>Created</span>
@@ -675,6 +725,48 @@ try {
                                             <?= ucfirst($product['status']) ?>
                                         </button>
                                     </form>
+                                </td>
+                                <td>
+                                    <div class="display-options">
+                                        <form method="POST" action="<?= admin_url('products/update_display') ?>" style="display: inline-block;" class="display-option-form">
+                                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                            <input type="hidden" name="csrf_token" value="<?= generateCSRFToken() ?>">
+                                            
+                                            <div class="form-check form-check-inline mb-1">
+                                                <input class="form-check-input display-checkbox" 
+                                                       type="checkbox" 
+                                                       name="show_on_homepage" 
+                                                       value="1" 
+                                                       id="homepage_<?= $product['id'] ?>"
+                                                       <?= (isset($product['show_on_homepage']) && $product['show_on_homepage'] == 1) ? 'checked' : '' ?>
+                                                       onchange="toggleDisplayOption(this, <?= $product['id'] ?>, 'homepage')">
+                                                <label class="form-check-label" for="homepage_<?= $product['id'] ?>" title="Show on Home Page">
+                                                    <i class="fas fa-home"></i> Home
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input display-checkbox" 
+                                                       type="checkbox" 
+                                                       name="show_on_product_page" 
+                                                       value="1" 
+                                                       id="productpage_<?= $product['id'] ?>"
+                                                       <?= (isset($product['show_on_product_page']) && $product['show_on_product_page'] == 1) ? 'checked' : '' ?>
+                                                       onchange="toggleDisplayOption(this, <?= $product['id'] ?>, 'productpage')">
+                                                <label class="form-check-label" for="productpage_<?= $product['id'] ?>" title="Show on Product Page">
+                                                    <i class="fas fa-box"></i> Products
+                                                </label>
+                                            </div>
+                                            
+                                            <!-- Hidden inputs to preserve other checkbox value when one is changed -->
+                                            <?php if (isset($product['show_on_homepage']) && $product['show_on_homepage'] == 1): ?>
+                                                <input type="hidden" name="show_on_homepage" value="1" id="homepage_hidden_<?= $product['id'] ?>">
+                                            <?php endif; ?>
+                                            <?php if (isset($product['show_on_product_page']) && $product['show_on_product_page'] == 1): ?>
+                                                <input type="hidden" name="show_on_product_page" value="1" id="productpage_hidden_<?= $product['id'] ?>">
+                                            <?php endif; ?>
+                                        </form>
+                                    </div>
                                 </td>
                                 <td>
                                     <small><?= date('M j, Y', strtotime($product['created_at'])) ?></small>
@@ -818,6 +910,57 @@ document.addEventListener('DOMContentLoaded', function() {
         selectAll.checked = count === productCheckboxes.length;
     }
 });
+
+// Toggle display option
+function toggleDisplayOption(checkbox, productId, type) {
+    const form = checkbox.closest('form');
+    const isChecked = checkbox.checked;
+    
+    // Get the current checkbox name
+    const currentCheckboxName = type === 'homepage' ? 'show_on_homepage' : 'show_on_product_page';
+    const otherCheckboxName = type === 'homepage' ? 'show_on_product_page' : 'show_on_homepage';
+    
+    // Get checkboxes and their checked states BEFORE modifying them
+    const currentCheckbox = form.querySelector(`input[type="checkbox"][name="${currentCheckboxName}"]`);
+    const otherCheckbox = form.querySelector(`input[type="checkbox"][name="${otherCheckboxName}"]`);
+    const otherCheckboxChecked = otherCheckbox ? otherCheckbox.checked : false;
+    
+    // Temporarily disable and rename checkboxes to prevent them from interfering with form submission
+    if (currentCheckbox) {
+        currentCheckbox.disabled = true;
+        currentCheckbox.name = currentCheckboxName + '_disabled'; // Rename to prevent submission
+    }
+    if (otherCheckbox) {
+        otherCheckbox.disabled = true;
+        otherCheckbox.name = otherCheckboxName + '_disabled'; // Rename to prevent submission
+    }
+    
+    // Remove any existing hidden inputs
+    const allHiddenInputs = form.querySelectorAll(`input[type="hidden"][name="${currentCheckboxName}"], input[type="hidden"][name="${otherCheckboxName}"]`);
+    allHiddenInputs.forEach(input => input.remove());
+    
+    // Add hidden input for current checkbox with explicit value (1 if checked, 0 if unchecked)
+    const currentHiddenInput = document.createElement('input');
+    currentHiddenInput.type = 'hidden';
+    currentHiddenInput.name = currentCheckboxName;
+    currentHiddenInput.value = isChecked ? '1' : '0';
+    form.appendChild(currentHiddenInput);
+    
+    // Add hidden input for other checkbox with explicit value (1 if checked, 0 if unchecked)
+    const otherHiddenInput = document.createElement('input');
+    otherHiddenInput.type = 'hidden';
+    otherHiddenInput.name = otherCheckboxName;
+    otherHiddenInput.value = otherCheckboxChecked ? '1' : '0';
+    form.appendChild(otherHiddenInput);
+    
+    // Show loading state
+    const label = checkbox.nextElementSibling;
+    const originalHTML = label.innerHTML;
+    label.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (type === 'homepage' ? 'Home' : 'Products');
+    
+    // Submit form - page will reload after update
+    form.submit();
+}
 </script>
 
 <?php

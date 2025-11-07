@@ -79,11 +79,13 @@ try {
     $reviews = $review_stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Get related products (same category, different models)
+    // Only show products with show_on_product_page = 1
     $related_stmt = $pdo->prepare("
         SELECT p.*, b.name as brand_name
         FROM products p
         LEFT JOIN brands b ON p.brand_id = b.id
         WHERE p.category_id = ? AND p.id != ? AND p.status = 'active'
+        AND (p.show_on_product_page = 1 OR p.show_on_product_page IS NULL)
         ORDER BY RAND()
         LIMIT 4
     ");

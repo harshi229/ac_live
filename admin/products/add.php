@@ -35,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $warranty_years = intval($_POST['warranty_years']);
     $installation = $_POST['installation'];
     $amc_available = isset($_POST['amc_available']) ? 1 : 0;
+    $show_on_homepage = isset($_POST['show_on_homepage']) ? 1 : 0;
+    $show_on_product_page = isset($_POST['show_on_product_page']) ? 1 : 0;
     $description = trim($_POST['description']);
     $selected_features = isset($_POST['features']) ? $_POST['features'] : [];
 
@@ -96,15 +98,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $discount_amount = $original_price > 0 ? $original_price - $price : 0;
                 
                 // Insert product
-                $sql = "INSERT INTO products (brand_id, category_id, sub_category_id, product_name, model_name, model_number, inverter, star_rating, energy_rating, capacity, price, original_price, discount_percentage, discount_amount, stock, warranty_years, installation, amc_available, description, product_image, status) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')";
+                $sql = "INSERT INTO products (brand_id, category_id, sub_category_id, product_name, model_name, model_number, inverter, star_rating, energy_rating, capacity, price, original_price, discount_percentage, discount_amount, stock, warranty_years, installation, amc_available, description, product_image, status, show_on_homepage, show_on_product_page) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?, ?)";
                 
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([
                     $brand_id, $category_id, $sub_category_id, $product_name, $model_name, 
                     $model_number, $inverter, $star_rating, $energy_rating, $capacity, $price, 
                     $original_price, $discount_percentage, $discount_amount, $stock, 
-                    $warranty_years, $installation, $amc_available, $description, $image_name
+                    $warranty_years, $installation, $amc_available, $description, $image_name,
+                    $show_on_homepage, $show_on_product_page
                 ]);
 
                 $product_id = $pdo->lastInsertId();
@@ -445,6 +448,35 @@ try {
                     <label class="form-check-label" for="amc_available">
                         AMC (Annual Maintenance Contract) Available
                     </label>
+                </div>
+            </div>
+
+            <!-- Display Options -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Display Options</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="show_on_homepage" id="show_on_homepage" value="1"
+                                   <?= (isset($_POST['show_on_homepage']) && $_POST['show_on_homepage']) ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="show_on_homepage">
+                                <strong>Show on Home Page</strong>
+                            </label>
+                            <small class="form-text text-muted d-block">Check this to display this product on the homepage</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="show_on_product_page" id="show_on_product_page" value="1"
+                                   <?= (isset($_POST['show_on_product_page']) && $_POST['show_on_product_page']) ? 'checked' : (isset($_POST['show_on_product_page']) ? '' : 'checked') ?>>
+                            <label class="form-check-label" for="show_on_product_page">
+                                <strong>Show on Product Page</strong>
+                            </label>
+                            <small class="form-text text-muted d-block">Check this to display this product on the products listing page</small>
+                        </div>
+                    </div>
                 </div>
             </div>
 

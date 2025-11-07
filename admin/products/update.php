@@ -43,6 +43,8 @@ $model_number = trim($_POST['model_number'] ?? '');
 $energy_rating = trim($_POST['energy_rating'] ?? '');
 $installation = $_POST['installation'] ?? '';
 $description = trim($_POST['description'] ?? '');
+$show_on_homepage = isset($_POST['show_on_homepage']) ? 1 : 0;
+$show_on_product_page = isset($_POST['show_on_product_page']) ? 1 : 0;
 
 // Validate required fields
 $errors = [];
@@ -181,6 +183,8 @@ try {
         'energy_rating' => $energy_rating,
         'installation' => $installation,
         'description' => $description,
+        'show_on_homepage' => $show_on_homepage,
+        'show_on_product_page' => $show_on_product_page,
         'updated_at' => date('Y-m-d H:i:s')
     ];
     

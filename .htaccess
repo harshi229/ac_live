@@ -4,7 +4,8 @@ RewriteEngine On
 # RewriteBase: Use root for production (akashaircon.com), /public_html/ for local development
 # When deploying to production, ensure files are in document root and RewriteBase is /
 # For local development with XAMPP in /public_html/ subdirectory, change this to: RewriteBase /public_html/
-RewriteBase /
+# NOTE: Change this to RewriteBase / when deploying to production
+RewriteBase /public_html/
 
 # Security headers
 <IfModule mod_headers.c>
@@ -75,6 +76,10 @@ RewriteRule ^admin/products/search\.php$ admin/products/index.php [L,QSA]
 
 # Handle admin search API
 RewriteRule ^admin/search$ admin/search.php [L,QSA]
+
+# Handle admin login and other admin pages
+RewriteRule ^admin/login$ admin/login.php [L,QSA]
+RewriteRule ^admin/logout$ admin/logout.php [L,QSA]
 
 # SEO-friendly URLs - Only rewrite if file doesn't exist and .php version exists
 RewriteCond %{REQUEST_FILENAME} !-f

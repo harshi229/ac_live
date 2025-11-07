@@ -203,13 +203,14 @@ echo '<link rel="preload" as="image" href="' . IMG_URL . '/placeholder-product.p
 
 // Fetch featured products, categories, and brands
 try {
-    // Get featured products
+    // Get featured products (only products with show_on_homepage = 1)
     $featured_stmt = $pdo->prepare("
         SELECT p.*, b.name as brand_name, c.name as category_name
         FROM products p
         LEFT JOIN brands b ON p.brand_id = b.id
         LEFT JOIN categories c ON p.category_id = c.id
-        WHERE p.status = 'active'
+        WHERE p.status = 'active' 
+        AND p.show_on_homepage = 1
         ORDER BY p.created_at DESC
         LIMIT 6
     ");

@@ -20,6 +20,42 @@ class ProductQueryBuilder
     }
 
     /**
+     * Add filter for products to show on homepage
+     * Only shows products where show_on_homepage = 1
+     */
+    public function addHomepageFilter()
+    {
+        $this->whereConditions[] = "p.show_on_homepage = 1";
+        return $this;
+    }
+
+    /**
+     * Add filter for products to show on product page
+     * Only shows products where show_on_product_page = 1
+     * Products with show_on_product_page = 0 or NULL will not be shown
+     * If column doesn't exist, shows all products (backward compatibility)
+     */
+    public function addProductPageFilter()
+    {
+        // Check if column exists first, if not, don't add filter (for backward compatibility)
+        try {
+            $check_column = $this->pdo->query("SHOW COLUMNS FROM products LIKE 'show_on_product_page'");
+            if ($check_column->rowCount() > 0) {
+                // Column exists, filter by it
+                // Only show products with show_on_product_page = 1 (explicitly checked)
+                $this->whereConditions[] = "p.show_on_product_page = 1";
+            } else {
+                // Column doesn't exist yet - don't filter (show all products)
+                error_log("show_on_product_page column not found - showing all products");
+            }
+        } catch (PDOException $e) {
+            // Column doesn't exist or error checking - don't filter (show all products)
+            error_log("Error checking show_on_product_page column: " . $e->getMessage() . " - showing all products");
+        }
+        return $this;
+    }
+
+    /**
      * Add category filter
      */
     public function addCategoryFilter($categoryId)

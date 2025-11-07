@@ -277,6 +277,35 @@ if (!$product) {
             <label for="description" class="form-label">Description:</label>
             <textarea class="form-control" name="description" id="description" rows="4" required><?php echo htmlspecialchars($product['description'] ?? ''); ?></textarea>
         </div>
+
+        <!-- Display Options -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Display Options</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="show_on_homepage" id="show_on_homepage" value="1"
+                               <?= (isset($product['show_on_homepage']) && $product['show_on_homepage']) ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="show_on_homepage">
+                            <strong>Show on Home Page</strong>
+                        </label>
+                        <small class="form-text text-muted d-block">Check this to display this product on the homepage</small>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="show_on_product_page" id="show_on_product_page" value="1"
+                               <?= (isset($product['show_on_product_page']) && $product['show_on_product_page']) ? 'checked' : (isset($product['show_on_product_page']) ? '' : 'checked') ?>>
+                        <label class="form-check-label" for="show_on_product_page">
+                            <strong>Show on Product Page</strong>
+                        </label>
+                        <small class="form-text text-muted d-block">Check this to display this product on the products listing page</small>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">

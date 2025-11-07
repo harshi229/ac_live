@@ -29,21 +29,41 @@ define('DATABASE_PATH', ROOT_PATH . '/database');
 // Example: https://akashaircon.com
 // ====================================================================
 
-// Check for manual override from environment variable first
-$production_url = getenv('PRODUCTION_URL');
+// First, detect if we're on localhost to prevent production URL override
+$host = $_SERVER['SERVER_NAME'] ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
+$http_host = $_SERVER['HTTP_HOST'] ?? '';
 
-// Check for .production_url file (safer than env vars in some setups)
-if (!$production_url && file_exists(__DIR__ . '/.production_url')) {
-    $production_url = trim(file_get_contents(__DIR__ . '/.production_url'));
+$is_local = (
+    $host === 'localhost' || 
+    $host === '127.0.0.1' || 
+    strpos($host, 'localhost') !== false ||
+    strpos($host, '127.0.0.1') !== false ||
+    strpos($http_host, 'localhost') !== false ||
+    strpos($http_host, '127.0.0.1') !== false ||
+    strpos($host, '192.168.') !== false ||
+    strpos($host, '10.') !== false ||
+    strpos($host, 'public_html') !== false
+);
+
+// Only use production URL override if we're NOT on localhost
+$production_url = null;
+if (!$is_local) {
+    // Check for manual override from environment variable first
+    $production_url = getenv('PRODUCTION_URL');
+    
+    // Check for .production_url file (safer than env vars in some setups)
+    if (!$production_url && file_exists(__DIR__ . '/.production_url')) {
+        $production_url = trim(file_get_contents(__DIR__ . '/.production_url'));
+    }
+    
+    // Check for manual override constant
+    if (defined('FORCE_PRODUCTION_URL')) {
+        $production_url = FORCE_PRODUCTION_URL;
+    }
 }
 
-// Check for manual override constant
-if (defined('FORCE_PRODUCTION_URL')) {
-    $production_url = FORCE_PRODUCTION_URL;
-}
-
-// Use manual override if set
-if (!empty($production_url)) {
+// Use manual override if set (and not on localhost)
+if (!empty($production_url) && !$is_local) {
     define('BASE_URL', rtrim($production_url, '/'));
 } else {
     // Determine protocol (https or http)
@@ -52,26 +72,6 @@ if (!empty($production_url)) {
     if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
         $protocol = 'https';
     }
-    
-    // Get host - check multiple sources for reliability
-    // Prioritize HTTP_HOST and SERVER_NAME as they are the most reliable indicators
-    $host = $_SERVER['SERVER_NAME'] ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
-    
-    // Also check HTTP_HOST separately for production detection
-    $http_host = $_SERVER['HTTP_HOST'] ?? '';
-    
-    // Check if we're on localhost/127.0.0.1 first (most reliable indicator of local development)
-    $is_local = (
-        $host === 'localhost' || 
-        $host === '127.0.0.1' || 
-        strpos($host, 'localhost') !== false ||
-        strpos($host, '127.0.0.1') !== false ||
-        strpos($http_host, 'localhost') !== false ||
-        strpos($http_host, '127.0.0.1') !== false ||
-        strpos($host, '192.168.') !== false || // Local network IPs
-        strpos($host, '10.') !== false || // Local network IPs
-        strpos($host, 'public_html') !== false // If host contains public_html, it's local
-    );
     
     // If we're on localhost, we're definitely NOT in production
     if ($is_local) {

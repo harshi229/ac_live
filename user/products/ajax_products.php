@@ -30,7 +30,7 @@ try {
     // Create ProductQueryBuilder instance
     $queryBuilder = new ProductQueryBuilder($pdo);
     
-    // Build query from filters
+    // Build query from filters (this resets the builder, so filters must be added after)
     $queryBuilder->buildFromFilters([
         'category_id' => $category_id,
         'brand_id' => $brand_id,
@@ -49,6 +49,10 @@ try {
         'page' => $page,
         'items_per_page' => $items_per_page
     ]);
+    
+    // Add filter to only show products with show_on_product_page = 1
+    // Must be called AFTER buildFromFilters() because buildFromFilters() resets the builder
+    $queryBuilder->addProductPageFilter();
 
     // Get total count and products
     $total_products = $queryBuilder->getTotalCount();

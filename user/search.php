@@ -98,7 +98,7 @@ if (!empty($query) && ($search_type === 'all' || $search_type === 'products')) {
         }
         
         // First, let's check if we have any products at all
-        $count_sql = "SELECT COUNT(*) as total FROM products WHERE status = 'active'";
+        $count_sql = "SELECT COUNT(*) as total FROM products WHERE status = 'active' AND (show_on_product_page = 1 OR show_on_product_page IS NULL)";
         $count_stmt = $pdo->prepare($count_sql);
         $count_stmt->execute();
         $total_products = $count_stmt->fetch()['total'];
@@ -135,6 +135,7 @@ if (!empty($query) && ($search_type === 'all' || $search_type === 'products')) {
                        END LIKE ?
                 )
                 AND products.status = 'active'
+                AND (products.show_on_product_page = 1 OR products.show_on_product_page IS NULL)
                 ORDER BY products.product_name ASC";
         
         $stmt = $pdo->prepare($sql);
@@ -161,6 +162,7 @@ if (!empty($query) && ($search_type === 'all' || $search_type === 'products')) {
                           JOIN brands ON products.brand_id = brands.id
                           LEFT JOIN sub_categories ON products.sub_category_id = sub_categories.id
                           WHERE products.status = 'active'
+                          AND (products.show_on_product_page = 1 OR products.show_on_product_page IS NULL)
                           ORDER BY products.product_name ASC LIMIT 5";
             $broad_stmt = $pdo->prepare($broad_sql);
             $broad_stmt->execute();
