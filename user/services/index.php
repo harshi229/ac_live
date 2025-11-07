@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_service_request
         ";
         
         // Send email to admin
-        $adminEmail = 'harshilparmar2212@gmail.com'; // From email config
+        $adminEmail = 'aakashjamnagar@gmail.com'; // From email config
         $emailSent = sendEmail($adminEmail, $emailSubject, $emailMessage);
         
         if ($emailSent) {

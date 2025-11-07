@@ -20,8 +20,8 @@ define('TWITTER_URL', 'https://www.twitter.com/akashenterprise');
 define('LINKEDIN_URL', 'https://www.linkedin.com/company/akashenterprise');
 
 // Contact Information for Schema
-define('COMPANY_PHONE', '+91-12345-67890');
-define('COMPANY_EMAIL', 'info@akashenterprise.com');
+define('COMPANY_PHONE', '+91-98792-35475');
+define('COMPANY_EMAIL', 'aakashjamnagar@gmail.com');
 define('COMPANY_ADDRESS', 'Your Business Address, City, State, India');
 
 // SEO Helper Functions

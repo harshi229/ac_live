@@ -532,11 +532,11 @@ function initializeMicroInteractions() {
 function initializeFloatingContact() {
     // Create floating contact button
     const contactHTML = `
-        <a href="https://wa.me/911234567890?text=Hi, I'm interested in your AC products" 
+        <a href="https://wa.me/919879235475?text=Hi, I'm interested in your AC products" 
            class="floating-contact-btn" 
            target="_blank" 
            rel="noopener"
-           aria-label="Contact us on WhatsApp">
+           aria-label="Chat on WhatsApp with +91 98792 35475">
             <i class="fab fa-whatsapp"></i>
         </a>
     `;

@@ -151,9 +151,9 @@ define('ALLOWED_IMAGE_TYPES', ['image/jpeg', 'image/jpg', 'image/png', 'image/gi
 define('ALLOWED_IMAGE_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
 
 // Email settings
-define('ADMIN_EMAIL', 'admin@akashenterprise.com');
-define('SUPPORT_EMAIL', 'support@akashenterprise.com');
-define('NO_REPLY_EMAIL', 'noreply@akashenterprise.com');
+define('ADMIN_EMAIL', 'aakashjamnagar@gmail.com');
+define('SUPPORT_EMAIL', 'aakashjamnagar@gmail.com');
+define('NO_REPLY_EMAIL', 'aakashjamnagar@gmail.com');
 
 // Order status options
 define('ORDER_STATUS_PENDING', 'Pending');

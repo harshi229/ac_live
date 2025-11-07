@@ -48,7 +48,7 @@ function generateOrganizationSchema() {
         "logo" => IMG_URL . "/full-logo.png",
         "contactPoint" => [
             "@type" => "ContactPoint",
-            "telephone" => "+91-12345-67890",
+            "telephone" => "+91-98792-35475",
             "contactType" => "customer service",
             "availableLanguage" => ["English", "Hindi"]
         ],

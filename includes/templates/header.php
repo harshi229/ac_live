@@ -30,6 +30,7 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>/bootstrap.min.css?v=<?php echo APP_VERSION; ?>"> 
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>/style.css?v=<?php echo APP_VERSION; ?>">
+    <link rel="stylesheet" href="<?php echo CSS_URL; ?>/loader-scroller.css?v=<?php echo APP_VERSION; ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Favicon -->
@@ -656,7 +657,8 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
         }
 
         .breadcrumb-item.active {
-            color: white;
+            color: #1e293b;
+            font-weight: 600;
         }
 
         .breadcrumb-item::after {
@@ -888,11 +890,41 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
                         <a href="<?php echo BASE_URL; ?>/index.php">Home</a>
                     </li>
                     <?php
-                    // Simple breadcrumb logic
+                    // Enhanced breadcrumb logic
                     $current_page = basename($_SERVER['PHP_SELF']);
-                    if ($current_page != 'index.php') {
-                        $page_name = ucfirst(str_replace(['.php', '-', '_'], ['', ' ', ' '], $current_page));
-                        echo '<li class="breadcrumb-item active">' . htmlspecialchars($page_name) . '</li>';
+                    $request_uri = $_SERVER['REQUEST_URI'];
+                    $show_breadcrumb = false;
+                    $page_name = '';
+                    
+                    // Check URL path for products and services (even if filename is index.php)
+                    if (strpos($request_uri, '/products/') !== false) {
+                        $show_breadcrumb = true;
+                        $page_name = 'Products';
+                    } elseif (strpos($request_uri, '/services/') !== false) {
+                        $show_breadcrumb = true;
+                        $page_name = 'Services';
+                    } elseif ($current_page != 'index.php') {
+                        $show_breadcrumb = true;
+                        // Map specific pages to their proper names
+                        $page_names = [
+                            'contact.php' => 'Contact Us',
+                            'about.php' => 'About Us',
+                            'products.php' => 'Products',
+                            'services.php' => 'Services',
+                            'privacy.php' => 'Privacy Policy',
+                            'terms.php' => 'Terms & Conditions',
+                        ];
+                        
+                        // Get page name from map or generate from filename
+                        if (isset($page_names[$current_page])) {
+                            $page_name = $page_names[$current_page];
+                        } else {
+                            $page_name = ucfirst(str_replace(['.php', '-', '_'], ['', ' ', ' '], $current_page));
+                        }
+                    }
+                    
+                    if ($show_breadcrumb && !empty($page_name)) {
+                        echo '<li class="breadcrumb-item active" aria-current="page">' . htmlspecialchars($page_name) . '</li>';
                     }
                     ?>
                 </ol>

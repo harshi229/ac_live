@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
         ";
         
         // Send email to admin
-        $adminEmail = 'harshilparmar2212@gmail.com'; // From email config
+        $adminEmail = 'aakashjamnagar@gmail.com'; // From email config
         $emailSent = sendEmail($adminEmail, $emailSubject, $emailMessage);
         
         if ($emailSent) {
@@ -433,19 +433,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
 .map-section {
     padding: 0;
     background: #f8f9fa;
+    position: relative;
 }
 
 .map-container {
     width: 100%;
-    height: 500px;
-    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-size: 1.2rem;
+    height: 600px;
     position: relative;
     overflow: hidden;
+    background: #e2e8f0;
+    border-radius: 0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
 }
 
 .map-placeholder {
@@ -460,44 +465,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
     margin-bottom: 15px;
 }
 
-.map-container iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
 /* Map Actions */
 .map-actions {
-    padding: 20px 0;
+    padding: 40px 20px;
+    background: white;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+}
+
+.map-actions-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.map-address-info {
+    margin-bottom: 10px;
+}
+
+.map-address-info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.map-address-info p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
 }
 
 .map-actions .btn {
     border: none;
-    padding: 12px 30px;
-    border-radius: 25px;
+    padding: 16px 40px;
+    border-radius: 50px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
     transition: all 0.3s ease;
-    min-width: 160px;
+    min-width: 220px;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .map-actions .btn-primary {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .map-actions .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
     color: white;
+}
+
+.map-actions .btn-primary:active {
+    transform: translateY(-1px);
+}
+
+.map-actions .btn-primary i {
+    font-size: 1.1rem;
 }
 
 .map-actions .btn-success {
@@ -507,23 +544,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
 }
 
 .map-actions .btn-success:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
     color: white;
 }
 
 /* Responsive adjustments for map actions */
-@media (max-width: 576px) {
-    .map-actions .d-flex {
-        flex-direction: column;
-        align-items: center;
+@media (max-width: 768px) {
+    .map-container {
+        height: 450px;
+    }
+    
+    .map-actions {
+        padding: 30px 15px;
     }
     
     .map-actions .btn {
         width: 100%;
-        max-width: 280px;
-        margin-bottom: 10px;
+        max-width: 300px;
+        padding: 14px 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .map-container {
+        height: 400px;
+    }
+    
+    .map-actions {
+        padding: 25px 15px;
+    }
+    
+    .map-actions-wrapper {
+        gap: 15px;
+    }
+    
+    .map-actions .btn {
+        width: 100%;
+        max-width: 100%;
+        padding: 14px 25px;
+        font-size: 0.95rem;
+    }
+    
+    .map-address-info h4 {
+        font-size: 1rem;
+    }
+    
+    .map-address-info p {
+        font-size: 0.9rem;
     }
 }
 
@@ -647,8 +716,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                 </div>
                 <h3>Call Us</h3>
                 <p>Speak directly with our team</p>
-                <a href="tel:+911234567890">
-                    +91 12345 67890 <i class="fas fa-arrow-right ms-2"></i>
+                <a href="tel:+919879235475">
+                    +91 98792 35475 <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
             
@@ -658,8 +727,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                 </div>
                 <h3>Email Us</h3>
                 <p>Send us a detailed message</p>
-                <a href="mailto:support@akashent.com">
-                    support@akashent.com <i class="fas fa-arrow-right ms-2"></i>
+                <a href="mailto:aakashjamnagar@gmail.com">
+                    aakashjamnagar@gmail.com <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
             
@@ -669,7 +738,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                 </div>
                 <h3>WhatsApp</h3>
                 <p>Quick chat with us</p>
-                <a href="https://wa.me/911234567890" target="_blank">
+                <a href="https://wa.me/919879235475" target="_blank">
                     Start Chat <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -723,10 +792,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                         </div>
                         <div class="info-content">
                             <h4>Phone</h4>
-                            <p><a href="tel:+911234567890">+91 98792 35475</a></p>
-                            <p><a href="tel:+919876543210">+91 98252 11063</a></p>
-                            <p><a href="tel:+911234567890">+91 94288 61488</a></p>
-                            <p><a href="tel:+919876543210">02882663036</a></p>
+                            <p><a href="tel:+919879235475">+91 98792 35475</a></p>
                         </div>
                     </div>
                     
@@ -736,8 +802,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                         </div>
                         <div class="info-content">
                             <h4>Email</h4>
-                            <p><a href="mailto:support@akashent.com">support@akashent.com</a></p>
-                            <p><a href="mailto:sales@akashent.com">sales@akashent.com</a></p>
+                            <p><a href="mailto:aakashjamnagar@gmail.com">aakashjamnagar@gmail.com</a></p>
                         </div>
                     </div>
                     
@@ -790,7 +855,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                         <a href="#" class="social-link linkedin" aria-label="LinkedIn">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="https://wa.me/911234567890" class="social-link whatsapp" aria-label="WhatsApp">
+                        <a href="https://wa.me/919879235475" class="social-link whatsapp" aria-label="Chat on WhatsApp with +91 98792 35475">
                             <i class="fab fa-whatsapp"></i>
                         </a>
                     </div>
@@ -849,23 +914,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
 <!-- Map Section -->
 <section class="map-section" id="map-section">
     <div class="map-container">
-        <!-- Google Maps Embed for Hitachi Home, Jamnagar -->
+        <!-- Google Maps Embed for Akash Enterprise, Jamnagar -->
         <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14736.123456789!2d70.0558066!3d22.4849737!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39574001f4900001%3A0xf5ae7b2599eb805a!2sHitachi%20Home%2C%20Pandit%20Nehru%20Marg%2C%20Patel%20Colony%2C%20Jamnagar%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1234567890"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.863338495676!2d70.0529878!3d22.4848749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39574001f272cd05%3A0xda450341fdac961b!2s10%2C+Pandit+Nehru+Rd%2C+opp.+OM+TVS%2C+Patel+Colony%2C+Jamnagar%2C+Gujarat+361008!5e0!3m2!1sen!2sin!4v1731234567890"
             width="100%" 
-            height="400" 
+            height="600" 
             style="border:0;" 
             allowfullscreen="" 
             loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Akash Enterprise Location - 10, Pandit Nehru Rd, opp. OM TVS, Patel Colony, Jamnagar, Gujarat 361008">
         </iframe>
-        
-        <!-- Map Actions -->
-        <div class="map-actions mt-3 text-center">
-            <a href="https://www.google.com/maps/dir/Hitachi+Home,+Pandit+Nehru+Marg,+Patel+Colony,+Jamnagar,+Gujarat/F3M4%2BX8M,+Pandit+Nehru+Marg,+Patel+Colony,+Jamnagar,+Gujarat+361008/@22.4849528,69.9734037,12z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x39574001f4900001:0xf5ae7b2599eb805a!2m2!1d70.0558066!2d22.4849737!1m5!1m1!1s0x39574001f4900001:0xf5ae7b2599eb805a!2m2!1d70.0558066!2d22.4849737?entry=ttu&g_ep=EgoyMDI1MDkzMC4wIKXMDSoASAFQAw%3D%3D" 
+    </div>
+    
+    <!-- Map Actions -->
+    <div class="map-actions">
+        <div class="map-actions-wrapper">
+            <div class="map-address-info">
+                <h4><i class="fas fa-map-marker-alt me-2" style="color: #3b82f6;"></i>Our Location</h4>
+                <p>10, Pandit Nehru Rd, opp. OM TVS, Patel Colony, Jamnagar, Gujarat 361008</p>
+            </div>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=10,+Pandit+Nehru+Rd,+opp.+OM+TVS,+Patel+Colony,+Jamnagar,+Gujarat+361008" 
                target="_blank" 
+               rel="noopener noreferrer"
                class="btn btn-primary">
-                <i class="fas fa-directions me-2"></i>Get Directions
+                <i class="fas fa-directions"></i>
+                <span>Get Directions</span>
             </a>
         </div>
     </div>

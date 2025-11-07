@@ -715,7 +715,7 @@ if (isset($_SESSION['admin_id'])) {
                                         <div class="user-details">
                                             <div class="user-name"><?php echo htmlspecialchars($admin['username'] ?? 'Admin'); ?></div>
                                             <div class="user-role">Administrator</div>
-                                            <div class="user-email"><?php echo htmlspecialchars($admin['email'] ?? 'admin@example.com'); ?></div>
+                                            <div class="user-email"><?php echo htmlspecialchars($admin['email'] ?? 'aakashjamnagar@gmail.com'); ?></div>
                                         </div>
                                     </div>
                                     <div class="dropdown-divider" role="separator"></div>

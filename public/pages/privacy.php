@@ -388,8 +388,8 @@ require_once __DIR__ . '/../../includes/templates/header.php';
             <h3>Data Protection Officer</h3>
             <p><strong>Akash Enterprise</strong></p>
             <p><strong>Address:</strong> [Your Business Address]</p>
-            <p><strong>Phone:</strong> <a href="tel:+91-XXXXXXXXXX">+91-XXXXXXXXXX</a></p>
-            <p><strong>Email:</strong> <a href="mailto:privacy@akashenterprise.com">privacy@akashenterprise.com</a></p>
+            <p><strong>Phone:</strong> <a href="tel:+919879235475">+91 98792 35475</a></p>
+            <p><strong>Email:</strong> <a href="mailto:aakashjamnagar@gmail.com">aakashjamnagar@gmail.com</a></p>
             <p><strong>Website:</strong> <a href="<?php echo BASE_URL; ?>"><?php echo BASE_URL; ?></a></p>
         </div>
 

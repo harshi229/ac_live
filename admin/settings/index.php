@@ -94,7 +94,7 @@ while ($row = $settings_query->fetch(PDO::FETCH_ASSOC)) {
 // Default values
 $defaults = [
     'site_name' => 'AC Management System',
-    'site_email' => 'admin@acsystem.com',
+    'site_email' => 'aakashjamnagar@gmail.com',
     'site_phone' => '+1-234-567-8900',
     'site_address' => 'Your Business Address',
     'currency' => '₹',
