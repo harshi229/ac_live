@@ -1387,6 +1387,88 @@ try {
     }
 }
 
+/* Clients Section */
+.clients-section {
+    padding: 100px 0;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 60px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.client-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.client-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.client-card:hover::before {
+    transform: scaleX(1);
+}
+
+.client-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.client-logo {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.client-card:hover .client-logo {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.client-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.client-type {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-style: italic;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .products-grid,
@@ -1412,6 +1494,10 @@ try {
     
     .brands-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -1466,7 +1552,8 @@ try {
     .categories-grid,
     .products-grid,
     .services-grid,
-    .features-grid {
+    .features-grid,
+    .clients-grid {
         grid-template-columns: 1fr;
     }
     
@@ -2086,6 +2173,35 @@ try {
                 <div class="faq-answer">
                     <p>We accept all major credit/debit cards, net banking, UPI payments, and EMI options. We also offer flexible payment plans and financing options to make your AC purchase more affordable.</p>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Clients Section -->
+<section class="clients-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Our Partners</span>
+            <h2 class="section-title">Our Trusted Clients</h2>
+            <p class="section-subtitle">Proud to serve leading organizations across industries</p>
+        </div>
+        
+        <div class="clients-grid">
+            <div class="client-card">
+                <div class="client-logo">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h3 class="client-name">Reliance</h3>
+                <p class="client-type">Enterprise Client</p>
+            </div>
+            
+            <div class="client-card">
+                <div class="client-logo">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3 class="client-name">Nayara</h3>
+                <p class="client-type">Enterprise Client</p>
             </div>
         </div>
     </div>

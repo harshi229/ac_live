@@ -141,10 +141,7 @@
                             <i class="fas fa-shield-alt"></i>
                             <span>Secure & Trusted</span>
                         </div>
-                        <div class="footer-badge-item">
-                            <i class="fas fa-award"></i>
-                            <span>ISO Certified</span>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

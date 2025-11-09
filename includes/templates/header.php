@@ -39,7 +39,7 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
     <style>
         /* Modern Responsive Header Styles */
         :root {
-            --header-height: 80px;
+            --header-height: 100px;
             --primary-blue: #3b82f6;
             --bg-dark: #0f172a;
             --text-primary: #f8fafc;
@@ -79,7 +79,8 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.75rem 1rem;
+            padding: 1rem;
+            min-height: var(--header-height);
             max-width: 1400px;
             margin: 0 auto;
             gap: 1rem;
@@ -98,9 +99,9 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
         }
 
         .header-logo img {
-            height: 70px;
+            height: 90px;
             width: auto;
-            max-width: 280px;
+            max-width: 350px;
             object-fit: contain;
             display: block;
             transition: transform 0.3s ease;
@@ -563,12 +564,17 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
         }
 
         @media (max-width: 991px) {
+            :root {
+                --header-height: 90px;
+            }
+            
             .header-content {
-                padding: 0.5rem 1rem;
+                padding: 0.75rem 1rem;
+                min-height: var(--header-height);
             }
 
             .header-logo img {
-                height: 55px;
+                height: 70px;
             }
 
             .search-toggle span {
@@ -601,12 +607,18 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
         }
 
         @media (max-width: 576px) {
+            :root {
+                --header-height: 80px;
+            }
+            
             .header-content {
                 gap: 0.5rem;
+                padding: 0.75rem 1rem;
+                min-height: var(--header-height);
             }
 
             .header-logo img {
-                height: 45px;
+                height: 60px;
             }
 
             .search-input {
@@ -622,10 +634,23 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
 
         /* Breadcrumbs */
         .breadcrumb-section {
-            background: white;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-light);
-            padding: 1.2rem 0;
+            position: sticky;
+            top: var(--header-height);
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            border-bottom-width: 0px;
+            padding: 0.875rem 0;
+            padding-bottom: 0px;
+            margin: 0;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .breadcrumb-section .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .breadcrumb {
@@ -634,26 +659,32 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
             gap: 0.5rem;
             flex-wrap: wrap;
             margin: 0;
+            margin-top: 15px;
             padding: 0;
             list-style: none;
+            width: 100%;
         }
 
         .breadcrumb-item {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: #94a3b8;
-            font-size: 0.9rem;
+            color: #64748b;
+            font-size: 0.875rem;
+            line-height: 1.5;
         }
 
         .breadcrumb-item a {
-            color: #94a3b8;
+            color: #64748b;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.2s ease;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
         }
 
         .breadcrumb-item a:hover {
             color: var(--primary-blue);
+            background: rgba(59, 130, 246, 0.1);
         }
 
         .breadcrumb-item.active {
@@ -664,11 +695,24 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
         .breadcrumb-item::after {
             content: '›';
             margin-left: 0.5rem;
-            color: #64748b;
+            color: #94a3b8;
+            font-weight: normal;
+            font-size: 0.875rem;
         }
 
         .breadcrumb-item:last-child::after {
             display: none;
+        }
+
+        /* Responsive Breadcrumb */
+        @media (max-width: 768px) {
+            .breadcrumb-section {
+                padding: 0.75rem 0;
+            }
+            
+            .breadcrumb-item {
+                font-size: 0.8125rem;
+            }
         }
 
         /* Loading State */
@@ -885,9 +929,12 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
     <div class="breadcrumb-section">
         <div class="container">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="<?php echo BASE_URL; ?>/index.php">Home</a>
+                <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a href="<?php echo BASE_URL; ?>/index.php" itemprop="item">
+                            <span itemprop="name">Home</span>
+                        </a>
+                        <meta itemprop="position" content="1" />
                     </li>
                     <?php
                     // Enhanced breadcrumb logic
@@ -924,7 +971,10 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
                     }
                     
                     if ($show_breadcrumb && !empty($page_name)) {
-                        echo '<li class="breadcrumb-item active" aria-current="page">' . htmlspecialchars($page_name) . '</li>';
+                        echo '<li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">';
+                        echo '<span itemprop="name">' . htmlspecialchars($page_name) . '</span>';
+                        echo '<meta itemprop="position" content="2" />';
+                        echo '</li>';
                     }
                     ?>
                 </ol>
