@@ -202,6 +202,12 @@ echo '<link rel="preload" as="image" href="' . IMG_URL . '/slider3.png">';
 echo '<link rel="preload" as="image" href="' . IMG_URL . '/placeholder-product.png">';
 
 // Fetch featured products, categories, and brands
+// Initialize variables to prevent undefined variable errors
+$featured_products = [];
+$categories = [];
+$brands = [];
+$stats = [];
+
 try {
     // Get featured products (only products with show_on_homepage = 1)
     $featured_stmt = $pdo->prepare("
@@ -218,21 +224,50 @@ try {
     $featured_products = $featured_stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Get categories with product counts
-    $categories_stmt = $pdo->prepare("
-        SELECT c.*, COUNT(p.id) as product_count
-        FROM categories c
-        LEFT JOIN products p ON c.id = p.category_id AND p.status = 'active'
-        WHERE c.status = 'active'
-        GROUP BY c.id
-        ORDER BY product_count DESC
-        LIMIT 6
-    ");
-    $categories_stmt->execute();
-    $categories = $categories_stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Check if categories table has status column
+    try {
+        $categories_stmt = $pdo->prepare("
+            SELECT c.*, COUNT(p.id) as product_count
+            FROM categories c
+            LEFT JOIN products p ON c.id = p.category_id AND p.status = 'active'
+            WHERE c.status = 'active'
+            GROUP BY c.id
+            ORDER BY product_count DESC
+            LIMIT 6
+        ");
+        $categories_stmt->execute();
+        $categories = $categories_stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Fallback if status column doesn't exist
+        if (strpos($e->getMessage(), "Unknown column 'status'") !== false) {
+            $categories_stmt = $pdo->prepare("
+                SELECT c.*, COUNT(p.id) as product_count
+                FROM categories c
+                LEFT JOIN products p ON c.id = p.category_id AND p.status = 'active'
+                GROUP BY c.id
+                ORDER BY product_count DESC
+                LIMIT 6
+            ");
+            $categories_stmt->execute();
+            $categories = $categories_stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            throw $e;
+        }
+    }
     
     // Get brands
-    $brands_stmt = $pdo->query("SELECT * FROM brands WHERE status = 'active' LIMIT 8");
-    $brands = $brands_stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        $brands_stmt = $pdo->query("SELECT * FROM brands WHERE status = 'active' LIMIT 8");
+        $brands = $brands_stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Fallback if status column doesn't exist
+        if (strpos($e->getMessage(), "Unknown column 'status'") !== false) {
+            $brands_stmt = $pdo->query("SELECT * FROM brands LIMIT 8");
+            $brands = $brands_stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            throw $e;
+        }
+    }
     
     // Get real statistics
     $stats_stmt = $pdo->query("
@@ -285,6 +320,11 @@ try {
     
 } catch (PDOException $e) {
     error_log("Error fetching homepage data: " . $e->getMessage());
+    // Ensure variables are set even on error
+    if (!isset($featured_products)) $featured_products = [];
+    if (!isset($categories)) $categories = [];
+    if (!isset($brands)) $brands = [];
+    if (!isset($stats)) $stats = [];
 }
 ?>
 
