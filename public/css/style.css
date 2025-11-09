@@ -1429,13 +1429,11 @@ footer {
 
 /* ================= BRANDS SECTION ================= */
 .brands-section {
-    padding: 80px 20px;
-    background: rgba(30, 41, 59, 0.3);
-    backdrop-filter: blur(15px);
-    border-top: 1px solid var(--border-light);
-    border-bottom: 1px solid var(--border-light);
+    padding: 100px 20px;
+    background: linear-gradient(90deg, #f1f5f9 0%, #f8fafc 50%, #f1f5f9 100%);
     position: relative;
     z-index: 1;
+    overflow: hidden;
 }
 
 .brands-section::before {
@@ -1445,67 +1443,79 @@ footer {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(168, 85, 247, 0.05));
+    background: linear-gradient(90deg, rgba(241, 245, 249, 0.8) 0%, rgba(248, 250, 252, 0.9) 50%, rgba(241, 245, 249, 0.8) 100%);
     pointer-events: none;
     z-index: -1;
 }
 
 .brands-section .section-header {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 1;
 }
 
 .brands-section .section-badge {
     display: inline-block;
-    background: rgba(59, 130, 246, 0.15);
+    background: rgba(59, 130, 246, 0.12);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: 50px;
-    padding: 8px 20px;
-    font-size: 0.9rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 25px;
+    padding: 10px 24px;
+    font-size: 0.85rem;
     font-weight: 600;
-    color: var(--primary-blue);
-    margin-bottom: 15px;
+    color: #3b82f6;
+    margin-bottom: 20px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
 .brands-section .section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 18px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
 }
 
 .brands-section .section-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: #64748b;
     margin-bottom: 0;
-    max-width: 600px;
+    max-width: 650px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.6;
+    font-weight: 400;
 }
 
 .brands-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    max-width: 1000px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 .brand-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(248, 250, 252, 0.2);
-    border-radius: var(--radius-lg);
-    padding: 30px 20px;
+    background: #ffffff;
+    border: none;
+    border-radius: 16px;
+    padding: 40px 24px;
     text-align: center;
-    transition: all var(--transition-normal);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .brand-card::before {
@@ -1514,10 +1524,11 @@ footer {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: var(--primary-gradient);
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
     transform: scaleX(0);
-    transition: transform var(--transition-normal);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left;
 }
 
 .brand-card:hover::before {
@@ -1525,64 +1536,91 @@ footer {
 }
 
 .brand-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    background: rgba(255, 255, 255, 1);
-    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    background: #ffffff;
 }
 
 .brand-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-dark);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1e293b;
     margin: 0;
-    text-shadow: none;
-    background: none;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-    background-clip: unset;
+    line-height: 1.4;
+    word-wrap: break-word;
+    hyphens: auto;
 }
 
 /* Responsive Design for Brands Section */
 @media (max-width: 768px) {
     .brands-section {
-        padding: 60px 15px;
+        padding: 70px 15px;
+    }
+    
+    .brands-section .section-header {
+        margin-bottom: 40px;
+    }
+    
+    .brands-section .section-badge {
+        padding: 8px 20px;
+        font-size: 0.8rem;
     }
     
     .brands-section .section-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .brands-section .section-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
     
     .brands-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 18px;
     }
     
     .brand-card {
-        padding: 25px 15px;
+        padding: 32px 20px;
+        min-height: 100px;
     }
     
     .brand-name {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
     }
 }
 
 @media (max-width: 480px) {
+    .brands-section {
+        padding: 60px 12px;
+    }
+    
+    .brands-section .section-header {
+        margin-bottom: 35px;
+    }
+    
+    .brands-section .section-badge {
+        padding: 7px 18px;
+        font-size: 0.75rem;
+        margin-bottom: 15px;
+    }
+    
     .brands-section .section-title {
-        font-size: 1.8rem;
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+    }
+    
+    .brands-section .section-subtitle {
+        font-size: 0.9rem;
     }
     
     .brands-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
     }
     
     .brand-card {
-        padding: 20px 12px;
+        padding: 28px 16px;
+        min-height: 90px;
     }
     
     .brand-name {

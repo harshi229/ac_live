@@ -1914,6 +1914,27 @@ try {
     </div>
 </section>
 
+<!-- Brands Section -->
+<?php if (!empty($brands)): ?>
+<section class="brands-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Authorized Dealers</span>
+            <h2 class="section-title">Top Brands We Carry</h2>
+            <p class="section-subtitle">Premium quality from World Famous Brands manufacturers</p>
+        </div>
+        
+        <div class="brands-grid">
+            <?php foreach (array_slice($brands, 0, 8) as $brand): ?>
+            <div class="brand-card">
+                <h4 class="brand-name"><?= htmlspecialchars($brand['name']) ?></h4>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
 <!-- Enhanced Categories Section -->
 <section class="categories-section">
     <div class="container">
@@ -2188,27 +2209,6 @@ try {
         </div>
     </div>
 </section>
-
-<!-- Brands Section -->
-<?php if (!empty($brands)): ?>
-<section class="brands-section">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">Authorized Dealers</span>
-            <h2 class="section-title">Top Brands We Carry</h2>
-            <p class="section-subtitle">Premium quality from World Famous Brands manufacturers</p>
-        </div>
-        
-        <div class="brands-grid">
-            <?php foreach (array_slice($brands, 0, 8) as $brand): ?>
-            <div class="brand-card">
-                <h4 class="brand-name"><?= htmlspecialchars($brand['name']) ?></h4>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
 
 <!-- Why Choose Us Section -->
 <section class="why-choose-section">

@@ -76,11 +76,16 @@ try {
     $capacities = $filterOptions['capacities'];
     $warranties = $filterOptions['warranties'];
     $price_range = $filterOptions['price_range'];
+    
+    // Get all brands for display section (not just filtered ones)
+    $all_brands_stmt = $pdo->query("SELECT * FROM brands WHERE status = 'active' ORDER BY name");
+    $all_brands = $all_brands_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     $error_message = "Error loading products: " . $e->getMessage();
     $products = [];
     $total_products = 0;
+    $all_brands = [];
 }
 ?>
 
@@ -93,6 +98,27 @@ try {
             <p>Discover premium air conditioning solutions for every need</p>
         </div>
     </div>
+
+    <!-- Brands Section -->
+    <?php if (!empty($all_brands)): ?>
+    <section class="brands-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Authorized Dealers</span>
+                <h2 class="section-title">All Brands We Carry</h2>
+                <p class="section-subtitle">Premium quality from World Famous Brands manufacturers</p>
+            </div>
+            
+            <div class="brands-grid">
+                <?php foreach ($all_brands as $brand): ?>
+                <div class="brand-card" onclick="applyBrandFilter(<?= $brand['id'] ?>)">
+                    <h4 class="brand-name"><?= htmlspecialchars($brand['name']) ?></h4>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <div class="container">
         <!-- Filters Toolbar (below hero) -->

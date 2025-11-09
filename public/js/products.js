@@ -1534,6 +1534,23 @@ function applyFilter(filterType, value) {
     updateActiveFilterChips();
 }
 
+// Apply brand filter from brand card click
+function applyBrandFilter(brandId) {
+    applyFilter('brand', brandId);
+    
+    // Update the brand radio button in the filter dropdown
+    const brandRadio = document.getElementById('brand_' + brandId);
+    if (brandRadio) {
+        brandRadio.checked = true;
+    }
+    
+    // Scroll to products section
+    const productsContainer = document.getElementById('productsContainer');
+    if (productsContainer) {
+        productsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
 // Apply price filter
 function applyPriceFilter() {
     const minPrice = document.querySelector('input[name="min_price"]').value;
