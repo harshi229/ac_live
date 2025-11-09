@@ -22,8 +22,6 @@ try {
     $stats['approved_reviews'] = $pdo->query("SELECT COUNT(*) FROM reviews WHERE status = 'approved'")->fetchColumn();
     $stats['avg_rating'] = $pdo->query("SELECT COALESCE(AVG(rating), 0) FROM reviews WHERE status = 'approved'")->fetchColumn();
     
-    // Low stock products (less than 5)
-    $low_stock_products = $pdo->query("SELECT COUNT(*) FROM products WHERE stock < 5 AND status = 'active'")->fetchColumn();
     
     // Recent orders (last 7 days)
     $recent_orders = $pdo->query("SELECT COUNT(*) FROM orders WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)")->fetchColumn();
@@ -50,15 +48,6 @@ try {
         GROUP BY p.id 
         ORDER BY sales_count DESC 
         LIMIT 5
-    ")->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Low stock products list
-    $low_stock_list = $pdo->query("
-        SELECT product_name, model_name, stock, brand_id, (SELECT name FROM brands WHERE id = products.brand_id) as brand_name
-        FROM products 
-        WHERE stock < 5 AND status = 'active' 
-        ORDER BY stock ASC 
-        LIMIT 10
     ")->fetchAll(PDO::FETCH_ASSOC);
     
     // Sales chart data (last 30 days)
@@ -805,12 +794,6 @@ try {
                     </h5>
                         </div>
                 <div class="card-body">
-                    <?php if ($low_stock_products > 0): ?>
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>Low Stock Alert:</strong> <?php echo $low_stock_products; ?> products are running low on stock.
-                        </div>
-                    <?php endif; ?>
                     
                     <?php if ($stats['pending_orders'] > 0): ?>
                     <div class="alert alert-info">

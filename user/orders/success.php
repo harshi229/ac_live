@@ -672,12 +672,6 @@ body {
                     <span class="info-value"><?php echo date('M d, Y', strtotime($order['delivery_date'])); ?></span>
                 </div>
                 <?php endif; ?>
-                <?php if ($order['installation_required']): ?>
-                <div class="info-item">
-                    <span class="info-label">Installation:</span>
-                    <span class="info-value">Professional installation included</span>
-                </div>
-                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -709,9 +703,6 @@ body {
                         </div>
                         
                         <div class="item-options">
-                            <span class="option-tag <?php echo $item['installation_required'] ? 'option-yes' : 'option-no'; ?>">
-                                Installation: <?php echo $item['installation_required'] ? 'Yes' : 'No'; ?>
-                            </span>
                             <span class="option-tag <?php echo $item['amc_opted'] ? 'option-yes' : 'option-no'; ?>">
                                 AMC: <?php echo $item['amc_opted'] ? 'Yes' : 'No'; ?>
                             </span>
@@ -796,11 +787,6 @@ body {
                 <i class="fas fa-search"></i> Track Your Order
             </a>
             
-            <?php if ($order['installation_required']): ?>
-            <a href="../services/index.php" class="btn btn-success">
-                <i class="fas fa-tools"></i> Book Installation
-            </a>
-            <?php endif; ?>
             
             <a href="history.php" class="btn btn-secondary">
                 <i class="fas fa-history"></i> View All Orders

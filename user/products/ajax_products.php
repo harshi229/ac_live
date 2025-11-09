@@ -19,7 +19,6 @@ $star_rating = isset($_GET['star_rating']) ? intval($_GET['star_rating']) : 0;
 $capacity_filter = isset($_GET['capacity']) ? $_GET['capacity'] : '';
 $warranty_filter = isset($_GET['warranty']) ? intval($_GET['warranty']) : 0;
 $amc_filter = isset($_GET['amc']) ? $_GET['amc'] : '';
-$stock_filter = isset($_GET['stock']) ? $_GET['stock'] : '';
 $feature_filter = isset($_GET['feature']) ? intval($_GET['feature']) : 0;
 
 // Pagination
@@ -43,7 +42,6 @@ try {
         'capacity_filter' => $capacity_filter,
         'warranty_filter' => $warranty_filter,
         'amc_filter' => $amc_filter,
-        'stock_filter' => $stock_filter,
         'feature_filter' => $feature_filter,
         'sort' => $sort,
         'page' => $page,

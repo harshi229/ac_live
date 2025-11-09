@@ -22,7 +22,7 @@ function generateProductSchema($product) {
             "@type" => "Offer",
             "price" => $product['price'],
             "priceCurrency" => "INR",
-            "availability" => $product['stock'] > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            "availability" => "https://schema.org/InStock",
             "seller" => [
                 "@type" => "Organization",
                 "name" => "Akash Enterprise"

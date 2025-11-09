@@ -51,13 +51,11 @@ try {
             'Energy Rating: ' . ($product['energy_rating'] ?? $product['star_rating'] . ' Star'),
             'Warranty: ' . $product['warranty_years'] . ' Years',
             'Inverter: ' . $product['inverter'],
-            'Installation: ' . ($product['installation'] == 'Yes' ? 'Included' : 'Not Included'),
             'AMC Available: ' . ($product['amc_available'] ? 'Yes' : 'No')
         ],
         'avg_rating' => round($product['avg_rating'], 1),
         'review_count' => intval($product['review_count']),
-        'stock_status' => $product['status'],
-        'in_stock' => $product['stock'] > 0
+        'stock_status' => $product['status']
     ];
     
     // Add additional features if available

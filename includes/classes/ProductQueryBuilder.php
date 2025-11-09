@@ -183,26 +183,6 @@ class ProductQueryBuilder
         return $this;
     }
 
-    /**
-     * Add stock filter
-     */
-    public function addStockFilter($stockFilter)
-    {
-        if ($stockFilter && in_array($stockFilter, ['in_stock', 'low_stock', 'out_of_stock'])) {
-            switch ($stockFilter) {
-                case 'in_stock':
-                    $this->whereConditions[] = "p.stock > 10";
-                    break;
-                case 'low_stock':
-                    $this->whereConditions[] = "p.stock > 0 AND p.stock <= 10";
-                    break;
-                case 'out_of_stock':
-                    $this->whereConditions[] = "p.stock = 0";
-                    break;
-            }
-        }
-        return $this;
-    }
 
     /**
      * Add feature filter
@@ -343,7 +323,6 @@ class ProductQueryBuilder
         $this->addCapacityFilter($filters['capacity_filter'] ?? '');
         $this->addWarrantyFilter($filters['warranty_filter'] ?? 0);
         $this->addAmcFilter($filters['amc_filter'] ?? '');
-        $this->addStockFilter($filters['stock_filter'] ?? '');
         $this->addFeatureFilter($filters['feature_filter'] ?? 0);
         $this->setSorting($filters['sort'] ?? 'newest');
         $this->setPagination($filters['page'] ?? 1, $filters['items_per_page'] ?? 12);

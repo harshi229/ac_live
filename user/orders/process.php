@@ -38,14 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Begin a transaction
         $pdo->beginTransaction();
 
-        // Check current stock of the product
-        $check_stock = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
-        $check_stock->execute([$product_id]);
-        $product = $check_stock->fetch(PDO::FETCH_ASSOC);
+        // Check if product exists and is active
+        $check_product = $pdo->prepare("SELECT id, status FROM products WHERE id = ? AND status = 'active'");
+        $check_product->execute([$product_id]);
+        $product = $check_product->fetch(PDO::FETCH_ASSOC);
 
-        // If the product doesn't exist or stock is insufficient
-        if (!$product || $product['stock'] < $quantity) {
-            echo "Insufficient stock available.";
+        // If the product doesn't exist or is not active
+        if (!$product) {
+            echo "Product not available.";
             $pdo->rollBack(); // Rollback transaction on error
             exit();
         }

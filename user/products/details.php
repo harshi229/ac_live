@@ -1070,43 +1070,21 @@ try {
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Stock Status -->
+                    <?php if ($product['amc_available']): ?>
                     <div class="stock-info">
-                        <?php
-                        $stock_class = '';
-                        $stock_icon = '';
-                        if ($product['stock'] > 10) {
-                            $stock_class = 'in-stock';
-                            $stock_icon = 'fas fa-check-circle';
-                            $stock_text = 'In Stock (' . $product['stock'] . ' units available)';
-                        } elseif ($product['stock'] > 0) {
-                            $stock_class = 'low-stock';
-                            $stock_icon = 'fas fa-exclamation-triangle';
-                            $stock_text = 'Low Stock (' . $product['stock'] . ' units left)';
-                        } else {
-                            $stock_class = 'out-of-stock';
-                            $stock_icon = 'fas fa-times-circle';
-                            $stock_text = 'Out of Stock';
-                        }
-                        ?>
-                        <div class="stock-badge <?php echo $stock_class; ?>">
-                            <i class="<?php echo $stock_icon; ?>"></i>
-                            <span><?php echo $stock_text; ?></span>
+                        <div class="stock-badge" style="background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; margin-top: 10px;">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>AMC Available</span>
                         </div>
-                        <?php if ($product['amc_available']): ?>
-                            <div class="stock-badge" style="background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; margin-top: 10px;">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>AMC Available</span>
-                            </div>
-                        <?php endif; ?>
                     </div>
+                    <?php endif; ?>
                     
                     <!-- Quantity Selector -->
                     <div class="quantity-section">
                         <div class="quantity-label">Quantity</div>
                         <div class="quantity-controls">
                             <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-                            <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="<?php echo $product['stock']; ?>">
+                            <input type="number" class="quantity-input" id="quantity" value="1" min="1">
                             <button class="quantity-btn" onclick="increaseQuantity()">+</button>
                         </div>
                     </div>
@@ -1157,10 +1135,6 @@ try {
                                 <li class="feature-item">
                                     <i class="fas fa-check"></i>
                                     <span><?php echo $product['warranty_years']; ?> Year Warranty</span>
-                                </li>
-                                <li class="feature-item">
-                                    <i class="fas fa-check"></i>
-                                    <span>Installation: <?php echo $product['installation'] == 'Yes' ? 'Included' : 'Not Included'; ?></span>
                                 </li>
                                 <?php if ($product['amc_available']): ?>
                                 <li class="feature-item">
@@ -1224,14 +1198,6 @@ try {
                             <tr>
                                 <th>Capacity</th>
                                 <td><?php echo htmlspecialchars($product['capacity'] ?? 'N/A'); ?></td>
-                            </tr>
-                            <tr>
-                                <th>Installation</th>
-                                <td><?php echo $product['installation'] == 'Yes' ? 'Included' : 'Not Included'; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Current Stock</th>
-                                <td><?php echo $product['stock']; ?> Units</td>
                             </tr>
                             <tr>
                                 <th>Warranty Period</th>

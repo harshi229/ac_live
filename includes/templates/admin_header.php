@@ -156,7 +156,6 @@ if (isset($_SESSION['admin_id'])) {
                                                     strpos($_SERVER['REQUEST_URI'], '/products/add') === false && 
                                                     strpos($_SERVER['REQUEST_URI'], '/products/edit') === false && 
                                                     strpos($_SERVER['REQUEST_URI'], '/products/delete') === false && 
-                                                    strpos($_SERVER['REQUEST_URI'], '/products/update_stock') === false && 
                                                     strpos($_SERVER['REQUEST_URI'], '/products/update') === false);
                                 ?>
                                 <a class="nav-link <?php echo $is_products_page ? 'active' : ''; ?>" href="<?php echo admin_url('products'); ?>" aria-label="Products - Manage inventory">
@@ -189,17 +188,6 @@ if (isset($_SESSION['admin_id'])) {
                                     <div class="nav-link-content">
                                         <span class="nav-link-title">Add Product</span>
                                         <span class="nav-link-subtitle">New item</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/products/update_stock') !== false ? 'active' : ''; ?>" href="<?php echo admin_url('products/update_stock'); ?>" aria-label="Update Stock - Inventory levels">
-                                    <div class="nav-link-icon">
-                                        <i class="fas fa-boxes"></i>
-                                    </div>
-                                    <div class="nav-link-content">
-                                        <span class="nav-link-title">Update Stock</span>
-                                        <span class="nav-link-subtitle">Inventory levels</span>
                                     </div>
                                 </a>
                             </li>
@@ -392,17 +380,6 @@ if (isset($_SESSION['admin_id'])) {
                                     <div class="nav-link-content">
                                         <span class="nav-link-title">Sales Report</span>
                                         <span class="nav-link-subtitle">Revenue analytics</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/reports/stock') !== false ? 'active' : ''; ?>" href="<?php echo admin_url('reports/stock'); ?>" aria-label="Stock Report - Inventory status">
-                                    <div class="nav-link-icon">
-                                        <i class="fas fa-chart-bar"></i>
-                                    </div>
-                                    <div class="nav-link-content">
-                                        <span class="nav-link-title">Stock Report</span>
-                                        <span class="nav-link-subtitle">Inventory status</span>
                                     </div>
                                 </a>
                             </li>

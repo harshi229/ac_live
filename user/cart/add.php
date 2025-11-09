@@ -50,12 +50,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Begin a transaction
         $pdo->beginTransaction();
 
-        // Check current stock and status of the product
-        $check_stock = $pdo->prepare("SELECT stock, status FROM products WHERE id = ?");
-        $check_stock->execute([$product_id]);
-        $product = $check_stock->fetch(PDO::FETCH_ASSOC);
+        // Check status of the product
+        $check_product = $pdo->prepare("SELECT status FROM products WHERE id = ?");
+        $check_product->execute([$product_id]);
+        $product = $check_product->fetch(PDO::FETCH_ASSOC);
 
-        // If the product doesn't exist or stock is insufficient
+        // If the product doesn't exist
         if (!$product) {
             $pdo->rollBack(); // Rollback transaction on error
             if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
@@ -76,17 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $product_url = product_url($product_id) . "?error=product_inactive";
                 echo "<script>window.location.href='" . $product_url . "';</script>";
-            }
-            exit();
-        }
-        
-        if ($product['stock'] < $quantity) {
-            $pdo->rollBack(); // Rollback transaction on error
-            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'message' => 'Insufficient stock available.']);
-            } else {
-                echo "<script>window.location.href='../products/details.php?id=" . $product_id . "&error=insufficient_stock';</script>";
             }
             exit();
         }
@@ -117,44 +106,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $existing_item = $check_cart->fetch(PDO::FETCH_ASSOC);
                 $new_quantity = $existing_item['quantity'] + $quantity;
 
-                // Check if the new quantity exceeds stock
-                if ($new_quantity > $product['stock']) {
-                    $pdo->rollBack(); // Rollback transaction on error
-                    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-                        http_response_code(400);
-                        echo json_encode(['success' => false, 'message' => 'Insufficient stock available.']);
-                    } else {
-                        $product_url = product_url($product_id) . "?error=insufficient_stock";
-                        echo "<script>window.location.href='" . $product_url . "';</script>";
-                    }
-                    exit();
-                }
-
                 // Update cart quantity
                 $update_cart = $pdo->prepare("UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?");
                 $update_cart->execute([$new_quantity, $user_id, $product_id]);
             } else {
                 // If product does not exist in the cart, insert a new row
-                if ($quantity > $product['stock']) {
-                    $pdo->rollBack(); // Rollback transaction on error
-                    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-                        http_response_code(400);
-                        echo json_encode(['success' => false, 'message' => 'Insufficient stock available.']);
-                    } else {
-                        $product_url = product_url($product_id) . "?error=insufficient_stock";
-                        echo "<script>window.location.href='" . $product_url . "';</script>";
-                    }
-                    exit();
-                }
-
                 // Insert new product into the cart
                 $add_to_cart = $pdo->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)");
                 $add_to_cart->execute([$user_id, $product_id, $quantity]);
             }
         }
 
-        // Note: Stock is not reduced here as it should only be reduced when order is placed
-        // Stock validation is done above to ensure sufficient stock is available
+        // Product added to cart successfully
 
         // Commit the transaction
         $pdo->commit();

@@ -24,7 +24,6 @@ $star_rating = isset($_GET['star_rating']) ? intval($_GET['star_rating']) : 0;
 $capacity_filter = isset($_GET['capacity']) ? $_GET['capacity'] : '';
 $warranty_filter = isset($_GET['warranty']) ? intval($_GET['warranty']) : 0;
 $amc_filter = isset($_GET['amc']) ? $_GET['amc'] : '';
-$stock_filter = isset($_GET['stock']) ? $_GET['stock'] : '';
 $feature_filter = isset($_GET['feature']) ? intval($_GET['feature']) : 0;
 
 // Include ProductQueryBuilder class
@@ -51,7 +50,6 @@ try {
         'capacity_filter' => $capacity_filter,
         'warranty_filter' => $warranty_filter,
         'amc_filter' => $amc_filter,
-        'stock_filter' => $stock_filter,
         'feature_filter' => $feature_filter,
         'sort' => $sort,
         'page' => $page,
@@ -352,21 +350,6 @@ try {
                     <span class="product-badge">AMC</span>
                     <?php endif; ?>
                     
-                    <?php
-                    $stock_badge_class = 'out-of-stock';
-                    $stock_text = 'Out of Stock';
-                    if ($product['stock'] > 10) {
-                        $stock_badge_class = 'in-stock';
-                        $stock_text = 'In Stock';
-                    } elseif ($product['stock'] > 0) {
-                        $stock_badge_class = 'low-stock';
-                        $stock_text = 'Low Stock';
-                    }
-                    ?>
-                    <div class="stock-badge <?= $stock_badge_class ?>">
-                        <?= $stock_text ?>
-                    </div>
-                    
                     <button class="wishlist-quick-btn" onclick="toggleWishlist(<?= $product['id'] ?>)">
                         <i class="far fa-heart"></i>
                     </button>
@@ -415,9 +398,6 @@ try {
                             <?php else: ?>
                                 <!-- Regular pricing -->
                                 <div class="product-price">₹<?= number_format($product['price']) ?></div>
-                            <?php endif; ?>
-                            <?php if($product['stock'] <= 5 && $product['stock'] > 0): ?>
-                            <div class="stock-warning">Only <?= $product['stock'] ?> left!</div>
                             <?php endif; ?>
                         </div>
                         

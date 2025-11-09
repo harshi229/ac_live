@@ -151,7 +151,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     
     $payment_method = $_POST['payment_method'] ?? '';
     $notes = trim($_POST['notes'] ?? '');
-    $installation_required = isset($_POST['installation_required']) ? 1 : 0;
     
     // Get payment details based on selected payment method - Commented out for non-COD methods
     $payment_details = null;
@@ -276,17 +275,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             // Begin transaction
             $pdo->beginTransaction();
 
-            // Validate stock availability
-            foreach ($cart_items as $item) {
-                $check_stock = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
-                $check_stock->execute([$item['product_id']]);
-                $product_stock = $check_stock->fetch(PDO::FETCH_ASSOC);
-                
-                if (!$product_stock || $product_stock['stock'] < $item['quantity']) {
-                    throw new Exception("Insufficient stock for product: " . $item['product_name']);
-                }
-            }
-
             // Calculate delivery date based on shipping method
             $delivery_days = 7; // Default for standard
             if ($selected_shipping === 'express') {
@@ -366,8 +354,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 INSERT INTO orders (
                     user_id, order_number, total_price, payment_method, 
                     order_status, payment_status, delivery_date, address, 
-                    notes, payment_details, installation_required, created_at
-                ) VALUES (?, ?, ?, ?, 'Pending', ?, ?, ?, ?, ?, ?, NOW())
+                    notes, payment_details, created_at
+                ) VALUES (?, ?, ?, ?, 'Pending', ?, ?, ?, ?, ?, NOW())
             ");
             $order_stmt->execute([
                 $user_id, 
@@ -378,13 +366,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 $delivery_date, 
                 $full_address,
                 $notes,
-                $payment_details_json,
-                $installation_required
+                $payment_details_json
             ]);
 
             $order_id = $pdo->lastInsertId();
 
-            // Insert order items and update stock
+            // Insert order items
             foreach ($cart_items as $item) {
                 // Insert order item
                 $order_item_stmt = $pdo->prepare("
@@ -400,9 +387,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     $amc_selections[$item['product_id']]
                 ]);
 
-                // Update product stock
-                $update_stock_stmt = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ?");
-                $update_stock_stmt->execute([$item['quantity'], $item['product_id']]);
             }
 
             // Clear cart
@@ -1975,20 +1959,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                             <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Order Confirmation</h3>
                         </div>
                         <div class="section-content">
-                            <!-- Installation Option -->
-                            <div class="installation-option">
-                                <input type="checkbox" id="installation_required" name="installation_required" 
-                                       class="installation-checkbox" value="1" checked>
-                                <label for="installation_required" class="installation-label">
-                                    Professional installation required (Additional charges may apply)
-                                </label>
-                            </div>
-                            
                             <!-- Notes Section -->
                             <div class="notes-section">
                                 <label for="notes" class="notes-label">Special Instructions (Optional)</label>
                                 <textarea id="notes" name="notes" class="notes-textarea" 
-                                          placeholder="Any special instructions for delivery or installation..."></textarea>
+                                          placeholder="Any special instructions for delivery..."></textarea>
                             </div>
                             
                             <!-- Delivery Information -->
@@ -2757,16 +2732,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Installation checkbox handling
-    const installationCheckbox = document.getElementById('installation_required');
-    if (installationCheckbox) {
-        installationCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                console.log('Professional installation required');
-            }
-        });
-    }
     
     // Auto-resize textarea
     const textareas = document.querySelectorAll('textarea');

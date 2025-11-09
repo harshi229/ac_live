@@ -31,9 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = floatval($_POST['price']);
     $original_price = floatval($_POST['original_price']);
     $discount_percentage = floatval($_POST['discount_percentage']);
-    $stock = intval($_POST['stock']);
     $warranty_years = intval($_POST['warranty_years']);
-    $installation = $_POST['installation'];
     $amc_available = isset($_POST['amc_available']) ? 1 : 0;
     $show_on_homepage = isset($_POST['show_on_homepage']) ? 1 : 0;
     $show_on_product_page = isset($_POST['show_on_product_page']) ? 1 : 0;
@@ -99,14 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 // Insert product
                 $sql = "INSERT INTO products (brand_id, category_id, sub_category_id, product_name, model_name, model_number, inverter, star_rating, energy_rating, capacity, price, original_price, discount_percentage, discount_amount, stock, warranty_years, installation, amc_available, description, product_image, status, show_on_homepage, show_on_product_page) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?, ?)";
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'No', ?, ?, ?, 'active', ?, ?)";
                 
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([
                     $brand_id, $category_id, $sub_category_id, $product_name, $model_name, 
                     $model_number, $inverter, $star_rating, $energy_rating, $capacity, $price, 
-                    $original_price, $discount_percentage, $discount_amount, $stock, 
-                    $warranty_years, $installation, $amc_available, $description, $image_name,
+                    $original_price, $discount_percentage, $discount_amount, 
+                    $warranty_years, $amc_available, $description, $image_name,
                     $show_on_homepage, $show_on_product_page
                 ]);
 
@@ -333,16 +331,6 @@ try {
                         <div class="form-text">Enter the energy efficiency rating (e.g., 5 Star, 3 Star)</div>
                     </div>
 
-                    <!-- Installation -->
-                    <div class="mb-3">
-                        <label for="installation" class="form-label">Installation <span class="required">*</span></label>
-                        <select class="form-select" name="installation" id="installation" required>
-                            <option value="">Select Installation</option>
-                            <option value="Yes" <?= (isset($_POST['installation']) && $_POST['installation'] == 'Yes') ? 'selected' : '' ?>>Yes - Included</option>
-                            <option value="No" <?= (isset($_POST['installation']) && $_POST['installation'] == 'No') ? 'selected' : '' ?>>No - Not Included</option>
-                        </select>
-                    </div>
-
                     <!-- Capacity -->
                     <div class="mb-3">
                         <label for="capacity" class="form-label">Capacity <span class="required">*</span></label>
@@ -362,22 +350,22 @@ try {
                             <h5 class="mb-0">Pricing Information</h5>
                         </div>
                         <div class="card-body">
-                            <!-- Original Price -->
+                            <!-- MRP -->
                             <div class="mb-3">
-                                <label for="original_price" class="form-label">Original Price (₹) <span class="required">*</span></label>
+                                <label for="original_price" class="form-label">MRP (₹) <span class="required">*</span></label>
                                 <input type="number" class="form-control" name="original_price" id="original_price" step="0.01" min="0" 
                                        value="<?= isset($_POST['original_price']) ? htmlspecialchars($_POST['original_price']) : '' ?>" 
                                        placeholder="e.g., 40000" required>
-                                <div class="form-text">The actual price of the AC unit</div>
+                                <div class="form-text">The MRP of the AC unit</div>
                             </div>
 
-                            <!-- Selling Price -->
+                            <!-- Special Price -->
                             <div class="mb-3">
-                                <label for="price" class="form-label">Selling Price (₹) <span class="required">*</span></label>
+                                <label for="price" class="form-label">Special Price (₹) <span class="required">*</span></label>
                                 <input type="number" class="form-control" name="price" id="price" step="0.01" min="0" 
                                        value="<?= isset($_POST['price']) ? htmlspecialchars($_POST['price']) : '' ?>" 
                                        placeholder="e.g., 37000" required>
-                                <div class="form-text">The price customers will pay (discounted price)</div>
+                                <div class="form-text">The special price customers will pay</div>
                             </div>
 
                             <!-- Discount Percentage -->
@@ -386,7 +374,7 @@ try {
                                 <input type="number" class="form-control" name="discount_percentage" id="discount_percentage" step="0.01" min="0" max="100" 
                                        value="<?= isset($_POST['discount_percentage']) ? htmlspecialchars($_POST['discount_percentage']) : '' ?>" 
                                        placeholder="e.g., 7.5" readonly>
-                                <div class="form-text">Automatically calculated based on original and selling price</div>
+                                <div class="form-text">Automatically calculated based on MRP and special price</div>
                             </div>
 
                             <!-- Discount Preview -->
@@ -395,14 +383,6 @@ try {
                                 <div id="discount-details"></div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Stock -->
-                    <div class="mb-3">
-                        <label for="stock" class="form-label">Stock Quantity <span class="required">*</span></label>
-                        <input type="number" class="form-control" name="stock" id="stock" min="0" 
-                               value="<?= isset($_POST['stock']) ? htmlspecialchars($_POST['stock']) : '' ?>" 
-                               placeholder="e.g., 10" required>
                     </div>
 
                     <!-- Warranty -->
@@ -586,10 +566,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 discountDetails.innerHTML = `
                     <div class="row">
                         <div class="col-md-6">
-                            <strong>Original Price:</strong> ₹${originalPrice.toLocaleString()}
+                            <strong>MRP:</strong> ₹${originalPrice.toLocaleString()}
                         </div>
                         <div class="col-md-6">
-                            <strong>Selling Price:</strong> ₹${sellingPrice.toLocaleString()}
+                            <strong>Special Price:</strong> ₹${sellingPrice.toLocaleString()}
                         </div>
                         <div class="col-md-6">
                             <strong>Discount Amount:</strong> ₹${discountAmount.toLocaleString()}
@@ -607,7 +587,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 discountPercentageInput.value = '0';
                 discountPreview.style.display = 'none';
-                alert('Selling price cannot be higher than original price!');
+                alert('Special price cannot be higher than MRP!');
                 sellingPriceInput.value = originalPrice;
             }
         } else {

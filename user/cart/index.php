@@ -737,31 +737,12 @@ $grand_total = $subtotal - $discount_amount + $shipping_cost + $tax;
                                         <?php endif; ?>
                                     </div>
                                     
-                                    <!-- Stock Status -->
-                                    <div class="stock-status">
-                                        <?php
-                                        $stock_class = '';
-                                        $stock_text = '';
-                                        if ($item['stock'] > 10) {
-                                            $stock_class = 'in-stock';
-                                            $stock_text = 'In Stock (' . $item['stock'] . ' units)';
-                                        } elseif ($item['stock'] > 0) {
-                                            $stock_class = 'low-stock';
-                                            $stock_text = 'Low Stock (' . $item['stock'] . ' units left)';
-                                        } else {
-                                            $stock_class = 'out-of-stock';
-                                            $stock_text = 'Out of Stock';
-                                        }
-                                        ?>
-                                        <span class="stock-badge <?php echo $stock_class; ?>"><?php echo $stock_text; ?></span>
-                                    </div>
-                                    
                                     <!-- Quantity Controls -->
                                     <div class="item-actions">
                                         <div class="quantity-controls">
                                             <button class="quantity-btn" onclick="updateQuantity(<?php echo $item['product_id']; ?>, <?php echo $item['quantity'] - 1; ?>)">-</button>
                                             <input type="number" class="quantity-input" value="<?php echo $item['quantity']; ?>" 
-                                                   min="1" max="<?php echo $item['stock']; ?>" 
+                                                   min="1" 
                                                    onchange="updateQuantity(<?php echo $item['product_id']; ?>, this.value)">
                                             <button class="quantity-btn" onclick="updateQuantity(<?php echo $item['product_id']; ?>, <?php echo $item['quantity'] + 1; ?>)">+</button>
                                         </div>

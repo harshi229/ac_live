@@ -51,8 +51,7 @@ try {
         'description' => $product['description'],
         'avg_rating' => round($product['avg_rating'], 1),
         'review_count' => intval($product['review_count']),
-        'stock_status' => $product['stock_status'],
-        'in_stock' => $product['stock_quantity'] > 0
+        'stock_status' => $product['stock_status']
     ];
     
     echo json_encode([

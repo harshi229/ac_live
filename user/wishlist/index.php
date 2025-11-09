@@ -25,12 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $delete_stmt = $pdo->prepare("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?");
         $delete_stmt->execute([$user_id, $product_id]);
     } elseif ($_POST['action'] === 'add_to_cart') {
-        // Check stock and add to cart
-        $check_stmt = $pdo->prepare("SELECT stock, status FROM products WHERE id = ?");
+        // Check product status and add to cart
+        $check_stmt = $pdo->prepare("SELECT status FROM products WHERE id = ?");
         $check_stmt->execute([$product_id]);
         $product = $check_stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($product && $product['status'] === 'active' && $product['stock'] > 0) {
+        if ($product && $product['status'] === 'active') {
             // Check if already in cart
             $cart_check = $pdo->prepare("SELECT quantity FROM cart WHERE user_id = ? AND product_id = ?");
             $cart_check->execute([$user_id, $product_id]);
@@ -414,14 +414,10 @@ $wishlist_items = $wishlist_query->fetchAll(PDO::FETCH_ASSOC);
                 <div class="stat-item">
                     <span class="stat-number">
                         <?php
-                        $available_items = 0;
-                        foreach ($wishlist_items as $item) {
-                            if ($item['stock'] > 0) $available_items++;
-                        }
-                        echo $available_items;
+                        echo count($wishlist_items);
                         ?>
                     </span>
-                    <span class="stat-label">Available Items</span>
+                    <span class="stat-label">Items in Wishlist</span>
                 </div>
             </div>
 
@@ -466,19 +462,13 @@ $wishlist_items = $wishlist_query->fetchAll(PDO::FETCH_ASSOC);
                                     <i class="fas fa-eye"></i> View Product
                                 </a>
 
-                                <?php if ($item['stock'] > 0): ?>
-                                    <form method="POST" style="display: inline;">
-                                        <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
-                                        <input type="hidden" name="action" value="add_to_cart">
-                                        <button type="submit" class="btn-wishlist-action btn-add-to-cart-wishlist">
-                                            <i class="fas fa-shopping-cart"></i> Add to Cart
-                                        </button>
-                                    </form>
-                                <?php else: ?>
-                                    <button class="btn-wishlist-action" style="background: #94a3b8; cursor: not-allowed;" disabled>
-                                        <i class="fas fa-times"></i> Out of Stock
+                                <form method="POST" style="display: inline;">
+                                    <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
+                                    <input type="hidden" name="action" value="add_to_cart">
+                                    <button type="submit" class="btn-wishlist-action btn-add-to-cart-wishlist">
+                                        <i class="fas fa-shopping-cart"></i> Add to Cart
                                     </button>
-                                <?php endif; ?>
+                                </form>
 
                                 <form method="POST" style="display: inline;">
                                     <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">

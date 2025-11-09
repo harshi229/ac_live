@@ -81,22 +81,22 @@ if (!$product) {
                 <h5 class="mb-0">Pricing Information</h5>
             </div>
             <div class="card-body">
-                <!-- Original Price -->
+                <!-- MRP -->
                 <div class="mb-3">
-                    <label for="original_price" class="form-label">Original Price (₹) <span class="required">*</span></label>
+                    <label for="original_price" class="form-label">MRP (₹) <span class="required">*</span></label>
                     <input type="number" class="form-control" name="original_price" id="original_price" step="0.01" min="0" 
                            value="<?php echo htmlspecialchars($product['original_price'] ?? $product['price'] ?? ''); ?>" 
                            placeholder="e.g., 40000" required>
-                    <div class="form-text">The actual price of the AC unit</div>
+                    <div class="form-text">The MRP of the AC unit</div>
                 </div>
 
-                <!-- Selling Price -->
+                <!-- Special Price -->
                 <div class="mb-3">
-                    <label for="price" class="form-label">Selling Price (₹) <span class="required">*</span></label>
+                    <label for="price" class="form-label">Special Price (₹) <span class="required">*</span></label>
                     <input type="number" class="form-control" name="price" id="price" step="0.01" min="0" 
                            value="<?php echo htmlspecialchars($product['price'] ?? ''); ?>" 
                            placeholder="e.g., 37000" required>
-                    <div class="form-text">The price customers will pay (discounted price)</div>
+                    <div class="form-text">The special price customers will pay</div>
                 </div>
 
                 <!-- Discount Percentage -->
@@ -105,7 +105,7 @@ if (!$product) {
                     <input type="number" class="form-control" name="discount_percentage" id="discount_percentage" step="0.01" min="0" max="100" 
                            value="<?php echo htmlspecialchars($product['discount_percentage'] ?? ''); ?>" 
                            placeholder="e.g., 7.5" readonly>
-                    <div class="form-text">Automatically calculated based on original and selling price</div>
+                    <div class="form-text">Automatically calculated based on MRP and special price</div>
                 </div>
 
                 <!-- Discount Preview -->
@@ -114,11 +114,6 @@ if (!$product) {
                     <div id="discount-details"></div>
                 </div>
             </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="stock" class="form-label">Stock:</label>
-            <input type="number" class="form-control" name="stock" id="stock" value="<?php echo htmlspecialchars($product['stock'] ?? ''); ?>" required>
         </div>
 
         <div class="mb-3">
@@ -173,15 +168,6 @@ if (!$product) {
             <div class="form-text">Enter the energy efficiency rating (e.g., 5 Star, 3 Star)</div>
         </div>
 
-        <div class="mb-3">
-            <label for="installation" class="form-label">Installation:</label>
-            <select class="form-select" name="installation" id="installation" required>
-                <option value="">Select Installation</option>
-                <option value="Yes" <?= ($product['installation'] ?? '') == 'Yes' ? 'selected' : '' ?>>Yes - Included</option>
-                <option value="No" <?= ($product['installation'] ?? '') == 'No' ? 'selected' : '' ?>>No - Not Included</option>
-            </select>
-        </div>
-        
         <div class="mb-3">
             <label class="form-label">Product Images:</label>
             
@@ -515,10 +501,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 discountDetails.innerHTML = `
                     <div class="row">
                         <div class="col-md-6">
-                            <strong>Original Price:</strong> ₹${originalPrice.toLocaleString()}
+                            <strong>MRP:</strong> ₹${originalPrice.toLocaleString()}
                         </div>
                         <div class="col-md-6">
-                            <strong>Selling Price:</strong> ₹${sellingPrice.toLocaleString()}
+                            <strong>Special Price:</strong> ₹${sellingPrice.toLocaleString()}
                         </div>
                         <div class="col-md-6">
                             <strong>Discount Amount:</strong> ₹${discountAmount.toLocaleString()}
@@ -536,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 discountPercentageInput.value = '0';
                 discountPreview.style.display = 'none';
-                alert('Selling price cannot be higher than original price!');
+                alert('Special price cannot be higher than MRP!');
                 sellingPriceInput.value = originalPrice;
             }
         } else {

@@ -35,13 +35,11 @@ $product_name = trim($_POST['product_name'] ?? '');
 $price = floatval($_POST['price'] ?? 0);
 $original_price = floatval($_POST['original_price'] ?? 0);
 $discount_percentage = floatval($_POST['discount_percentage'] ?? 0);
-$stock = intval($_POST['stock'] ?? 0);
 $category_id = intval($_POST['category_id'] ?? 0);
 $sub_category_id = intval($_POST['sub_category_id'] ?? 0);
 $model_name = trim($_POST['model_name'] ?? '');
 $model_number = trim($_POST['model_number'] ?? '');
 $energy_rating = trim($_POST['energy_rating'] ?? '');
-$installation = $_POST['installation'] ?? '';
 $description = trim($_POST['description'] ?? '');
 $show_on_homepage = isset($_POST['show_on_homepage']) ? 1 : 0;
 $show_on_product_page = isset($_POST['show_on_product_page']) ? 1 : 0;
@@ -54,19 +52,15 @@ if (empty($product_name)) {
 }
 
 if ($price <= 0) {
-    $errors[] = 'Selling price must be greater than 0.';
+    $errors[] = 'Special price must be greater than 0.';
 }
 
 if ($original_price <= 0) {
-    $errors[] = 'Original price must be greater than 0.';
+    $errors[] = 'MRP must be greater than 0.';
 }
 
 if ($price > $original_price) {
-    $errors[] = 'Selling price cannot be higher than original price.';
-}
-
-if ($stock < 0) {
-    $errors[] = 'Stock cannot be negative.';
+    $errors[] = 'Special price cannot be higher than MRP.';
 }
 
 if ($category_id <= 0) {
@@ -83,10 +77,6 @@ if (empty($model_number)) {
 
 if (empty($energy_rating)) {
     $errors[] = 'Energy rating is required.';
-}
-
-if (empty($installation)) {
-    $errors[] = 'Installation option is required.';
 }
 
 if (empty($description)) {
@@ -175,13 +165,11 @@ try {
         'original_price' => $original_price,
         'discount_percentage' => $discount_percentage,
         'discount_amount' => $discount_amount,
-        'stock' => $stock,
         'category_id' => $category_id,
         'sub_category_id' => $sub_category_id,
         'model_name' => $model_name,
         'model_number' => $model_number,
         'energy_rating' => $energy_rating,
-        'installation' => $installation,
         'description' => $description,
         'show_on_homepage' => $show_on_homepage,
         'show_on_product_page' => $show_on_product_page,

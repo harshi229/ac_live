@@ -502,7 +502,6 @@ function renderProducts(products, totalProducts, totalPages, currentPage) {
                      loading="lazy"
                      onerror="this.src='${config.imgUrl}/placeholder-product.png'">
                 ${product.amc_available ? '<span class="product-badge">AMC</span>' : ''}
-                ${getStockBadge(product.stock)}
                 <button class="wishlist-quick-btn" onclick="toggleWishlist(${product.id})">
                     <i class="far fa-heart"></i>
                 </button>
@@ -529,7 +528,6 @@ function renderProducts(products, totalProducts, totalPages, currentPage) {
                 <div class="product-list-footer">
                     <div class="product-price-section">
                         <div class="product-price">₹${formatNumber(product.price)}</div>
-                        ${product.stock <= 5 && product.stock > 0 ? `<div class="stock-warning">Only ${product.stock} left!</div>` : ''}
                     </div>
                     <div class="product-actions">
                         <a href="details.php?id=${product.id}&from=product" class="btn-view-details">
@@ -552,23 +550,6 @@ function renderProducts(products, totalProducts, totalPages, currentPage) {
     updateActiveFilterChips();
 }
 
-/**
- * Get stock badge HTML
- */
-function getStockBadge(stock) {
-    let badgeClass = 'out-of-stock';
-    let text = 'Out of Stock';
-
-    if (stock > 10) {
-        badgeClass = 'in-stock';
-        text = 'In Stock';
-    } else if (stock > 0) {
-        badgeClass = 'low-stock';
-        text = 'Low Stock';
-    }
-
-    return `<div class="stock-badge ${badgeClass}">${text}</div>`;
-}
 
 /**
  * Get star rating HTML

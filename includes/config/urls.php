@@ -26,7 +26,6 @@ $url_patterns = [
         'products_add' => 'admin/products/add',
         'products_edit' => 'admin/products/edit/{id}',
         'products_delete' => 'admin/products/delete/{id}',
-        'products_update_stock' => 'admin/products/update_stock',
         
         // Categories
         'categories' => 'admin/categories',
@@ -59,7 +58,6 @@ $url_patterns = [
         'reports' => 'admin/reports',
         'reports_sales' => 'admin/reports/sales',
         'reports_customers' => 'admin/reports/customers',
-        'reports_stock' => 'admin/reports/stock',
         
         // Settings
         'settings' => 'admin/settings',

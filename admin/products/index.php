@@ -104,9 +104,6 @@ switch ($sort_by) {
     case 'price_high':
         $order_clause .= "p.price DESC";
         break;
-    case 'stock_low':
-        $order_clause .= "p.stock ASC";
-        break;
     case 'newest':
     default:
         $order_clause .= "p.created_at DESC";
@@ -146,8 +143,7 @@ try {
     $stats = [
         'total' => $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn(),
         'active' => $pdo->query("SELECT COUNT(*) FROM products WHERE status = 'active'")->fetchColumn(),
-        'inactive' => $pdo->query("SELECT COUNT(*) FROM products WHERE status = 'inactive'")->fetchColumn(),
-        'low_stock' => $pdo->query("SELECT COUNT(*) FROM products WHERE stock < 5")->fetchColumn()
+        'inactive' => $pdo->query("SELECT COUNT(*) FROM products WHERE status = 'inactive'")->fetchColumn()
     ];
     
 } catch (PDOException $e) {
@@ -155,7 +151,7 @@ try {
     $products = [];
     $brands = [];
     $categories = [];
-    $stats = ['total' => 0, 'active' => 0, 'inactive' => 0, 'low_stock' => 0];
+    $stats = ['total' => 0, 'active' => 0, 'inactive' => 0];
 }
 ?>
 
@@ -419,20 +415,6 @@ try {
                 </div>
             </div>
 
-        <div class="stat-card stat-card-revenue info" data-aos="fade-up" data-aos-delay="400">
-            <div class="stat-header">
-                <div class="stat-icon info">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div class="stat-icon-bg info"></div>
-                </div>
-            </div>
-            <div class="stat-content">
-                <h3 class="stat-value"><?php echo $stats['low_stock']; ?></h3>
-                <p class="stat-label">Low Stock</p>
-                <div class="stat-subtitle">Need restocking</div>
-                </div>
-            </div>
-        </div>
 
         <!-- Filter Section -->
     <div class="admin-card mb-4">
@@ -482,7 +464,6 @@ try {
                             <option value="">All Status</option>
                             <option value="active" <?= $status_filter == 'active' ? 'selected' : '' ?>>Active</option>
                             <option value="inactive" <?= $status_filter == 'inactive' ? 'selected' : '' ?>>Inactive</option>
-                            <option value="out_of_stock" <?= $status_filter == 'out_of_stock' ? 'selected' : '' ?>>Out of Stock</option>
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -492,7 +473,6 @@ try {
                             <option value="name" <?= $sort_by == 'name' ? 'selected' : '' ?>>Name A-Z</option>
                             <option value="price_low" <?= $sort_by == 'price_low' ? 'selected' : '' ?>>Price Low-High</option>
                             <option value="price_high" <?= $sort_by == 'price_high' ? 'selected' : '' ?>>Price High-Low</option>
-                            <option value="stock_low" <?= $sort_by == 'stock_low' ? 'selected' : '' ?>>Low Stock First</option>
                         </select>
                     </div>
                     <div class="col-md-1">
@@ -563,9 +543,6 @@ try {
             <div>
                 <a href="<?php echo admin_url('products/add'); ?>" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Add New Product
-                </a>
-                <a href="<?php echo admin_url('products/update_stock'); ?>" class="btn btn-outline-warning">
-                    <i class="fas fa-edit"></i> Update Stock
                 </a>
             </div>
         <div class="text-muted">
@@ -649,12 +626,6 @@ try {
                                     <i class="fas fa-sort sort-icon"></i>
                                 </div>
                             </th>
-                            <th class="sortable" data-column="stock" width="8%">
-                                <div class="th-content">
-                                    <span>Stock</span>
-                                    <i class="fas fa-sort sort-icon"></i>
-                                </div>
-                            </th>
                             <th class="sortable" data-column="status" width="8%">
                                 <div class="th-content">
                                     <span>Status</span>
@@ -710,10 +681,6 @@ try {
                                             <div class="current-price fw-bold">₹<?= number_format($product['price'], 0) ?></div>
                                         </div>
                                     <?php endif; ?>
-                                </td>
-                                <td>
-                                    <span class="stock-indicator <?= $product['stock'] > 10 ? 'stock-good' : ($product['stock'] > 0 ? 'stock-low' : 'stock-out') ?>"></span>
-                                    <?= $product['stock'] ?>
                                 </td>
                                 <td>
                                     <form method="POST" style="display: inline;">
