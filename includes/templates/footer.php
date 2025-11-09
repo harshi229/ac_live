@@ -15,7 +15,7 @@
                     </div>
                     <h3 class="footer-brand-name">Akash Enterprise</h3>
                     <p class="footer-description">
-                        Your trusted partner for premium air conditioning solutions since 1962. 
+                        Your trusted partner for premium air conditioning solutions since 1995. 
                         We provide quality AC sales, installation, and maintenance services with excellence.
                     </p>
                     

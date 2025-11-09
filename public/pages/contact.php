@@ -738,7 +738,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                 </div>
                 <h3>WhatsApp</h3>
                 <p>Quick chat with us</p>
-                <a href="https://wa.me/919879235475" target="_blank">
+                <a href="https://wa.me/919428861488" target="_blank">
                     Start Chat <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -855,7 +855,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_contact'])) {
                         <a href="#" class="social-link linkedin" aria-label="LinkedIn">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="https://wa.me/919879235475" class="social-link whatsapp" aria-label="Chat on WhatsApp with +91 98792 35475">
+                        <a href="https://wa.me/919428861488" class="social-link whatsapp" aria-label="Chat on WhatsApp with +91 94288 61488">
                             <i class="fab fa-whatsapp"></i>
                         </a>
                     </div>

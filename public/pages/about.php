@@ -1,7 +1,7 @@
 <?php
 // Set page metadata
 $pageTitle = 'About Us';
-$pageDescription = 'Learn about Akash Enterprise - Over 60 years of excellence in air conditioning solutions since 1962';
+$pageDescription = 'Learn about Akash Enterprise - Over 60 years of excellence in air conditioning solutions since 1995';
 $pageKeywords = 'about us, company history, AC experts, air conditioning professionals, cooling solutions';
 
 require_once __DIR__ . '/../../includes/config/init.php';

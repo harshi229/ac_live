@@ -43,7 +43,7 @@ function generateOrganizationSchema() {
         "@context" => "https://schema.org",
         "@type" => "Organization",
         "name" => "Akash Enterprise",
-        "description" => "Professional Air Conditioning Sales & Service since 1962",
+        "description" => "Professional Air Conditioning Sales & Service since 1995",
         "url" => BASE_URL,
         "logo" => IMG_URL . "/full-logo.png",
         "contactPoint" => [

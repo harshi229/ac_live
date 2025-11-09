@@ -1,7 +1,7 @@
 <?php
 // Set page metadata
 $pageTitle = 'Home';
-$pageDescription = 'Welcome to Akash Enterprise - Your trusted partner for premium air conditioning solutions since 1962. Quality AC sales, installation, and maintenance services.';
+$pageDescription = 'Welcome to Akash Enterprise - Your trusted partner for premium air conditioning solutions since 1995. Quality AC sales, installation, and maintenance services.';
 $pageKeywords = 'air conditioning, AC sales, AC installation, AC maintenance, split AC, window AC, commercial AC, residential AC, AMC services, best AC dealer';
 
 require_once __DIR__ . '/includes/config/init.php';
@@ -1775,7 +1775,7 @@ try {
                                         <i class="fas fa-star me-2"></i>Trusted Since 1995
                                     </span>
                                     <h1 class="carousel-title">
-                                        Perfect Air Conditioning Solutions
+                                    Perfect Air Conditioning Solutions for Residential to Commercial Segments
                                     </h1>
                                     <p class="carousel-subtitle">
                                         Experience ultimate comfort with our energy-efficient AC systems. Expert installation, 
@@ -1808,12 +1808,17 @@ try {
                                         <i class="fas fa-wrench me-2"></i>Professional Service
                                     </span>
                                     <h1 class="carousel-title">
-                                        Expert Installation & Service
+                                        We Provide Expert Installation &amp; Service
                                     </h1>
                                     <p class="carousel-subtitle">
-                                        Our certified technicians provide professional AC installation and maintenance services 
-                                        with comprehensive warranty coverage and 24/7 emergency support.
+                                        Our certified technicians deliver professional AC installation and maintenance, complete with genuine spare parts, warranty coverage, and 24/7 emergency support.
                                     </p>
+                                    <ul class="list-unstyled mb-3">
+                                        <li><i class="fas fa-check-circle text-primary me-2"></i>Authorized Multibrand Sales &amp; Service Dealer</li>
+                                        <li><i class="fas fa-check-circle text-primary me-2"></i>Expert Installation &amp; Service with Genuine Spare Parts</li>
+                                        <li><i class="fas fa-check-circle text-primary me-2"></i>Competitive Pricing</li>
+                                        <li><i class="fas fa-check-circle text-primary me-2"></i>Comprehensive Warranty Coverage</li>
+                                    </ul>
                                     <div class="carousel-buttons">
                                         <a href="<?php echo USER_URL; ?>/services/" class="carousel-btn carousel-btn-primary">
                                             <i class="fas fa-calendar-check"></i> Book Service
@@ -1841,7 +1846,7 @@ try {
                                         <i class="fas fa-bolt me-2"></i>Energy Efficient
                                     </span>
                                     <h1 class="carousel-title">
-                                        Smart & Energy Efficient
+                                        Smart & Energy Efficient HVAC Solutions
                                     </h1>
                                     <p class="carousel-subtitle">
                                         Discover our range of inverter And Fixspeed AC systems that deliver superior cooling performance 

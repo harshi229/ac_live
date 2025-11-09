@@ -10,7 +10,7 @@ define('GOOGLE_SITE_VERIFICATION', ''); // Google Search Console verification co
 
 // SEO Settings
 define('SEO_SITE_NAME', 'Akash Enterprise - AC Sales & Service');
-define('SEO_DEFAULT_DESCRIPTION', 'Professional air conditioning sales, installation, and maintenance services since 1962');
+define('SEO_DEFAULT_DESCRIPTION', 'Professional air conditioning sales, installation, and maintenance services since 1995');
 define('SEO_DEFAULT_KEYWORDS', 'air conditioning, AC sales, AC installation, AC maintenance, split AC, window AC, commercial AC, residential AC, AMC services');
 
 // Social Media URLs
@@ -39,9 +39,9 @@ function getSEOKeywords($page = '') {
 
 function getSEODescription($page = '') {
     $descriptions = [
-        'home' => 'Welcome to Akash Enterprise - Your trusted partner for premium air conditioning solutions since 1962. Quality AC sales, installation, and maintenance services.',
+        'home' => 'Welcome to Akash Enterprise - Your trusted partner for premium air conditioning solutions since 1995. Quality AC sales, installation, and maintenance services.',
         'products' => 'Browse our complete range of air conditioning products including residential, commercial, and cassette AC units from top brands.',
-        'about' => 'Learn about Akash Enterprise - Over 60 years of excellence in air conditioning solutions since 1962. Professional AC experts.',
+        'about' => 'Learn about Akash Enterprise - Over 60 years of excellence in air conditioning solutions since 1995. Professional AC experts.',
         'contact' => 'Get in touch with Akash Enterprise - We\'re here to help with all your air conditioning needs. Professional AC consultation.',
         'services' => 'Professional air conditioning services including installation, repair, maintenance, and AMC plans. Expert AC technicians.'
     ];
