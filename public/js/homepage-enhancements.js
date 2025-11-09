@@ -2,7 +2,6 @@
 /* Enhanced functionality for homepage */
 
 // Global variables
-let exitIntentShown = false;
 
 // ================= IMAGE LOADING ENHANCEMENT ================= //
 function initializeImageLoading() {
@@ -247,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeLazyLoading();
     initializeFAQ();
     initializeScrollProgress();
-    initializeExitIntent();
     initializeMicroInteractions();
     initializeFloatingContact();
 });
@@ -427,81 +425,6 @@ function initializeScrollProgress() {
 }
 
 
-// ================= EXIT INTENT POPUP ================= //
-function initializeExitIntent() {
-    // Create exit intent popup
-    const popupHTML = `
-        <div class="exit-intent-popup" id="exitIntentPopup">
-            <div class="exit-intent-content">
-                <button class="exit-intent-close" onclick="closeExitIntent()">&times;</button>
-                <h3 class="exit-intent-title">Wait! Don't Miss Out</h3>
-                <p class="exit-intent-desc">
-                    Get exclusive deals and updates on our latest AC products and services. 
-                    Subscribe to our newsletter and save up to 20% on your next purchase!
-                </p>
-                <form class="exit-intent-form" onsubmit="handleNewsletterSubmit(event)">
-                    <input type="email" placeholder="Enter your email address" required>
-                    <button type="submit">Subscribe Now</button>
-                </form>
-                <p class="small text-muted">No spam, unsubscribe anytime.</p>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', popupHTML);
-    
-    // Track mouse movement for exit intent
-    let mouseY = 0;
-    document.addEventListener('mousemove', (e) => {
-        mouseY = e.clientY;
-    });
-    
-    document.addEventListener('mouseleave', (e) => {
-        if (e.clientY <= 0 && mouseY > 0 && !exitIntentShown) {
-            showExitIntent();
-        }
-    });
-}
-
-function showExitIntent() {
-    if (exitIntentShown) return;
-    
-    const popup = document.getElementById('exitIntentPopup');
-    popup.classList.add('active');
-    exitIntentShown = true;
-    
-    // Auto-hide after 10 seconds
-    setTimeout(() => {
-        closeExitIntent();
-    }, 10000);
-}
-
-function closeExitIntent() {
-    const popup = document.getElementById('exitIntentPopup');
-    popup.classList.remove('active');
-}
-
-function handleNewsletterSubmit(event) {
-    event.preventDefault();
-    const email = event.target.querySelector('input[type="email"]').value;
-    
-    // Show loading state
-    const button = event.target.querySelector('button');
-    const originalText = button.textContent;
-    button.textContent = 'Subscribing...';
-    button.disabled = true;
-    
-    // Simulate API call
-    setTimeout(() => {
-        showNotification('Thank you for subscribing! Check your email for confirmation.', 'success');
-        closeExitIntent();
-        button.textContent = originalText;
-        button.disabled = false;
-        event.target.reset();
-    }, 2000);
-}
-
-
 // ================= MICRO-INTERACTIONS ================= //
 function initializeMicroInteractions() {
     // Add micro-interactions to elements
@@ -663,8 +586,6 @@ function initializeAccessibility() {
                 const bsModal = bootstrap.Modal.getInstance(modal);
                 if (bsModal) bsModal.hide();
             });
-            
-            closeExitIntent();
         }
     });
 }
