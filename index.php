@@ -293,7 +293,9 @@ try {
 <!-- Hero Carousel Section -->
 <style>
 .hero-carousel-section {
+    min-height: 100vh;
     height: 100vh;
+    max-height: 100vh;
     position: relative;
     overflow: hidden;
 }
@@ -331,6 +333,18 @@ try {
     display: flex;
     align-items: center;
     z-index: 2;
+    padding: 20px;
+}
+
+.carousel-overlay .container {
+    width: 100%;
+    max-width: 100%;
+}
+
+.carousel-overlay .row {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .carousel-content {
@@ -338,55 +352,65 @@ try {
     position: relative;
     z-index: 3;
     animation: fadeInUp 1s ease-out;
+    width: 100%;
+    max-width: 100%;
 }
 
 .carousel-badge {
     display: inline-block;
     background: rgba(59, 130, 246, 0.2);
     border: 2px solid rgba(59, 130, 246, 0.5);
-    padding: 8px 20px;
+    padding: clamp(6px, 1vw, 8px) clamp(12px, 2vw, 20px);
     border-radius: 30px;
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
     font-weight: 600;
-    margin-bottom: 25px;
+    margin-bottom: clamp(15px, 3vw, 25px);
     backdrop-filter: blur(10px);
 }
 
 .carousel-title {
-    font-size: 4rem;
+    font-size: clamp(1.75rem, 6vw, 4rem);
     font-weight: 800;
     line-height: 1.1;
-    margin-bottom: 25px;
+    margin-bottom: clamp(15px, 3vw, 25px);
     background: linear-gradient(135deg, #3b82f6, #22c55e, #8b5cf6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .carousel-subtitle {
-    font-size: 1.4rem;
+    font-size: clamp(0.95rem, 2.5vw, 1.4rem);
     color: #cbd5e1;
-    margin-bottom: 40px;
-    max-width: 600px;
+    margin-bottom: clamp(20px, 4vw, 40px);
+    max-width: 100%;
     line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .carousel-buttons {
     display: flex;
-    gap: 20px;
+    gap: clamp(10px, 2vw, 20px);
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .carousel-btn {
-    padding: 16px 40px;
-    font-size: 1.1rem;
+    padding: clamp(12px, 2vw, 16px) clamp(24px, 4vw, 40px);
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
     font-weight: 600;
     border-radius: 50px;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: clamp(6px, 1vw, 10px);
     text-decoration: none;
+    white-space: nowrap;
+    flex: 0 1 auto;
 }
 
 .carousel-btn-primary {
@@ -418,8 +442,8 @@ try {
 /* Carousel Controls */
 .hero-carousel-section .carousel-control-prev,
 .hero-carousel-section .carousel-control-next {
-    width: 60px;
-    height: 60px;
+    width: clamp(40px, 6vw, 60px);
+    height: clamp(40px, 6vw, 60px);
     background: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     top: 50%;
@@ -427,14 +451,15 @@ try {
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
+    z-index: 10;
 }
 
 .hero-carousel-section .carousel-control-prev {
-    left: 30px;
+    left: clamp(10px, 2vw, 30px);
 }
 
 .hero-carousel-section .carousel-control-next {
-    right: 30px;
+    right: clamp(10px, 2vw, 30px);
 }
 
 .hero-carousel-section .carousel-control-prev:hover,
@@ -446,23 +471,24 @@ try {
 
 .hero-carousel-section .carousel-control-prev-icon,
 .hero-carousel-section .carousel-control-next-icon {
-    width: 20px;
-    height: 20px;
+    width: clamp(16px, 3vw, 20px);
+    height: clamp(16px, 3vw, 20px);
 }
 
 /* Carousel Indicators */
 .hero-carousel-section .carousel-indicators {
-    bottom: 30px;
+    bottom: clamp(15px, 3vw, 30px);
     margin-bottom: 0;
+    gap: clamp(4px, 1vw, 8px);
 }
 
 .hero-carousel-section .carousel-indicators button {
-    width: 12px;
-    height: 12px;
+    width: clamp(10px, 1.5vw, 12px);
+    height: clamp(10px, 1.5vw, 12px);
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.5);
-    margin: 0 8px;
+    margin: 0 clamp(4px, 1vw, 8px);
     transition: all 0.3s ease;
 }
 
@@ -478,27 +504,27 @@ try {
 }
 
 /* Carousel Animation */
-.carousel-item {
+.hero-carousel-section .carousel-item {
     transition: transform 0.8s ease-in-out;
 }
 
-.carousel-item.active .carousel-content {
+.hero-carousel-section .carousel-item.active .carousel-content {
     animation: fadeInUp 1s ease-out 0.3s both;
 }
 
-.carousel-item.active .carousel-badge {
+.hero-carousel-section .carousel-item.active .carousel-badge {
     animation: fadeInDown 0.8s ease-out 0.1s both;
 }
 
-.carousel-item.active .carousel-title {
+.hero-carousel-section .carousel-item.active .carousel-title {
     animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
-.carousel-item.active .carousel-subtitle {
+.hero-carousel-section .carousel-item.active .carousel-subtitle {
     animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
-.carousel-item.active .carousel-buttons {
+.hero-carousel-section .carousel-item.active .carousel-buttons {
     animation: fadeInUp 0.8s ease-out 0.6s both;
 }
 
@@ -1475,15 +1501,21 @@ try {
     .categories-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    .hero-carousel-section {
+        height: 90vh;
+        min-height: 600px;
+    }
 }
 
 @media (max-width: 992px) {
-    .carousel-title {
-        font-size: 3rem;
+    .hero-carousel-section {
+        height: 85vh;
+        min-height: 550px;
     }
     
-    .carousel-subtitle {
-        font-size: 1.2rem;
+    .carousel-overlay {
+        padding: 15px;
     }
     
     .stats-container,
@@ -1503,32 +1535,54 @@ try {
 
 @media (max-width: 768px) {
     .hero-carousel-section {
-        height: 80vh;
+        height: 75vh;
         min-height: 500px;
+        max-height: 80vh;
     }
     
-    .carousel-title {
-        font-size: 2.5rem;
+    .carousel-overlay {
+        padding: 20px 15px;
     }
     
-    .carousel-subtitle {
-        font-size: 1.1rem;
+    .carousel-overlay .container {
+        padding-left: 10px;
+        padding-right: 10px;
     }
     
     .carousel-buttons {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 12px;
     }
     
     .carousel-btn {
         width: 100%;
         justify-content: center;
+        padding: 14px 24px;
     }
     
     .hero-carousel-section .carousel-control-prev,
     .hero-carousel-section .carousel-control-next {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .hero-carousel-section .carousel-control-prev-icon,
+    .hero-carousel-section .carousel-control-next-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .hero-carousel-section .carousel-control-prev {
+        left: 10px;
+    }
+    
+    .hero-carousel-section .carousel-control-next {
+        right: 10px;
+    }
+    
+    .hero-carousel-section .carousel-indicators {
+        bottom: 20px;
     }
     
     .categories-grid {
@@ -1538,14 +1592,6 @@ try {
     
     .category-card {
         height: 250px;
-    }
-    
-    .hero-carousel-section .carousel-control-prev {
-        left: 15px;
-    }
-    
-    .hero-carousel-section .carousel-control-next {
-        right: 15px;
     }
     
     .stats-container,
@@ -1569,11 +1615,52 @@ try {
 @media (max-width: 576px) {
     .hero-carousel-section {
         height: 70vh;
-        min-height: 400px;
+        min-height: 450px;
+        max-height: 75vh;
     }
     
-    .carousel-title {
-        font-size: 2rem;
+    .carousel-overlay {
+        padding: 15px 10px;
+    }
+    
+    .carousel-overlay .container {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    
+    .carousel-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .hero-carousel-section .carousel-control-prev,
+    .hero-carousel-section .carousel-control-next {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .hero-carousel-section .carousel-control-prev-icon,
+    .hero-carousel-section .carousel-control-next-icon {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .hero-carousel-section .carousel-control-prev {
+        left: 8px;
+    }
+    
+    .hero-carousel-section .carousel-control-next {
+        right: 8px;
+    }
+    
+    .hero-carousel-section .carousel-indicators {
+        bottom: 15px;
+    }
+    
+    .hero-carousel-section .carousel-indicators button {
+        width: 8px;
+        height: 8px;
+        margin: 0 4px;
     }
     
     .categories-grid {
@@ -1584,19 +1671,82 @@ try {
     .category-card {
         height: 200px;
     }
-    
-    .carousel-subtitle {
-        font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+    .hero-carousel-section {
+        height: 65vh;
+        min-height: 400px;
+        max-height: 70vh;
     }
     
-    .carousel-badge {
-        font-size: 0.8rem;
-        padding: 6px 15px;
+    .carousel-overlay {
+        padding: 12px 8px;
     }
     
     .carousel-btn {
-        padding: 12px 30px;
-        font-size: 1rem;
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
+    
+    .hero-carousel-section .carousel-control-prev,
+    .hero-carousel-section .carousel-control-next {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .hero-carousel-section .carousel-control-prev-icon,
+    .hero-carousel-section .carousel-control-next-icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .hero-carousel-section .carousel-control-prev {
+        left: 5px;
+    }
+    
+    .hero-carousel-section .carousel-control-next {
+        right: 5px;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero-carousel-section {
+        height: 100vh;
+        min-height: 100vh;
+        max-height: 100vh;
+    }
+    
+    .carousel-title {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin-bottom: 10px;
+    }
+    
+    .carousel-subtitle {
+        font-size: clamp(0.85rem, 2vw, 1.1rem);
+        margin-bottom: 15px;
+    }
+    
+    .carousel-badge {
+        margin-bottom: 10px;
+        padding: 4px 12px;
+        font-size: 0.7rem;
+    }
+    
+    .carousel-buttons {
+        flex-direction: row;
+        gap: 10px;
+    }
+    
+    .carousel-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+        flex: 1 1 auto;
+    }
+    
+    .hero-carousel-section .carousel-indicators {
+        bottom: 10px;
     }
 }
 </style>

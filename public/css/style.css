@@ -409,6 +409,9 @@ body::before {
 }
 
 /* ================= HERO CAROUSEL ================= */
+/* Note: Hero carousel styles are now handled in index.php for better responsiveness */
+/* Generic carousel styles below are scoped to .hero-section only to avoid conflicts */
+
 .hero-section {
     position: relative;
     width: 100%;
@@ -417,28 +420,28 @@ body::before {
     z-index: 1;
 }
 
-.carousel-inner {
+.hero-section .carousel-inner {
     height: 100vh;
 }
 
-.carousel-item {
+.hero-section .carousel-item {
     height: 100vh;
 }
 
-.carousel-item img {
+.hero-section .carousel-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform var(--transition-slow);
 }
 
-.carousel-item:hover img {
+.hero-section .carousel-item:hover img {
     transform: scale(1.02);
 }
 
-/* Enhanced Carousel Controls */
-.carousel-control-prev,
-.carousel-control-next {
+/* Enhanced Carousel Controls - scoped to .hero-section */
+.hero-section .carousel-control-prev,
+.hero-section .carousel-control-next {
     width: 60px;
     height: 60px;
     background: rgba(15, 23, 42, 0.8);
@@ -450,26 +453,26 @@ body::before {
     transition: all var(--transition-normal);
 }
 
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
+.hero-section .carousel-control-prev:hover,
+.hero-section .carousel-control-next:hover {
     background: rgba(59, 130, 246, 0.9);
     transform: translateY(-50%) scale(1.1);
     border-color: var(--primary-blue);
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
+.hero-section .carousel-control-prev-icon,
+.hero-section .carousel-control-next-icon {
     width: 20px;
     height: 20px;
 }
 
-/* Enhanced Carousel Indicators */
-.carousel-indicators {
+/* Enhanced Carousel Indicators - scoped to .hero-section */
+.hero-section .carousel-indicators {
     bottom: 30px;
     margin: 0;
 }
 
-.carousel-indicators [data-bs-target] {
+.hero-section .carousel-indicators [data-bs-target] {
     width: 40px;
     height: 4px;
     background-color: rgba(248, 250, 252, 0.4);
@@ -478,7 +481,7 @@ body::before {
     border: none;
 }
 
-.carousel-indicators .active {
+.hero-section .carousel-indicators .active {
     background: var(--primary-gradient);
     width: 60px;
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
@@ -1290,8 +1293,8 @@ footer {
         gap: 20px;
     }
     
-    .carousel-control-prev,
-    .carousel-control-next {
+    .hero-section .carousel-control-prev,
+    .hero-section .carousel-control-next {
         width: 50px;
         height: 50px;
     }
