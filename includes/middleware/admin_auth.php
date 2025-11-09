@@ -18,7 +18,7 @@ configureSecureSession();
 $current_file = basename($_SERVER['PHP_SELF']);
 
 // Pages that don't require authentication
-$public_admin_pages = ['login.php', 'register.php'];
+$public_admin_pages = ['login.php'];
 
 // Check if current page requires authentication
 if (!in_array($current_file, $public_admin_pages)) {

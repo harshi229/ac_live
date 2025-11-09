@@ -53,9 +53,6 @@ if (isset($_GET['error'])) {
             $error = "An error occurred. Please try again.";
     }
 }
-if (isset($_GET['registered'])) {
-    $success = "Admin account created successfully! Please login with your credentials.";
-}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // CSRF Protection
@@ -268,20 +265,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .forgot-password a:hover {
             text-decoration: underline;
         }
-        .register-link {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e1e5e9;
-        }
-        .register-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .register-link a:hover {
-            text-decoration: underline;
-        }
         .loading {
             display: none;
         }
@@ -378,13 +361,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </span>
             </button>
         </form>
-
-        <div class="register-link">
-            <p class="mb-0">Don't have an account?</p>
-            <a href="register.php">
-                <i class="fas fa-user-plus me-1"></i>Create Admin Account
-            </a>
-        </div>
     </div>
 </main>
 
