@@ -17,8 +17,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'add_brand':
             $brand_name = isset($_POST['brand_name']) ? trim($_POST['brand_name']) : '';
             $description = isset($_POST['description']) ? trim($_POST['description']) : '';
+            $logo_path = null;
 
-            if (!empty($brand_name)) {
+            // Handle logo upload
+            if (isset($_FILES['brand_logo']) && $_FILES['brand_logo']['error'] === UPLOAD_ERR_OK) {
+                $upload_dir = UPLOAD_PATH . '/brands/';
+                
+                // Create directory if it doesn't exist
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+                
+                $file_extension = strtolower(pathinfo($_FILES['brand_logo']['name'], PATHINFO_EXTENSION));
+                $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                
+                if (in_array($file_extension, $allowed_extensions)) {
+                    // Check file size (max 5MB)
+                    if ($_FILES['brand_logo']['size'] <= 5242880) {
+                        $new_filename = 'brand_' . time() . '_' . uniqid() . '.' . $file_extension;
+                        $upload_path = $upload_dir . $new_filename;
+                        
+                        if (move_uploaded_file($_FILES['brand_logo']['tmp_name'], $upload_path)) {
+                            $logo_path = 'brands/' . $new_filename;
+                        } else {
+                            $error_message = "Failed to upload logo. Please try again.";
+                        }
+                    } else {
+                        $error_message = "Logo file is too large. Maximum size is 5MB.";
+                    }
+                } else {
+                    $error_message = "Invalid file type. Please upload JPG, PNG, GIF, or WebP images only.";
+                }
+            }
+
+            if (!empty($brand_name) && !isset($error_message)) {
                 try {
                     // Check if brand already exists
                     $check_stmt = $pdo->prepare("SELECT id FROM brands WHERE name = ?");
@@ -27,14 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($check_stmt->rowCount() > 0) {
                         $error_message = "Brand '$brand_name' already exists!";
                     } else {
-                        $insert_stmt = $pdo->prepare("INSERT INTO brands (name, description, logo, status, created_at) VALUES (?, ?, NULL, 'active', NOW())");
-                        $insert_stmt->execute([$brand_name, $description]);
+                        $insert_stmt = $pdo->prepare("INSERT INTO brands (name, description, logo, status, created_at) VALUES (?, ?, ?, 'active', NOW())");
+                        $insert_stmt->execute([$brand_name, $description, $logo_path]);
                         $success_message = "Brand '$brand_name' added successfully!";
                     }
                 } catch (PDOException $e) {
                     $error_message = "Database error: " . $e->getMessage();
                 }
-            } else {
+            } elseif (empty($brand_name)) {
                 $error_message = "Brand name is required!";
             }
             break;
@@ -54,11 +86,159 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             break;
 
+        case 'edit_brand':
+            $brand_id = isset($_POST['brand_id']) ? intval($_POST['brand_id']) : 0;
+            $brand_name = isset($_POST['brand_name']) ? trim($_POST['brand_name']) : '';
+            $description = isset($_POST['description']) ? trim($_POST['description']) : '';
+            $logo_path = null;
+
+            if ($brand_id > 0 && !empty($brand_name)) {
+                try {
+                    // Check if brand exists
+                    $check_exists = $pdo->prepare("SELECT id, logo FROM brands WHERE id = ?");
+                    $check_exists->execute([$brand_id]);
+                    $existing_brand = $check_exists->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($existing_brand) {
+                        // Handle logo upload if provided
+                        if (isset($_FILES['brand_logo']) && $_FILES['brand_logo']['error'] === UPLOAD_ERR_OK) {
+                            $upload_dir = UPLOAD_PATH . '/brands/';
+                            
+                            // Create directory if it doesn't exist
+                            if (!file_exists($upload_dir)) {
+                                mkdir($upload_dir, 0755, true);
+                            }
+                            
+                            $file_extension = strtolower(pathinfo($_FILES['brand_logo']['name'], PATHINFO_EXTENSION));
+                            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                            
+                            if (in_array($file_extension, $allowed_extensions)) {
+                                // Check file size (max 5MB)
+                                if ($_FILES['brand_logo']['size'] <= 5242880) {
+                                    // Get old logo path to delete it later
+                                    $old_logo = $existing_brand['logo'];
+                                    
+                                    $new_filename = 'brand_' . $brand_id . '_' . time() . '_' . uniqid() . '.' . $file_extension;
+                                    $upload_path = $upload_dir . $new_filename;
+                                    
+                                    if (move_uploaded_file($_FILES['brand_logo']['tmp_name'], $upload_path)) {
+                                        $logo_path = 'brands/' . $new_filename;
+                                        
+                                        // Delete old logo if exists
+                                        if (!empty($old_logo) && file_exists(UPLOAD_PATH . '/' . $old_logo)) {
+                                            @unlink(UPLOAD_PATH . '/' . $old_logo);
+                                        }
+                                    } else {
+                                        $error_message = "Failed to upload logo. Please try again.";
+                                    }
+                                } else {
+                                    $error_message = "Logo file is too large. Maximum size is 5MB.";
+                                }
+                            } else {
+                                $error_message = "Invalid file type. Please upload JPG, PNG, GIF, or WebP images only.";
+                            }
+                        }
+                        
+                        // If no error with logo upload, proceed with brand update
+                        if (!isset($error_message)) {
+                            // Check if new name conflicts with another brand
+                            $check_name = $pdo->prepare("SELECT id FROM brands WHERE name = ? AND id != ?");
+                            $check_name->execute([$brand_name, $brand_id]);
+                            
+                            if ($check_name->rowCount() > 0) {
+                                $error_message = "Brand name '$brand_name' already exists!";
+                            } else {
+                                // Update brand (with or without logo)
+                                if ($logo_path !== null) {
+                                    $update_stmt = $pdo->prepare("UPDATE brands SET name = ?, description = ?, logo = ? WHERE id = ?");
+                                    $update_stmt->execute([$brand_name, $description, $logo_path, $brand_id]);
+                                } else {
+                                    $update_stmt = $pdo->prepare("UPDATE brands SET name = ?, description = ? WHERE id = ?");
+                                    $update_stmt->execute([$brand_name, $description, $brand_id]);
+                                }
+                                $success_message = "Brand updated successfully!";
+                            }
+                        }
+                    } else {
+                        $error_message = "Brand not found.";
+                    }
+                } catch (PDOException $e) {
+                    $error_message = "Database error: " . $e->getMessage();
+                }
+            } elseif (empty($brand_name)) {
+                $error_message = "Brand name is required!";
+            } else {
+                $error_message = "Invalid brand ID.";
+            }
+            break;
+
+        case 'update_logo':
+            $brand_id = isset($_POST['brand_id']) ? intval($_POST['brand_id']) : 0;
+            $logo_path = null;
+
+            if ($brand_id > 0) {
+                // Handle logo upload
+                if (isset($_FILES['brand_logo']) && $_FILES['brand_logo']['error'] === UPLOAD_ERR_OK) {
+                    $upload_dir = UPLOAD_PATH . '/brands/';
+                    
+                    // Create directory if it doesn't exist
+                    if (!file_exists($upload_dir)) {
+                        mkdir($upload_dir, 0755, true);
+                    }
+                    
+                    $file_extension = strtolower(pathinfo($_FILES['brand_logo']['name'], PATHINFO_EXTENSION));
+                    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                    
+                    if (in_array($file_extension, $allowed_extensions)) {
+                        // Check file size (max 5MB)
+                        if ($_FILES['brand_logo']['size'] <= 5242880) {
+                            // Get old logo path to delete it later
+                            $old_logo_stmt = $pdo->prepare("SELECT logo FROM brands WHERE id = ?");
+                            $old_logo_stmt->execute([$brand_id]);
+                            $old_logo = $old_logo_stmt->fetchColumn();
+                            
+                            $new_filename = 'brand_' . $brand_id . '_' . time() . '_' . uniqid() . '.' . $file_extension;
+                            $upload_path = $upload_dir . $new_filename;
+                            
+                            if (move_uploaded_file($_FILES['brand_logo']['tmp_name'], $upload_path)) {
+                                $logo_path = 'brands/' . $new_filename;
+                                
+                                // Delete old logo if exists
+                                if (!empty($old_logo) && file_exists(UPLOAD_PATH . '/' . $old_logo)) {
+                                    @unlink(UPLOAD_PATH . '/' . $old_logo);
+                                }
+                                
+                                // Update database
+                                $update_stmt = $pdo->prepare("UPDATE brands SET logo = ? WHERE id = ?");
+                                $update_stmt->execute([$logo_path, $brand_id]);
+                                $success_message = "Brand logo updated successfully!";
+                            } else {
+                                $error_message = "Failed to upload logo. Please try again.";
+                            }
+                        } else {
+                            $error_message = "Logo file is too large. Maximum size is 5MB.";
+                        }
+                    } else {
+                        $error_message = "Invalid file type. Please upload JPG, PNG, GIF, or WebP images only.";
+                    }
+                } else {
+                    $error_message = "Please select a logo file to upload.";
+                }
+            } else {
+                $error_message = "Invalid brand ID.";
+            }
+            break;
+
         case 'delete_brand':
             $brand_id = isset($_POST['brand_id']) ? intval($_POST['brand_id']) : 0;
 
             if ($brand_id > 0) {
                 try {
+                    // Get logo path before deleting
+                    $logo_stmt = $pdo->prepare("SELECT logo FROM brands WHERE id = ?");
+                    $logo_stmt->execute([$brand_id]);
+                    $logo_path = $logo_stmt->fetchColumn();
+                    
                     // Check if brand has products
                     $check_products = $pdo->prepare("SELECT COUNT(*) FROM products WHERE brand_id = ?");
                     $check_products->execute([$brand_id]);
@@ -69,6 +249,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     } else {
                         $delete_stmt = $pdo->prepare("DELETE FROM brands WHERE id = ?");
                         $delete_stmt->execute([$brand_id]);
+                        
+                        // Delete logo file if exists
+                        if (!empty($logo_path) && file_exists(UPLOAD_PATH . '/' . $logo_path)) {
+                            @unlink(UPLOAD_PATH . '/' . $logo_path);
+                        }
+                        
                         $success_message = "Brand deleted successfully!";
                     }
                 } catch (PDOException $e) {
@@ -106,8 +292,34 @@ try {
     .btn-action { margin: 2px; padding: 5px 10px; font-size: 0.875rem; }
     .table-hover tbody tr:hover { background-color: #f8f9fa; }
     .alert { margin-bottom: 20px; }
-    .brand-logo { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+    .brand-logo { width: 60px; height: 60px; object-fit: contain; border-radius: 5px; border: 1px solid #dee2e6; padding: 5px; background: #fff; }
     .description-cell { max-width: 250px; word-wrap: break-word; }
+    
+    /* Fix modal z-index and interaction issues */
+    .modal { z-index: 1055 !important; }
+    .modal-backdrop { 
+        z-index: 1050 !important; 
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        pointer-events: auto !important;
+    }
+    .modal-dialog { 
+        z-index: 1056 !important; 
+        pointer-events: none;
+    }
+    .modal-content { 
+        z-index: 1056 !important; 
+        position: relative;
+        pointer-events: auto;
+    }
+    .modal.show { display: block !important; }
+    .modal.fade .modal-dialog { transition: transform 0.3s ease-out; }
+    
+    /* Ensure modal is clickable */
+    .modal-body,
+    .modal-header,
+    .modal-footer {
+        pointer-events: auto;
+    }
 </style>
 
 <main>
@@ -162,15 +374,20 @@ try {
     <!-- Add Brand Form -->
     <div class="add-brand-form">
         <h4 class="mb-3"><i class="fas fa-plus-circle"></i> Add New Brand</h4>
-        <form method="POST" class="row g-3">
+        <form method="POST" class="row g-3" enctype="multipart/form-data">
             <input type="hidden" name="action" value="add_brand">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="brand_name" class="form-label">Brand Name <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" name="brand_name" id="brand_name" placeholder="e.g., Hitachi, Daikin" required>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="description" class="form-label">Description (Optional)</label>
                 <textarea class="form-control" name="description" id="description" placeholder="Brief description about the brand"></textarea>
+            </div>
+            <div class="col-md-3">
+                <label for="brand_logo" class="form-label">Brand Logo (Optional)</label>
+                <input type="file" class="form-control" name="brand_logo" id="brand_logo" accept="image/jpeg,image/png,image/gif,image/webp">
+                <small class="text-muted">Max 5MB, JPG/PNG/GIF/WebP</small>
             </div>
             <div class="col-md-2">
                 <label class="form-label">&nbsp;</label>
@@ -193,18 +410,19 @@ try {
             <thead>
                 <tr>
                     <th width="5%">ID</th>
-                    <th width="20%">Brand Name</th>
-                    <th width="30%">Description</th>
-                    <th width="15%">Products</th>
+                    <th width="8%">Logo</th>
+                    <th width="18%">Brand Name</th>
+                    <th width="25%">Description</th>
+                    <th width="12%">Products</th>
                     <th width="10%">Status</th>
-                    <th width="12%">Created</th>
-                    <th width="8%">Actions</th>
+                    <th width="10%">Created</th>
+                    <th width="12%">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($brands)): ?>
                     <tr>
-                        <td colspan="7" class="text-center py-4">
+                        <td colspan="8" class="text-center py-4">
                             <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                             <p class="text-muted">No brands found. Add your first brand above.</p>
                         </td>
@@ -213,6 +431,15 @@ try {
                     <?php foreach ($brands as $brand): ?>
                         <tr>
                             <td><?= $brand['id'] ?></td>
+                            <td>
+                                <?php if (!empty($brand['logo'])): 
+                                    $logo_url = BASE_URL . '/public/image.php?file=' . urlencode($brand['logo']);
+                                ?>
+                                    <img src="<?= $logo_url ?>" alt="<?= htmlspecialchars($brand['name']) ?>" class="brand-logo" onerror="this.src='<?= IMG_URL ?>/placeholder-product.png'; this.onerror=null;">
+                                <?php else: ?>
+                                    <span class="text-muted"><i class="fas fa-image"></i> No logo</span>
+                                <?php endif; ?>
+                            </td>
                             <td><strong><?= htmlspecialchars($brand['name']) ?></strong></td>
                             <td class="description-cell">
                                 <?= !empty($brand['description']) ? htmlspecialchars($brand['description']) : '<em class="text-muted">No description</em>' ?>
@@ -236,6 +463,9 @@ try {
                             <td><small class="text-muted"><?= date('M d, Y', strtotime($brand['created_at'])) ?></small></td>
                             <td>
                                 <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-success btn-action" title="Edit Brand" data-bs-toggle="modal" data-bs-target="#editModal<?= $brand['id'] ?>">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
                                     <?php if ($brand['product_count'] == 0): ?>
                                         <form method="POST" style="display:inline;">
                                             <input type="hidden" name="action" value="delete_brand">
@@ -252,6 +482,55 @@ try {
                                 </div>
                             </td>
                         </tr>
+                        
+                        <!-- Edit Brand Modal -->
+                        <div class="modal fade" id="editModal<?= $brand['id'] ?>" tabindex="-1" aria-labelledby="editModalLabel<?= $brand['id'] ?>" aria-hidden="true" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel<?= $brand['id'] ?>">Edit Brand: <?= htmlspecialchars($brand['name']) ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST" enctype="multipart/form-data" id="editForm<?= $brand['id'] ?>">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="action" value="edit_brand">
+                                            <input type="hidden" name="brand_id" value="<?= $brand['id'] ?>">
+                                            
+                                            <div class="mb-3">
+                                                <label for="edit_brand_name_<?= $brand['id'] ?>" class="form-label">Brand Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="brand_name" id="edit_brand_name_<?= $brand['id'] ?>" value="<?= htmlspecialchars($brand['name']) ?>" required>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label for="edit_description_<?= $brand['id'] ?>" class="form-label">Description</label>
+                                                <textarea class="form-control" name="description" id="edit_description_<?= $brand['id'] ?>" rows="4" placeholder="Brief description about the brand"><?= htmlspecialchars($brand['description'] ?? '') ?></textarea>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label for="edit_brand_logo_<?= $brand['id'] ?>" class="form-label">Brand Logo</label>
+                                                <?php if (!empty($brand['logo'])): 
+                                                    $logo_url = BASE_URL . '/public/image.php?file=' . urlencode($brand['logo']);
+                                                ?>
+                                                    <div class="mb-2 text-center">
+                                                        <p class="mb-2"><strong>Current Logo:</strong></p>
+                                                        <img src="<?= $logo_url ?>" alt="<?= htmlspecialchars($brand['name']) ?>" class="img-thumbnail" style="max-width: 150px; max-height: 150px;" onerror="this.src='<?= IMG_URL ?>/placeholder-product.png'; this.onerror=null;">
+                                                    </div>
+                                                    <p class="text-muted small mb-2">Upload a new logo to replace the current one (optional)</p>
+                                                <?php else: ?>
+                                                    <p class="text-muted small mb-2">No logo currently set. Upload a logo (optional)</p>
+                                                <?php endif; ?>
+                                                <input type="file" class="form-control" name="brand_logo" id="edit_brand_logo_<?= $brand['id'] ?>" accept="image/jpeg,image/png,image/gif,image/webp">
+                                                <small class="text-muted">Max 5MB, JPG/PNG/GIF/WebP. Leave empty to keep current logo.</small>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Update Brand</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
@@ -275,4 +554,68 @@ try {
 <?php
 include INCLUDES_PATH . '/templates/admin_footer.php';
 ?>
+
+<script>
+// Fix modal interaction issues
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure all modals are properly initialized and clickable
+    document.querySelectorAll('.modal').forEach(function(modalElement) {
+        // When modal is shown, ensure content is clickable
+        modalElement.addEventListener('shown.bs.modal', function() {
+            // Force pointer events on modal content
+            const modalContent = this.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.pointerEvents = 'auto';
+                modalContent.style.position = 'relative';
+                modalContent.style.zIndex = '1056';
+            }
+            
+            // Ensure all interactive elements are clickable
+            const interactiveElements = this.querySelectorAll('input, textarea, button, select, a');
+            interactiveElements.forEach(function(el) {
+                el.style.pointerEvents = 'auto';
+            });
+            
+            // Focus on first input
+            const firstInput = this.querySelector('input[type="text"], textarea');
+            if (firstInput) {
+                setTimeout(function() {
+                    firstInput.focus();
+                }, 150);
+            }
+        });
+        
+        // Clean up when modal is hidden
+        modalElement.addEventListener('hidden.bs.modal', function() {
+            // Remove any lingering backdrop
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(function(backdrop) {
+                backdrop.remove();
+            });
+            
+            // Clean up body classes
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+        });
+    });
+    
+    // Handle edit button clicks
+    document.querySelectorAll('[data-bs-target^="#editModal"]').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Small delay to ensure Bootstrap processes the click
+            setTimeout(function() {
+                const targetId = button.getAttribute('data-bs-target');
+                const modal = document.querySelector(targetId);
+                if (modal) {
+                    const modalContent = modal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.style.pointerEvents = 'auto';
+                    }
+                }
+            }, 50);
+        });
+    });
+});
+</script>
 

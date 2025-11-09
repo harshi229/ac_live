@@ -1927,7 +1927,20 @@ try {
         <div class="brands-grid">
             <?php foreach (array_slice($brands, 0, 8) as $brand): ?>
             <div class="brand-card">
-                <h4 class="brand-name"><?= htmlspecialchars($brand['name']) ?></h4>
+                <?php if (!empty($brand['logo'])): 
+                    $logo_url = BASE_URL . '/public/image.php?file=' . urlencode($brand['logo']);
+                ?>
+                    <div class="brand-logo-wrapper">
+                        <img src="<?= htmlspecialchars($logo_url) ?>" 
+                             alt="<?= htmlspecialchars($brand['name']) ?> Logo" 
+                             class="brand-logo-image"
+                             loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <h4 class="brand-name" style="display: none;"><?= htmlspecialchars($brand['name']) ?></h4>
+                    </div>
+                <?php else: ?>
+                    <h4 class="brand-name"><?= htmlspecialchars($brand['name']) ?></h4>
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>
