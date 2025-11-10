@@ -4,18 +4,20 @@
 
 /* ===== PAGE LOADER ===== */
 .page-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 99999 !important;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .page-loader.fade-out {
@@ -25,10 +27,13 @@
 
 /* ===== MAIN LOADER ANIMATION ===== */
 .loader-container {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    margin-bottom: 30px;
+    position: relative !important;
+    width: 120px !important;
+    height: 120px !important;
+    margin-bottom: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .loader-ring {
@@ -81,19 +86,20 @@
 
 /* ===== LOADER LOGO ===== */
 .loader-logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: pulse 2s ease-in-out infinite;
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 50px !important;
+    height: 50px !important;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    animation: pulse 2s ease-in-out infinite !important;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5) !important;
+    z-index: 100 !important;
 }
 
 .loader-logo i {
@@ -114,12 +120,14 @@
 
 /* ===== LOADING TEXT ===== */
 .loader-text {
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease-out 0.5s forwards;
+    color: white !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 10px !important;
+    opacity: 0 !important;
+    animation: fadeInUp 0.8s ease-out 0.5s forwards !important;
+    text-align: center !important;
+    width: 100% !important;
 }
 
 .loader-subtext {
