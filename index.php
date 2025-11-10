@@ -630,10 +630,20 @@ try {
 
 /* Categories Section */
 .categories-section {
-    padding: 80px 0;
+    padding: clamp(50px, 8vw, 80px) clamp(12px, 2vw, 20px);
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     position: relative;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.categories-section .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: clamp(10px, 2vw, 15px);
+    padding-right: clamp(10px, 2vw, 15px);
+    box-sizing: border-box;
 }
 
 .categories-section::before {
@@ -641,8 +651,8 @@ try {
     position: absolute;
     top: -50%;
     right: -10%;
-    width: 500px;
-    height: 500px;
+    width: clamp(300px, 40vw, 500px);
+    height: clamp(300px, 40vw, 500px);
     background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
@@ -653,8 +663,8 @@ try {
     position: absolute;
     bottom: -30%;
     left: -5%;
-    width: 400px;
-    height: 400px;
+    width: clamp(250px, 35vw, 400px);
+    height: clamp(250px, 35vw, 400px);
     background: radial-gradient(circle, rgba(147, 51, 234, 0.08) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
@@ -663,71 +673,82 @@ try {
 /* Section Header */
 .section-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: clamp(30px, 5vw, 60px);
     position: relative;
     z-index: 1;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 .section-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 20px;
+    gap: clamp(6px, 1vw, 8px);
+    padding: clamp(6px, 1.2vw, 8px) clamp(16px, 2.5vw, 20px);
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
-    border-radius: 50px;
-    font-size: 14px;
+    border-radius: clamp(40px, 6vw, 50px);
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: clamp(12px, 2vw, 20px);
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     animation: fadeInDown 0.6s ease;
 }
 
 .section-title {
-    font-size: 42px;
+    font-size: clamp(1.75rem, 4.5vw, 2.625rem);
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 15px;
+    margin-bottom: clamp(10px, 1.5vw, 15px);
     line-height: 1.2;
     animation: fadeInUp 0.6s ease 0.1s both;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .section-subtitle {
-    font-size: 18px;
+    font-size: clamp(0.9rem, 2vw, 1.125rem);
     color: #64748b;
-    max-width: 600px;
+    max-width: min(600px, 95%);
     margin: 0 auto;
     animation: fadeInUp 0.6s ease 0.2s both;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 /* Categories Grid */
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: clamp(15px, 3vw, 30px);
     position: relative;
     z-index: 1;
+    padding: 0 clamp(5px, 1vw, 10px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Category Card */
 .category-card {
     position: relative;
     background: white;
-    border-radius: 20px;
+    border-radius: clamp(16px, 2.5vw, 20px);
     overflow: hidden;
     text-decoration: none;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     animation: fadeInUp 0.6s ease both;
     cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .category-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 20px;
-    padding: 2px;
+    border-radius: clamp(16px, 2.5vw, 20px);
+    padding: clamp(1.5px, 0.25vw, 2px);
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -748,8 +769,9 @@ try {
 /* Image Wrapper */
 .category-image-wrapper {
     position: relative;
-    height: 220px;
+    height: clamp(180px, 25vw, 220px);
     overflow: hidden;
+    width: 100%;
 }
 
 .category-image {
@@ -757,6 +779,7 @@ try {
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    display: block;
 }
 
 .category-card:hover .category-image {
@@ -777,19 +800,20 @@ try {
 
 .category-badge-count {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: clamp(10px, 1.5vw, 15px);
+    right: clamp(10px, 1.5vw, 15px);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    padding: 8px 16px;
-    border-radius: 50px;
-    font-size: 14px;
+    padding: clamp(6px, 1vw, 8px) clamp(12px, 2vw, 16px);
+    border-radius: clamp(40px, 6vw, 50px);
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
     font-weight: 700;
     color: #3b82f6;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transform: translateY(-5px);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
 }
 
 .category-card:hover .category-badge-count {
@@ -801,22 +825,22 @@ try {
 .category-content {
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 25px;
+    gap: clamp(10px, 1.5vw, 15px);
+    padding: clamp(18px, 2.5vw, 25px);
     position: relative;
 }
 
 .category-icon {
     flex-shrink: 0;
-    width: 50px;
-    height: 50px;
+    width: clamp(40px, 6vw, 50px);
+    height: clamp(40px, 6vw, 50px);
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
-    border-radius: 12px;
-    font-size: 22px;
+    border-radius: clamp(10px, 1.5vw, 12px);
+    font-size: clamp(18px, 2.5vw, 22px);
     transition: all 0.4s ease;
 }
 
@@ -830,11 +854,13 @@ try {
 }
 
 .category-name {
-    font-size: 20px;
+    font-size: clamp(1rem, 2vw, 1.25rem);
     font-weight: 700;
     color: #1e293b;
-    margin: 0 0 5px 0;
+    margin: 0 0 clamp(4px, 0.6vw, 5px) 0;
     transition: color 0.3s ease;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .category-card:hover .category-name {
@@ -842,15 +868,17 @@ try {
 }
 
 .category-description {
-    font-size: 14px;
+    font-size: clamp(0.8rem, 1.5vw, 0.875rem);
     color: #64748b;
     margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .category-arrow {
     flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+    width: clamp(30px, 4.5vw, 36px);
+    height: clamp(30px, 4.5vw, 36px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -858,6 +886,7 @@ try {
     border-radius: 50%;
     color: #3b82f6;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: clamp(14px, 2vw, 16px);
 }
 
 .category-card:hover .category-arrow {
@@ -870,50 +899,56 @@ try {
 .empty-state {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 80px 20px;
+    padding: clamp(50px, 8vw, 80px) clamp(15px, 2.5vw, 20px);
 }
 
 .empty-icon {
-    font-size: 64px;
+    font-size: clamp(48px, 8vw, 64px);
     color: #cbd5e1;
-    margin-bottom: 20px;
+    margin-bottom: clamp(15px, 2.5vw, 20px);
 }
 
 .empty-text {
-    font-size: 20px;
+    font-size: clamp(1.1rem, 2.5vw, 1.25rem);
     font-weight: 600;
     color: #475569;
-    margin-bottom: 10px;
+    margin-bottom: clamp(8px, 1.2vw, 10px);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .empty-subtext {
-    font-size: 16px;
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
     color: #94a3b8;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Categories Footer */
 .categories-footer {
     text-align: center;
-    margin-top: 60px;
+    margin-top: clamp(30px, 5vw, 60px);
     position: relative;
     z-index: 1;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 .btn-view-all-categories {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px 40px;
+    gap: clamp(8px, 1.5vw, 12px);
+    padding: clamp(12px, 2vw, 16px) clamp(24px, 4vw, 40px);
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
-    font-size: 16px;
+    font-size: clamp(0.875rem, 1.8vw, 1rem);
     font-weight: 600;
-    border-radius: 50px;
+    border-radius: clamp(40px, 6vw, 50px);
     text-decoration: none;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .btn-view-all-categories::before {
@@ -972,56 +1007,221 @@ try {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
     .categories-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: clamp(20px, 2.5vw, 25px);
+    }
+}
+
+@media (max-width: 992px) {
+    .categories-section {
+        padding: clamp(45px, 7vw, 70px) clamp(10px, 1.8vw, 18px);
+    }
+    
+    .categories-section .container {
+        padding-left: clamp(8px, 1.5vw, 12px);
+        padding-right: clamp(8px, 1.5vw, 12px);
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: clamp(18px, 2.2vw, 22px);
+    }
+    
+    .category-content {
+        gap: clamp(8px, 1.2vw, 12px);
     }
 }
 
 @media (max-width: 768px) {
     .categories-section {
-        padding: 60px 0;
+        padding: clamp(40px, 6vw, 60px) clamp(8px, 1.5vw, 15px);
     }
     
-    .section-title {
-        font-size: 32px;
+    .categories-section .container {
+        padding-left: clamp(6px, 1.2vw, 10px);
+        padding-right: clamp(6px, 1.2vw, 10px);
     }
     
-    .section-subtitle {
-        font-size: 16px;
+    .section-header {
+        padding: 0 clamp(8px, 1.5vw, 15px);
     }
     
     .categories-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: clamp(15px, 2.5vw, 20px);
+        padding: 0 clamp(4px, 0.8vw, 8px);
     }
     
     .category-image-wrapper {
-        height: 200px;
+        height: clamp(160px, 22vw, 200px);
     }
     
     .category-content {
-        padding: 20px;
+        padding: clamp(15px, 2.2vw, 20px);
+        flex-wrap: wrap;
+        gap: clamp(8px, 1.2vw, 12px);
+    }
+    
+    .category-icon {
+        width: clamp(35px, 5.5vw, 45px);
+        height: clamp(35px, 5.5vw, 45px);
+        font-size: clamp(16px, 2.2vw, 20px);
+    }
+    
+    .category-arrow {
+        width: clamp(28px, 4vw, 32px);
+        height: clamp(28px, 4vw, 32px);
+        font-size: clamp(12px, 1.8vw, 14px);
     }
     
     .btn-view-all-categories {
-        padding: 14px 32px;
-        font-size: 15px;
+        padding: clamp(12px, 1.8vw, 14px) clamp(20px, 3.5vw, 32px);
+        font-size: clamp(0.8rem, 1.6vw, 0.9375rem);
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .categories-section {
+        padding: clamp(35px, 5vw, 50px) clamp(6px, 1.2vw, 12px);
+    }
+    
+    .categories-section .container {
+        padding-left: clamp(5px, 1vw, 8px);
+        padding-right: clamp(5px, 1vw, 8px);
+    }
+    
+    .section-header {
+        padding: 0 clamp(6px, 1.2vw, 12px);
+    }
+    
+    .categories-grid {
+        gap: clamp(12px, 2vw, 18px);
+        padding: 0 clamp(3px, 0.6vw, 6px);
+    }
+    
+    .category-image-wrapper {
+        height: clamp(150px, 20vw, 180px);
+    }
+    
+    .category-content {
+        padding: clamp(12px, 2vw, 18px);
+        gap: clamp(8px, 1.2vw, 12px);
+    }
+    
+    .category-icon {
+        width: clamp(32px, 5vw, 40px);
+        height: clamp(32px, 5vw, 40px);
+        font-size: clamp(16px, 2.2vw, 20px);
+    }
+    
+    .category-arrow {
+        width: clamp(28px, 4vw, 32px);
+        height: clamp(28px, 4vw, 32px);
     }
 }
 
 @media (max-width: 480px) {
-    .section-title {
-        font-size: 28px;
+    .categories-section {
+        padding: clamp(30px, 4vw, 45px) clamp(5px, 1vw, 10px);
     }
     
-    .category-name {
-        font-size: 18px;
+    .categories-section .container {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    
+    .section-header {
+        padding: 0 4px;
+    }
+    
+    .categories-grid {
+        gap: clamp(10px, 1.8vw, 15px);
+        padding: 0 2px;
     }
     
     .category-image-wrapper {
-        height: 180px;
+        height: clamp(140px, 18vw, 170px);
+    }
+    
+    .category-content {
+        padding: clamp(10px, 1.8vw, 15px);
+    }
+    
+    .category-badge-count {
+        top: 8px;
+        right: 8px;
+        padding: 5px 12px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .categories-section {
+        padding: clamp(25px, 3.5vw, 40px) clamp(4px, 0.8vw, 8px);
+    }
+    
+    .categories-section .container {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+    
+    .section-header {
+        padding: 0 3px;
+        margin-bottom: clamp(20px, 3vw, 35px);
+    }
+    
+    .categories-grid {
+        gap: 12px;
+        padding: 0 2px;
+    }
+    
+    .category-image-wrapper {
+        height: clamp(130px, 16vw, 150px);
+    }
+    
+    .category-content {
+        padding: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .category-icon {
+        width: clamp(36px, 4.5vw, 40px);
+        height: clamp(36px, 4.5vw, 40px);
+        font-size: clamp(16px, 2vw, 18px);
+    }
+    
+    .category-arrow {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .category-badge-count {
+        top: 6px;
+        right: 6px;
+        padding: 4px 10px;
+        font-size: 0.65rem;
+    }
+    
+    .btn-view-all-categories {
+        padding: 10px 18px;
+        font-size: 0.8rem;
     }
 }
 
@@ -1258,43 +1458,7 @@ try {
     transform: translateX(5px);
 }
 
-/* Brands Section */
-.brands-section {
-    padding: 80px 0;
-    background: white;
-}
-
-.brands-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    margin-top: 60px;
-}
-
-.brand-card {
-    background: #f8f9fa;
-    border-radius: 15px;
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 120px;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.brand-card:hover {
-    background: white;
-    border-color: #3b82f6;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.brand-name {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #1e293b;
-}
+/* Brands Section - Styles are handled in style.css for better organization */
 
 /* Why Choose Us */
 .why-choose-section {
@@ -1564,9 +1728,7 @@ try {
         grid-template-columns: repeat(2, 1fr);
     }
     
-    .brands-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    /* Brands grid responsive styles are handled in style.css */
     
     .clients-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -2171,7 +2333,26 @@ try {
         <div class="products-grid">
             <?php if (!empty($featured_products)): ?>
                 <?php foreach (array_slice($featured_products, 0, 6) as $product): ?>
-                <div class="product-card enhanced-product-card" data-product-id="<?= $product['id'] ?>">
+                <?php 
+                // Ensure product ID exists and is valid (handle case sensitivity)
+                // Check multiple possible ID field names
+                $product_id = 0;
+                if (isset($product['id']) && !empty($product['id'])) {
+                    $product_id = (int)$product['id'];
+                } elseif (isset($product['ID']) && !empty($product['ID'])) {
+                    $product_id = (int)$product['ID'];
+                } elseif (isset($product['product_id']) && !empty($product['product_id'])) {
+                    $product_id = (int)$product['product_id'];
+                }
+                
+                // Only skip if we truly don't have an ID (log for debugging)
+                if (!$product_id) {
+                    error_log("Homepage product missing ID - Available keys: " . implode(', ', array_keys($product)) . " | Product name: " . ($product['product_name'] ?? 'N/A'));
+                    // Don't skip - let it show but with a warning
+                    // continue; // Commented out to see all products
+                }
+                ?>
+                <div class="product-card enhanced-product-card" data-product-id="<?= $product_id ?>">
                     <div class="product-image-wrapper">
                         <img src="<?php echo BASE_URL; ?>/public/image.php?file=<?= urlencode($product['product_image']) ?>" 
                              alt="<?= htmlspecialchars($product['product_name']) ?>" 
@@ -2184,7 +2365,7 @@ try {
                         </span>
                         <?php endif; ?>
                         <div class="product-overlay">
-                            <a href="<?php echo USER_URL; ?>/products/details.php?id=<?= $product['id'] ?>" class="overlay-btn overlay-btn-primary">
+                            <a href="<?php echo USER_URL; ?>/products/details.php?id=<?= $product_id ?>" class="overlay-btn overlay-btn-primary">
                                 <i class="fas fa-eye"></i> Quick View
                             </a>
                         </div>
@@ -2194,7 +2375,7 @@ try {
                         <h3 class="product-name"><?= htmlspecialchars($product['product_name']) ?></h3>
                         <div class="product-price">₹<?= number_format($product['price'], 0) ?></div>
                         <div class="product-actions">
-                            <a href="<?php echo USER_URL; ?>/products/details.php?id=<?= $product['id'] ?>" class="product-btn product-btn-primary">
+                            <a href="<?php echo USER_URL; ?>/products/details.php?id=<?= $product_id ?>" class="product-btn product-btn-primary">
                                 <i class="fas fa-shopping-cart"></i> View Details
                             </a>
                         </div>

@@ -1429,11 +1429,21 @@ footer {
 
 /* ================= BRANDS SECTION ================= */
 .brands-section {
-    padding: 100px 20px;
+    padding: clamp(50px, 10vw, 100px) clamp(12px, 2vw, 20px);
     background: linear-gradient(90deg, #f1f5f9 0%, #f8fafc 50%, #f1f5f9 100%);
     position: relative;
     z-index: 1;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.brands-section .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: clamp(10px, 2vw, 15px);
+    padding-right: clamp(10px, 2vw, 15px);
+    box-sizing: border-box;
 }
 
 .brands-section::before {
@@ -1450,7 +1460,7 @@ footer {
 
 .brands-section .section-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: clamp(30px, 5vw, 60px);
     position: relative;
     z-index: 1;
 }
@@ -1460,62 +1470,69 @@ footer {
     background: rgba(59, 130, 246, 0.12);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(59, 130, 246, 0.2);
-    border-radius: 25px;
-    padding: 10px 24px;
-    font-size: 0.85rem;
+    border-radius: clamp(20px, 3vw, 25px);
+    padding: clamp(6px, 1.5vw, 10px) clamp(16px, 3vw, 24px);
+    font-size: clamp(0.7rem, 1.5vw, 0.85rem);
     font-weight: 600;
     color: #3b82f6;
-    margin-bottom: 20px;
+    margin-bottom: clamp(12px, 2vw, 20px);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: clamp(0.5px, 0.1vw, 1px);
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
 .brands-section .section-title {
-    font-size: 2.75rem;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 18px;
+    margin-bottom: clamp(12px, 2vw, 18px);
     line-height: 1.2;
     letter-spacing: -0.5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .brands-section .section-subtitle {
-    font-size: 1.05rem;
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
     color: #64748b;
     margin-bottom: 0;
-    max-width: 650px;
+    max-width: min(650px, 95%);
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6;
     font-weight: 400;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 .brands-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 24px;
+    gap: clamp(15px, 3vw, 24px);
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 .brand-card {
     background: #ffffff;
     border: none;
-    border-radius: 16px;
-    padding: 40px 24px;
+    border-radius: clamp(12px, 2vw, 16px);
+    padding: clamp(20px, 4vw, 40px) clamp(16px, 3vw, 24px);
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     cursor: pointer;
-    min-height: 120px;
+    min-height: clamp(90px, 12vw, 120px);
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .brand-card::before {
@@ -1524,7 +1541,7 @@ footer {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: clamp(2px, 0.4vw, 3px);
     background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
     transform: scaleX(0);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1542,104 +1559,202 @@ footer {
 }
 
 .brand-name {
-    font-size: 1.15rem;
+    font-size: clamp(0.9rem, 2vw, 1.15rem);
     font-weight: 700;
     color: #1e293b;
     margin: 0;
     line-height: 1.4;
     word-wrap: break-word;
+    overflow-wrap: break-word;
     hyphens: auto;
 }
 
 .brand-logo-wrapper {
     width: 100%;
     height: 100%;
+    max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .brand-logo-image {
     max-width: 100%;
-    max-height: 80px;
+    max-height: clamp(50px, 10vw, 80px);
+    width: auto;
+    height: auto;
     object-fit: contain;
     display: block;
+    margin: 0 auto;
 }
 
 /* Responsive Design for Brands Section */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+    .brands-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: clamp(15px, 2.5vw, 20px);
+    }
+    
     .brands-section {
-        padding: 70px 15px;
+        padding: clamp(60px, 8vw, 100px) clamp(15px, 2vw, 20px);
+    }
+}
+
+@media (max-width: 992px) {
+    .brands-section {
+        padding: clamp(50px, 7vw, 80px) clamp(12px, 2vw, 18px);
     }
     
     .brands-section .section-header {
-        margin-bottom: 40px;
-    }
-    
-    .brands-section .section-badge {
-        padding: 8px 20px;
-        font-size: 0.8rem;
-    }
-    
-    .brands-section .section-title {
-        font-size: 2.2rem;
-    }
-    
-    .brands-section .section-subtitle {
-        font-size: 0.95rem;
+        margin-bottom: clamp(30px, 4vw, 50px);
     }
     
     .brands-grid {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: clamp(12px, 2vw, 18px);
     }
     
     .brand-card {
-        padding: 32px 20px;
-        min-height: 100px;
+        padding: clamp(24px, 3vw, 32px) clamp(14px, 2vw, 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .brands-section {
+        padding: clamp(40px, 6vw, 70px) clamp(10px, 2vw, 15px);
     }
     
-    .brand-name {
-        font-size: 1.05rem;
+    .brands-section .container {
+        padding-left: clamp(8px, 1.5vw, 12px);
+        padding-right: clamp(8px, 1.5vw, 12px);
+    }
+    
+    .brands-section .section-header {
+        margin-bottom: clamp(25px, 4vw, 40px);
+    }
+    
+    .brands-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: clamp(12px, 2vw, 18px);
+        padding: 0 5px;
+    }
+    
+    .brand-card {
+        padding: clamp(20px, 3vw, 28px) clamp(12px, 2vw, 18px);
+        min-height: clamp(80px, 10vw, 100px);
+    }
+    
+    .brand-logo-image {
+        max-height: clamp(45px, 8vw, 65px);
+    }
+    
+    .brand-logo-wrapper {
+        padding: 3px;
+    }
+}
+
+@media (max-width: 576px) {
+    .brands-section {
+        padding: clamp(35px, 5vw, 60px) clamp(8px, 1.5vw, 12px);
+    }
+    
+    .brands-section .container {
+        padding-left: clamp(6px, 1.2vw, 10px);
+        padding-right: clamp(6px, 1.2vw, 10px);
+    }
+    
+    .brands-section .section-header {
+        margin-bottom: clamp(20px, 3vw, 35px);
+    }
+    
+    .brands-section .section-subtitle {
+        padding: 0 clamp(5px, 1vw, 10px);
+    }
+    
+    .brands-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: clamp(10px, 2vw, 15px);
+        padding: 0 4px;
+    }
+    
+    .brand-card {
+        padding: clamp(18px, 2.5vw, 24px) clamp(10px, 1.5vw, 16px);
+        min-height: clamp(70px, 9vw, 90px);
+    }
+    
+    .brand-logo-image {
+        max-height: clamp(40px, 7vw, 55px);
+    }
+    
+    .brand-logo-wrapper {
+        padding: 2px;
     }
 }
 
 @media (max-width: 480px) {
     .brands-section {
-        padding: 60px 12px;
+        padding: clamp(30px, 4vw, 50px) clamp(6px, 1vw, 10px);
     }
     
-    .brands-section .section-header {
-        margin-bottom: 35px;
-    }
-    
-    .brands-section .section-badge {
-        padding: 7px 18px;
-        font-size: 0.75rem;
-        margin-bottom: 15px;
-    }
-    
-    .brands-section .section-title {
-        font-size: 1.9rem;
-        margin-bottom: 12px;
+    .brands-section .container {
+        padding-left: clamp(5px, 1vw, 8px);
+        padding-right: clamp(5px, 1vw, 8px);
     }
     
     .brands-section .section-subtitle {
-        font-size: 0.9rem;
+        padding: 0 clamp(4px, 0.8vw, 8px);
     }
     
     .brands-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: clamp(8px, 1.5vw, 12px);
+        padding: 0 3px;
     }
     
     .brand-card {
-        padding: 28px 16px;
-        min-height: 90px;
+        padding: clamp(16px, 2vw, 20px) clamp(8px, 1.2vw, 14px);
+        min-height: clamp(65px, 8vw, 85px);
     }
     
-    .brand-name {
-        font-size: 1rem;
+    .brand-logo-image {
+        max-height: clamp(35px, 6vw, 50px);
+    }
+    
+    .brand-logo-wrapper {
+        padding: 2px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .brands-section .container {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    
+    .brands-section .section-subtitle {
+        padding: 0 4px;
+    }
+    
+    .brands-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 2px;
+    }
+    
+    .brand-card {
+        min-height: 80px;
+        padding: 18px 10px;
+    }
+    
+    .brand-logo-image {
+        max-height: 40px;
+    }
+    
+    .brand-logo-wrapper {
+        padding: 2px;
     }
 }
 

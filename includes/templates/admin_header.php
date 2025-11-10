@@ -119,7 +119,8 @@ if (isset($_SESSION['admin_id'])) {
                                                strpos($_SERVER['REQUEST_URI'], '/settings') === false &&
                                                strpos($_SERVER['REQUEST_URI'], '/security_monitor') === false &&
                                                strpos($_SERVER['REQUEST_URI'], '/setup_security') === false &&
-                                               strpos($_SERVER['REQUEST_URI'], '/register') === false);
+                                               strpos($_SERVER['REQUEST_URI'], '/register') === false &&
+                                               strpos($_SERVER['REQUEST_URI'], '/features') === false);
                                 ?>
                                 <a class="nav-link <?php echo $is_dashboard ? 'active' : ''; ?>" href="<?php echo admin_url('index.php'); ?>" aria-label="Dashboard - Overview & Analytics">
                                     <div class="nav-link-icon">
@@ -288,7 +289,7 @@ if (isset($_SESSION['admin_id'])) {
                         </div>
                         <ul class="nav flex-column nav-section-content show" data-section="services">
                             <li class="nav-item">
-                                <a class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/services') !== false && strpos($_SERVER['REQUEST_URI'], '/installations') === false && strpos($_SERVER['REQUEST_URI'], '/amc') === false ? 'active' : ''; ?>" href="<?php echo admin_url('services'); ?>" aria-label="Service Management - Service tracking">
+                                <a class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/services') !== false && strpos($_SERVER['REQUEST_URI'], '/installations') === false && strpos($_SERVER['REQUEST_URI'], '/amc') === false && strpos($_SERVER['REQUEST_URI'], '/features') === false ? 'active' : ''; ?>" href="<?php echo admin_url('services'); ?>" aria-label="Service Management - Service tracking">
                                     <div class="nav-link-icon">
                                         <i class="fas fa-wrench"></i>
                                     </div>
@@ -317,6 +318,17 @@ if (isset($_SESSION['admin_id'])) {
                                     <div class="nav-link-content">
                                         <span class="nav-link-title">AMC Management</span>
                                         <span class="nav-link-subtitle">Annual contracts</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/services/features') !== false ? 'active' : ''; ?>" href="<?php echo admin_url('services/features'); ?>" aria-label="Features - Product features management">
+                                    <div class="nav-link-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="nav-link-content">
+                                        <span class="nav-link-title">Features</span>
+                                        <span class="nav-link-subtitle">Product features management</span>
                                     </div>
                                 </a>
                             </li>
