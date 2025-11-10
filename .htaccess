@@ -62,6 +62,10 @@ RewriteRule ^public/img/(.*)$ public/img/$1 [L]
 # Handle search page specifically to preserve query parameters
 RewriteRule ^user/search$ user/search.php [L,QSA]
 
+# Handle product details URLs (both clean and with .php)
+RewriteRule ^user/products/details$ user/products/details.php [L,QSA]
+RewriteRule ^user/products/([0-9]+)$ user/products/details.php?id=$1 [L,QSA]
+
 # Handle admin order details with ID parameter
 RewriteRule ^admin/orders/details/([0-9]+)$ admin/orders/details.php?id=$1 [L,QSA]
 

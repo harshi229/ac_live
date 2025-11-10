@@ -100,6 +100,13 @@ function asset_url($type, $file) {
  * @return string Clean product URL
  */
 function product_url($product_id, $use_clean_url = true) {
+    // Validate product ID
+    $product_id = (int)$product_id;
+    if ($product_id <= 0) {
+        // Return products index if invalid ID
+        return defined('USER_URL') ? USER_URL . '/products/' : (defined('BASE_URL') ? BASE_URL : '') . '/user/products/';
+    }
+    
     if (!defined('USER_URL')) {
         // Fallback if USER_URL is not defined
         $base = defined('BASE_URL') ? BASE_URL : '';
@@ -115,8 +122,8 @@ function product_url($product_id, $use_clean_url = true) {
         // Clean URL: /user/products/123 instead of /user/products/details.php?id=123
         return USER_URL . "/products/{$product_id}";
     }
-    // Fallback to query string format
-    return user_url("products/details", ['id' => $product_id]);
+    // Fallback to query string format with .php extension
+    return USER_URL . "/products/details.php?id={$product_id}";
 }
 
 /**

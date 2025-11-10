@@ -359,7 +359,7 @@ try {
                     <div class="product-list-header">
                         <span class="product-brand"><?= htmlspecialchars($product['brand_name']) ?></span>
                         <h3 class="product-title">
-                            <a href="details.php?id=<?= $product['id'] ?>&from=product">
+                            <a href="<?= product_url($product['id'], false) ?>&from=product">
                                 <?= htmlspecialchars($product['product_name']) ?>
                             </a>
                         </h3>
@@ -402,7 +402,7 @@ try {
                         </div>
                         
                         <div class="product-actions">
-                            <a href="details.php?id=<?= $product['id'] ?>&from=product" class="btn-view-details">
+                            <a href="<?= product_url($product['id'], false) ?>&from=product" class="btn-view-details">
                                 <i class="fas fa-eye"></i> View Details
                             </a>
                         </div>
