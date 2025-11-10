@@ -244,6 +244,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                 </a>
                 <?php endif; ?>
                 
+                <a href="register.php" class="btn-register">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </a>
+                
                     <div class="login-links">
                         <p>Don't have an account? <a href="register.php" class="register-link">Create one here</a></p>
                         <p><a href="forgot_password.php">Forgot your password?</a></p>
@@ -254,18 +259,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     </div>
 </div><!-- /main-content -->
 
-<!-- Registration Link in Top Corner -->
-<div class="top-corner-register">
-    <a href="register.php" class="register-corner-link" title="Create Account">
-        <i class="fas fa-user-plus"></i>
-        <span>Register</span>
-    </a>
-</div>
-
 <script>
 // Smooth page transition for registration link
 document.addEventListener('DOMContentLoaded', function() {
-    const registerLinks = document.querySelectorAll('.register-link, .register-corner-link');
+    const registerLinks = document.querySelectorAll('a[href="register.php"].btn-register');
     
     registerLinks.forEach(link => {
         link.addEventListener('click', function(e) {

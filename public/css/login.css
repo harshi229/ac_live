@@ -349,8 +349,43 @@ body::before {
     color: #374151;
 }
 
-.btn-google svg {
+.btn-google svg,
+.btn-google i {
     flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.btn-register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 15px 35px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: 2px solid #3b82f6;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    margin-top: 12px;
+}
+
+.btn-register:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-register i {
+    flex-shrink: 0;
+    font-size: 1.1rem;
 }
 
 .alert {

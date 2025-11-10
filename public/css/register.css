@@ -320,7 +320,7 @@ body::before {
 .divider {
     position: relative;
     text-align: center;
-    margin: 8px 0;
+    margin: 12px 0;
 }
 
 .divider::before {
@@ -342,23 +342,30 @@ body::before {
     font-weight: 500;
 }
 
+.auth-buttons-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
 .btn-google {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    width: 100%;
-    padding: 12px 30px;
+    width: max-content;
+    padding: 15px 20px;
     background: white;
     border: 2px solid #e5e7eb;
     border-radius: 25px;
     color: #374151;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.05rem;
     text-decoration: none;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 10px;
 }
 
 .btn-google:hover {
@@ -370,8 +377,42 @@ body::before {
     color: #374151;
 }
 
-.btn-google svg {
+.btn-google svg,
+.btn-google i {
     flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.btn-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: max-content;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: 2px solid #3b82f6;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-login i {
+    flex-shrink: 0;
+    font-size: 1.1rem;
 }
 
 .alert {
@@ -626,6 +667,11 @@ body::before {
         gap: 0;
     }
     
+    .auth-buttons-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
     .top-corner-login {
         top: 15px;
         right: 15px;
@@ -696,6 +742,11 @@ body::before {
     .btn-google {
         padding: 12px 30px;
         font-size: 1rem;
+    }
+    
+    .auth-buttons-row {
+        flex-direction: column;
+        gap: 10px;
     }
     
     .top-corner-login {

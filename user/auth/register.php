@@ -161,22 +161,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                     </script>
                 <?php endif; ?>
                 
-                <?php if (isGoogleOAuthConfigured() && !$success_message): ?>
-                <a href="<?php echo getGoogleAuthUrl(); ?>" class="btn-google">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.8055 10.2292C19.8055 9.55639 19.7502 8.88639 19.6326 8.23181H10.2002V12.0137H15.6014C15.3773 13.2858 14.6571 14.4156 13.6025 15.1358V17.5716H16.8252C18.713 15.8354 19.8055 13.2722 19.8055 10.2292Z" fill="#4285F4"/>
-                        <path d="M10.2002 19.9311C12.9591 19.9311 15.2694 19.0273 16.8252 17.5715L13.6025 15.1357C12.7055 15.7509 11.5543 16.1034 10.2002 16.1034C7.53677 16.1034 5.28657 14.3473 4.4918 11.9656H1.16016V14.4831C2.74577 17.6285 6.30977 19.9311 10.2002 19.9311Z" fill="#34A853"/>
-                        <path d="M4.49195 11.9655C4.03355 10.6934 4.03355 9.30992 4.49195 8.03779V5.52026H1.16031C-0.386772 8.58352 -0.386772 12.4198 1.16031 15.483L4.49195 11.9655Z" fill="#FBBC04"/>
-                        <path d="M10.2002 3.89891C11.6284 3.87606 13.0087 4.42163 14.0362 5.40853L16.8938 2.55087C15.1838 0.941412 12.9316 0.0652466 10.2002 0.0926561C6.30977 0.0926561 2.74577 2.39525 1.16016 5.54053L4.49179 8.05806C5.28657 5.67631 7.53677 3.89891 10.2002 3.89891Z" fill="#EA4335"/>
-                    </svg>
-                    Sign up with Google
-                </a>
-                
-                <div class="divider">
-                    <span>OR</span>
-                </div>
-                <?php endif; ?>
-                
                 <?php if (!$success_message): ?>
                 <form method="POST" action="" id="registerForm">
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
@@ -289,6 +273,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                 </form>
                 <?php endif; ?>
                 
+                <div class="auth-buttons-row">
+                    <?php if (isGoogleOAuthConfigured() && !$success_message): ?>
+                    <a href="<?php echo getGoogleAuthUrl(); ?>" class="btn-google">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.8055 10.2292C19.8055 9.55639 19.7502 8.88639 19.6326 8.23181H10.2002V12.0137H15.6014C15.3773 13.2858 14.6571 14.4156 13.6025 15.1358V17.5716H16.8252C18.713 15.8354 19.8055 13.2722 19.8055 10.2292Z" fill="#4285F4"/>
+                            <path d="M10.2002 19.9311C12.9591 19.9311 15.2694 19.0273 16.8252 17.5715L13.6025 15.1357C12.7055 15.7509 11.5543 16.1034 10.2002 16.1034C7.53677 16.1034 5.28657 14.3473 4.4918 11.9656H1.16016V14.4831C2.74577 17.6285 6.30977 19.9311 10.2002 19.9311Z" fill="#34A853"/>
+                            <path d="M4.49195 11.9655C4.03355 10.6934 4.03355 9.30992 4.49195 8.03779V5.52026H1.16031C-0.386772 8.58352 -0.386772 12.4198 1.16031 15.483L4.49195 11.9655Z" fill="#FBBC04"/>
+                            <path d="M10.2002 3.89891C11.6284 3.87606 13.0087 4.42163 14.0362 5.40853L16.8938 2.55087C15.1838 0.941412 12.9316 0.0652466 10.2002 0.0926561C6.30977 0.0926561 2.74577 2.39525 1.16016 5.54053L4.49179 8.05806C5.28657 5.67631 7.53677 3.89891 10.2002 3.89891Z" fill="#EA4335"/>
+                        </svg>
+                        Sign up with Google
+                    </a>
+                    <?php endif; ?>
+                    
+                    <a href="login.php" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </a>
+                </div>
+                
                 <div class="register-links">
                     <p>Already have an account? <a href="login.php" class="login-link">Sign in here</a></p>
                 </div>
@@ -297,18 +300,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     </div>
 </div><!-- /main-content -->
 
-<!-- Login Link in Top Corner -->
-<div class="top-corner-login">
-    <a href="login.php" class="login-corner-link" title="Sign In">
-        <i class="fas fa-sign-in-alt"></i>
-        <span>Login</span>
-    </a>
-</div>
-
 <script>
 // Smooth page transition for login link
 document.addEventListener('DOMContentLoaded', function() {
-    const loginLinks = document.querySelectorAll('.login-link, .login-corner-link');
+    const loginLinks = document.querySelectorAll('a[href="login.php"].btn-login, .login-link');
     
     loginLinks.forEach(link => {
         link.addEventListener('click', function(e) {
