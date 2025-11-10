@@ -719,7 +719,7 @@ $grand_total = $subtotal - $discount_amount + $shipping_cost + $tax;
                                 
                                 <!-- Product Details -->
                                 <div class="item-details">
-                                    <a href="../products/details.php?id=<?php echo $item['product_id']; ?>" class="item-name">
+                                    <a href="<?= product_url($item['product_id'], false, true, 'cart') ?>" class="item-name">
                                         <?php echo htmlspecialchars($item['product_name']); ?>
                                     </a>
                                     <div class="item-model"><?php echo htmlspecialchars($item['model_name'] . ' - ' . $item['model_number']); ?></div>

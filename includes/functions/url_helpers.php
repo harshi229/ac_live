@@ -97,9 +97,11 @@ function asset_url($type, $file) {
  * 
  * @param int $product_id Product ID
  * @param bool $use_clean_url Whether to use clean URL format (default: true)
+ * @param bool $encrypt Whether to encrypt URL parameters (default: true)
+ * @param string|null $from Source parameter (optional, only used when encrypting)
  * @return string Clean product URL
  */
-function product_url($product_id, $use_clean_url = true) {
+function product_url($product_id, $use_clean_url = true, $encrypt = true, $from = null) {
     // Validate product ID
     $product_id = (int)$product_id;
     if ($product_id <= 0) {
@@ -107,11 +109,20 @@ function product_url($product_id, $use_clean_url = true) {
         return defined('USER_URL') ? USER_URL . '/products/' : (defined('BASE_URL') ? BASE_URL : '') . '/user/products/';
     }
     
+    // Use encrypted URL if encryption is enabled
+    if ($encrypt) {
+        return encrypted_product_url($product_id, $from);
+    }
+    
     if (!defined('USER_URL')) {
         // Fallback if USER_URL is not defined
         $base = defined('BASE_URL') ? BASE_URL : '';
         // Temporarily use query string if constants not loaded
-        return $base . "/user/products/details.php?id={$product_id}";
+        $url = $base . "/user/products/details.php?id={$product_id}";
+        if ($from !== null) {
+            $url .= "&from=" . urlencode($from);
+        }
+        return $url;
     }
     
     // Temporarily disable clean URLs if causing 500 errors
@@ -123,7 +134,11 @@ function product_url($product_id, $use_clean_url = true) {
         return USER_URL . "/products/{$product_id}";
     }
     // Fallback to query string format with .php extension
-    return USER_URL . "/products/details.php?id={$product_id}";
+    $url = USER_URL . "/products/details.php?id={$product_id}";
+    if ($from !== null) {
+        $url .= "&from=" . urlencode($from);
+    }
+    return $url;
 }
 
 /**
@@ -362,4 +377,48 @@ function verify_signed_param($signed, $max_age = 3600) {
 function search_url($query, $filters = []) {
     $params = array_merge(['search' => $query], $filters);
     return user_url('products', $params);
+}
+
+/**
+ * Encrypt multiple URL parameters into a single encrypted token
+ * 
+ * @param array $params Array of parameters to encrypt (e.g., ['id' => 6, 'from' => 'product'])
+ * @return string Encrypted token
+ */
+function encrypt_url_params($params) {
+    require_once __DIR__ . '/security_helpers.php';
+    $data = json_encode($params);
+    return encryptUrlParam($data);
+}
+
+/**
+ * Decrypt URL parameters from encrypted token
+ * 
+ * @param string $encrypted Encrypted token
+ * @return array|false Decrypted parameters or false on failure
+ */
+function decrypt_url_params($encrypted) {
+    require_once __DIR__ . '/security_helpers.php';
+    $decrypted = decryptUrlParam($encrypted);
+    if ($decrypted === false) {
+        return false;
+    }
+    $params = json_decode($decrypted, true);
+    return is_array($params) ? $params : false;
+}
+
+/**
+ * Generate encrypted product detail URL
+ * 
+ * @param int $product_id Product ID
+ * @param string $from Source parameter (optional)
+ * @return string URL with encrypted parameters
+ */
+function encrypted_product_url($product_id, $from = null) {
+    $params = ['id' => (int)$product_id];
+    if ($from !== null) {
+        $params['from'] = $from;
+    }
+    $encrypted = encrypt_url_params($params);
+    return user_url('products/details.php', ['token' => $encrypted]);
 }

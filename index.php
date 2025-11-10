@@ -2365,7 +2365,7 @@ try {
                         </span>
                         <?php endif; ?>
                         <div class="product-overlay">
-                            <a href="<?php echo USER_URL; ?>/products/details.php?id=<?= $product_id ?>" class="overlay-btn overlay-btn-primary">
+                            <a href="<?= product_url($product_id, false, true, 'home') ?>" class="overlay-btn overlay-btn-primary">
                                 <i class="fas fa-eye"></i> Quick View
                             </a>
                         </div>
@@ -2375,7 +2375,7 @@ try {
                         <h3 class="product-name"><?= htmlspecialchars($product['product_name']) ?></h3>
                         <div class="product-price">₹<?= number_format($product['price'], 0) ?></div>
                         <div class="product-actions">
-                            <a href="<?php echo USER_URL; ?>/products/details.php?id=<?= $product_id ?>" class="product-btn product-btn-primary">
+                            <a href="<?= product_url($product_id, false, true, 'home') ?>" class="product-btn product-btn-primary">
                                 <i class="fas fa-shopping-cart"></i> View Details
                             </a>
                         </div>

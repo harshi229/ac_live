@@ -1085,7 +1085,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </h2>
                         
                         <?php foreach ($products as $product): ?>
-                            <a href="<?php echo USER_URL; ?>/products/details.php?id=<?php echo $product['id']; ?>" class="product-card">
+                            <a href="<?= product_url($product['id'], false, true, 'search') ?>" class="product-card">
                                 <div class="product-card-content">
                                     <div class="product-image-container">
                                         <img src="<?php echo BASE_URL; ?>/public/image.php?file=<?php echo urlencode($product['product_image']); ?>" 

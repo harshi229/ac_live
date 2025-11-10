@@ -458,7 +458,7 @@ $wishlist_items = $wishlist_query->fetchAll(PDO::FETCH_ASSOC);
                             <div class="wishlist-item-price">₹<?= number_format($item['price'], 0) ?></div>
 
                             <div class="wishlist-item-actions">
-                                <a href="../products/details.php?id=<?= $item['product_id'] ?>" class="btn-wishlist-action btn-view-product">
+                                <a href="<?= product_url($item['product_id'], false, true, 'wishlist') ?>" class="btn-wishlist-action btn-view-product">
                                     <i class="fas fa-eye"></i> View Product
                                 </a>
 

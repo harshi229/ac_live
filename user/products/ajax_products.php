@@ -57,6 +57,13 @@ try {
     $total_pages = ceil($total_products / $items_per_page);
     $products = $queryBuilder->getProducts();
 
+    // Add encrypted URLs to each product
+    require_once INCLUDES_PATH . '/functions/url_helpers.php';
+    foreach ($products as &$product) {
+        $product['encrypted_url'] = encrypted_product_url($product['id'], 'product');
+    }
+    unset($product); // Break reference
+
     // Return JSON response
     echo json_encode([
         'success' => true,

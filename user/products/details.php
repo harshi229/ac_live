@@ -7,8 +7,25 @@ $pageKeywords = 'product details, AC specifications, air conditioner features, p
 require_once __DIR__ . '/../../includes/config/init.php';
 // Database connection now in init.php
 
-// Get the product ID from the URL
-$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Get the product ID from the URL (support both encrypted and plain parameters)
+$product_id = 0;
+$from = null;
+
+// Check for encrypted token first
+if (isset($_GET['token'])) {
+    require_once __DIR__ . '/../../includes/functions/url_helpers.php';
+    $decrypted_params = decrypt_url_params($_GET['token']);
+    if ($decrypted_params !== false) {
+        $product_id = isset($decrypted_params['id']) ? intval($decrypted_params['id']) : 0;
+        $from = isset($decrypted_params['from']) ? $decrypted_params['from'] : null;
+    }
+}
+
+// Fallback to plain parameters if no encrypted token or decryption failed
+if (!$product_id && isset($_GET['id'])) {
+    $product_id = intval($_GET['id']);
+    $from = isset($_GET['from']) ? $_GET['from'] : null;
+}
 
 if (!$product_id) {
     echo "<script>window.location.href='index.php';</script>";

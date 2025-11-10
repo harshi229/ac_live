@@ -510,7 +510,7 @@ function renderProducts(products, totalProducts, totalPages, currentPage) {
                 <div class="product-list-header">
                     <span class="product-brand">${product.brand_name}</span>
                     <h3 class="product-title">
-                        <a href="${config.userUrl || ''}/products/details.php?id=${product.id}&from=product">${product.product_name}</a>
+                        <a href="${product.encrypted_url || (config.userUrl || '') + '/products/details.php?id=' + product.id + '&from=product'}">${product.product_name}</a>
                     </h3>
                     <div class="product-rating">
                         ${getStarRating(product.star_rating)}
@@ -530,7 +530,7 @@ function renderProducts(products, totalProducts, totalPages, currentPage) {
                         <div class="product-price">₹${formatNumber(product.price)}</div>
                     </div>
                     <div class="product-actions">
-                        <a href="${config.userUrl || ''}/products/details.php?id=${product.id}&from=product" class="btn-view-details">
+                        <a href="${product.encrypted_url || (config.userUrl || '') + '/products/details.php?id=' + product.id + '&from=product'}" class="btn-view-details">
                             <i class="fas fa-eye"></i> View Details
                         </a>
                     </div>
