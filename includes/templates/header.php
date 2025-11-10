@@ -348,7 +348,7 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
             transform: translateX(100%);
             transition: transform 0.3s ease;
             overflow-y: auto;
-            z-index: 999;
+            z-index: 1001;
         }
 
         .mobile-nav.active {
@@ -758,7 +758,17 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
 
             <!-- Desktop Navigation -->
             <nav class="desktop-nav">
-                <a href="<?php echo BASE_URL; ?>/index.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>">
+                <a href="<?php echo BASE_URL; ?>/index.php" class="nav-link <?php 
+                    $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+                    $is_home = (basename($_SERVER['PHP_SELF']) == 'index.php' && 
+                                strpos($request_uri, '/user/') === false && 
+                                strpos($request_uri, '/admin/') === false && 
+                                strpos($request_uri, '/api/') === false &&
+                                strpos($request_uri, '/public/') === false &&
+                                strpos($request_uri, '/products/') === false &&
+                                strpos($request_uri, '/services/') === false);
+                    echo $is_home ? 'active' : '';
+                ?>">
                     Home
                 </a>
                 <a href="<?php echo PUBLIC_URL; ?>/pages/about.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'about.php' ? 'active' : ''; ?>">
@@ -828,6 +838,9 @@ $pageKeywords = $pageKeywords ?? 'air conditioning, AC, cooling, installation, m
                                     } catch (Exception $e) {}
                                 }
                                 ?>
+                            </a>
+                            <a href="<?php echo USER_URL; ?>/orders/tracking.php" class="dropdown-item">
+                                <i class="fas fa-truck"></i> Order Tracking
                             </a>
                             <a href="<?php echo USER_URL; ?>/wishlist/" class="dropdown-item">
                                 <i class="fas fa-heart"></i> Wishlist
