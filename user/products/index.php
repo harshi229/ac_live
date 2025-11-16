@@ -377,7 +377,31 @@ try {
                         <?php if($product['inverter'] == 'Yes'): ?>
                         <span class="spec-item"><i class="fas fa-bolt"></i> Inverter</span>
                         <?php endif; ?>
-                        <span class="spec-item"><i class="fas fa-shield-alt"></i> <?= $product['warranty_years'] ?> Year Warranty</span>
+                        <span class="spec-item"><i class="fas fa-shield-alt"></i> 
+                            <?php
+                            // Format warranty display (concise for listing)
+                            $warranty_display = '';
+                            if (isset($product['warranty_years']) && $product['warranty_years'] > 0) {
+                                $warranty_display = $product['warranty_years'] . 'Y Full';
+                                $additional = [];
+                                if (isset($product['warranty_compressor_5']) && $product['warranty_compressor_5']) {
+                                    $additional[] = '5Y Comp';
+                                }
+                                if (isset($product['warranty_compressor_10']) && $product['warranty_compressor_10']) {
+                                    $additional[] = '10Y Comp';
+                                }
+                                if (isset($product['warranty_pcb_5']) && $product['warranty_pcb_5']) {
+                                    $additional[] = '5Y PCB';
+                                }
+                                if (!empty($additional)) {
+                                    $warranty_display .= ' + ' . implode(' + ', $additional);
+                                }
+                            } else {
+                                $warranty_display = ($product['warranty_years'] ?? '1') . ' Year';
+                            }
+                            echo htmlspecialchars($warranty_display);
+                            ?>
+                        </span>
                     </div>
                     
                     <div class="product-list-description">

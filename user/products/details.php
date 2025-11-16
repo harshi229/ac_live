@@ -1151,7 +1151,25 @@ try {
                                 </li>
                                 <li class="feature-item">
                                     <i class="fas fa-check"></i>
-                                    <span><?php echo $product['warranty_years']; ?> Year Warranty</span>
+                                    <span>
+                                        <?php
+                                        // Format warranty display
+                                        $warranty_parts = [];
+                                        if (isset($product['warranty_years']) && $product['warranty_years'] > 0) {
+                                            $warranty_parts[] = $product['warranty_years'] . ' Year' . ($product['warranty_years'] > 1 ? 's' : '') . ' Full Warranty';
+                                        }
+                                        if (isset($product['warranty_compressor_5']) && $product['warranty_compressor_5']) {
+                                            $warranty_parts[] = '5 Years Compressor';
+                                        }
+                                        if (isset($product['warranty_compressor_10']) && $product['warranty_compressor_10']) {
+                                            $warranty_parts[] = '10 Years Compressor';
+                                        }
+                                        if (isset($product['warranty_pcb_5']) && $product['warranty_pcb_5']) {
+                                            $warranty_parts[] = '5 Years PCB';
+                                        }
+                                        echo !empty($warranty_parts) ? implode(' + ', $warranty_parts) : ($product['warranty_years'] ?? '1') . ' Year Warranty';
+                                        ?>
+                                    </span>
                                 </li>
                                 <?php if ($product['amc_available']): ?>
                                 <li class="feature-item">
@@ -1218,7 +1236,25 @@ try {
                             </tr>
                             <tr>
                                 <th>Warranty Period</th>
-                                <td><?php echo htmlspecialchars($product['warranty_years']); ?> Years</td>
+                                <td>
+                                    <?php
+                                    // Format warranty display
+                                    $warranty_parts = [];
+                                    if (isset($product['warranty_years']) && $product['warranty_years'] > 0) {
+                                        $warranty_parts[] = $product['warranty_years'] . ' Year' . ($product['warranty_years'] > 1 ? 's' : '') . ' Full Warranty';
+                                    }
+                                    if (isset($product['warranty_compressor_5']) && $product['warranty_compressor_5']) {
+                                        $warranty_parts[] = '5 Years Compressor';
+                                    }
+                                    if (isset($product['warranty_compressor_10']) && $product['warranty_compressor_10']) {
+                                        $warranty_parts[] = '10 Years Compressor';
+                                    }
+                                    if (isset($product['warranty_pcb_5']) && $product['warranty_pcb_5']) {
+                                        $warranty_parts[] = '5 Years PCB';
+                                    }
+                                    echo !empty($warranty_parts) ? htmlspecialchars(implode(' + ', $warranty_parts)) : htmlspecialchars($product['warranty_years'] ?? '1') . ' Years';
+                                    ?>
+                                </td>
                             </tr>
                             <tr>
                                 <th>AMC Available</th>

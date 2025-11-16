@@ -346,6 +346,276 @@ try {
             transform: translateY(0);
         }
     }
+    
+    /* Fix Summary Cards Height and Spacing */
+    .stats-grid {
+        margin-bottom: 0 !important;
+        gap: var(--spacing-md) !important;
+    }
+    
+    /* Ensure Bootstrap rows have proper spacing */
+    .fade-in > .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .fade-in > .row > .col-12 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .stat-card {
+        min-height: auto !important;
+        padding: var(--spacing-md) !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .stat-header {
+        margin-bottom: var(--spacing-sm) !important;
+    }
+    
+    .stat-icon {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: var(--text-lg) !important;
+    }
+    
+    .stat-content {
+        padding: 0 !important;
+    }
+    
+    .stat-value {
+        font-size: var(--text-2xl) !important;
+        margin-bottom: var(--spacing-xs) !important;
+        line-height: 1.2 !important;
+    }
+    
+    .stat-label {
+        font-size: var(--text-sm) !important;
+        margin-bottom: var(--spacing-xs) !important;
+    }
+    
+    .stat-subtitle {
+        font-size: var(--text-xs) !important;
+        margin-top: 0 !important;
+    }
+    
+    /* Reduce spacing in page header */
+    .fade-in {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    .fade-in > .admin-card:first-child {
+        margin-bottom: var(--spacing-md) !important;
+    }
+    
+    .fade-in > .admin-card:first-child .card-body {
+        padding: var(--spacing-md) !important;
+    }
+    
+    /* Fix spacing between sections */
+    .admin-card.mb-4 {
+        margin-bottom: var(--spacing-md) !important;
+    }
+    
+    /* Filter Form Layout Fixes */
+    #filterForm {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    #filterForm .row {
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    #filterForm .row > [class*="col-"] {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        box-sizing: border-box;
+    }
+    
+    #filterForm .form-label {
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+        display: block;
+        white-space: nowrap;
+    }
+    
+    #filterForm .form-control,
+    #filterForm .form-select {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        display: block;
+    }
+    
+    #filterForm .col-md-1 .btn-primary {
+        width: 100%;
+        min-width: auto;
+        white-space: nowrap;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    #filterForm .d-grid {
+        display: grid;
+        width: 100%;
+    }
+    
+    /* Filter badges display */
+    .filter-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        align-items: center;
+    }
+    
+    .filter-badge {
+        font-size: var(--text-xs);
+        padding: 0.375rem 0.75rem;
+        display: inline-block;
+        white-space: nowrap;
+    }
+    
+    /* Product table responsive fixes */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+    }
+    
+    .table-responsive table {
+        width: 100%;
+        min-width: 1000px;
+        margin-bottom: 0;
+    }
+    
+    /* Responsive adjustments for filter form */
+    @media (max-width: 1200px) {
+        #filterForm .col-md-3,
+        #filterForm .col-md-2,
+        #filterForm .col-md-1 {
+            margin-bottom: 1rem;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        #filterForm .col-md-3 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        
+        #filterForm .col-md-2 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+        
+        #filterForm .col-md-1 {
+            flex: 0 0 16.666667%;
+            max-width: 16.666667%;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        #filterForm .row {
+            margin-left: -0.5rem;
+            margin-right: -0.5rem;
+        }
+        
+        #filterForm .row > [class*="col-"] {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        #filterForm .col-md-3,
+        #filterForm .col-md-2,
+        #filterForm .col-md-1 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        
+        #filterForm .btn-primary {
+            width: 100%;
+        }
+        
+        .table-responsive table {
+            min-width: 800px;
+        }
+    }
+    
+    /* Ensure admin-card doesn't overflow */
+    .admin-card {
+        overflow: visible;
+    }
+    
+    .admin-card .card-body {
+        overflow: visible;
+    }
+    
+    /* Fix for form select dropdowns */
+    #filterForm .form-select {
+        appearance: auto;
+        -webkit-appearance: menulist;
+        -moz-appearance: menulist;
+    }
+    
+    /* Fix Bootstrap row/col conflicts - only override if needed */
+    .fade-in .row {
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+    }
+    
+    .fade-in .row > [class*="col-"] {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    
+    /* Remove excessive margins from alerts */
+    .alert {
+        margin-bottom: var(--spacing-md) !important;
+    }
+    
+    /* Ensure proper spacing for action buttons section */
+    .d-flex.justify-content-between.mb-4 {
+        margin-bottom: var(--spacing-md) !important;
+    }
+    
+    /* Responsive adjustments for summary cards */
+    @media (max-width: 992px) {
+        .stats-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: var(--spacing-sm) !important;
+        }
+        
+        .stat-card {
+            padding: var(--spacing-sm) !important;
+        }
+        
+        .stat-value {
+            font-size: var(--text-xl) !important;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr !important;
+            gap: var(--spacing-sm) !important;
+            margin-bottom: var(--spacing-sm) !important;
+        }
+        
+        .stat-card {
+            padding: var(--spacing-sm) var(--spacing-md) !important;
+        }
+    }
 </style>
 
 <div class="fade-in">
@@ -371,53 +641,59 @@ try {
             </div>
         <?php endif; ?>
 
-        <!-- Statistics Cards -->
-    <div class="stats-grid">
-        <div class="stat-card stat-card-products" data-aos="fade-up" data-aos-delay="100">
-            <div class="stat-header">
-                <div class="stat-icon">
-                    <i class="fas fa-boxes"></i>
-                    <div class="stat-icon-bg"></div>
+        <!-- ROW 1: Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="stats-grid">
+                    <div class="stat-card stat-card-products" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="fas fa-boxes"></i>
+                                <div class="stat-icon-bg"></div>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-value"><?php echo $stats['total']; ?></h3>
+                            <p class="stat-label">Total Products</p>
+                            <div class="stat-subtitle">All inventory items</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-orders success" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-header">
+                            <div class="stat-icon success">
+                                <i class="fas fa-check-circle"></i>
+                                <div class="stat-icon-bg success"></div>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-value"><?php echo $stats['active']; ?></h3>
+                            <p class="stat-label">Active Products</p>
+                            <div class="stat-subtitle">Currently available</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-users warning" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-pause-circle"></i>
+                                <div class="stat-icon-bg warning"></div>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-value"><?php echo $stats['inactive']; ?></h3>
+                            <p class="stat-label">Inactive Products</p>
+                            <div class="stat-subtitle">Currently unavailable</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="stat-content">
-                <h3 class="stat-value"><?php echo $stats['total']; ?></h3>
-                <p class="stat-label">Total Products</p>
-                <div class="stat-subtitle">All inventory items</div>
             </div>
         </div>
 
-        <div class="stat-card stat-card-orders success" data-aos="fade-up" data-aos-delay="200">
-            <div class="stat-header">
-                <div class="stat-icon success">
-                    <i class="fas fa-check-circle"></i>
-                    <div class="stat-icon-bg success"></div>
-                </div>
-            </div>
-            <div class="stat-content">
-                <h3 class="stat-value"><?php echo $stats['active']; ?></h3>
-                <p class="stat-label">Active Products</p>
-                <div class="stat-subtitle">Currently available</div>
-            </div>
-        </div>
-
-        <div class="stat-card stat-card-users warning" data-aos="fade-up" data-aos-delay="300">
-            <div class="stat-header">
-                <div class="stat-icon warning">
-                    <i class="fas fa-pause-circle"></i>
-                    <div class="stat-icon-bg warning"></div>
-                </div>
-            </div>
-            <div class="stat-content">
-                <h3 class="stat-value"><?php echo $stats['inactive']; ?></h3>
-                <p class="stat-label">Inactive Products</p>
-                <div class="stat-subtitle">Currently unavailable</div>
-                </div>
-            </div>
-
-
-        <!-- Filter Section -->
-    <div class="admin-card mb-4">
+        <!-- ROW 2: Filter Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="admin-card">
         <div class="card-header">
             <h5 class="card-title">
                 <i class="fas fa-filter"></i>
@@ -494,6 +770,8 @@ try {
             </form>
         </div>
         </div>
+            </div>
+        </div>
 
         <!-- Debug Information (remove in production) -->
         <?php if (isset($_GET['search']) || isset($_GET['brand']) || isset($_GET['category']) || isset($_GET['status']) || isset($_GET['sort'])): ?>
@@ -538,20 +816,26 @@ try {
         </div>
         <?php endif; ?>
 
-        <!-- Action Buttons -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+        <!-- ROW 3: Action Buttons and Products List -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
                 <a href="<?php echo admin_url('products/add'); ?>" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Add New Product
                 </a>
             </div>
-        <div class="text-muted">
-                <strong><?php echo count($products); ?></strong> products found
+                    <div class="text-muted">
+                        <strong><?php echo count($products); ?></strong> products found
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Bulk Actions -->
-    <div class="admin-card mb-4" id="bulkActions" style="display: none;">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="admin-card" id="bulkActions" style="display: none;">
         <div class="card-body">
             <form method="POST" id="bulkForm">
                 <div class="row align-items-center">
@@ -575,9 +859,13 @@ try {
             </form>
         </div>
         </div>
+            </div>
+        </div>
 
         <!-- Products Table -->
-    <div class="admin-card" id="products-table-card">
+        <div class="row">
+            <div class="col-12">
+                <div class="admin-card" id="products-table-card">
         <div class="card-body">
             <?php if (empty($products)): ?>
                 <div class="empty-state">
@@ -602,6 +890,12 @@ try {
                     <table class="admin-table">
                     <thead>
                         <tr>
+                            <th class="sortable" data-column="id" width="5%">
+                                <div class="th-content">
+                                    <span>ID</span>
+                                    <i class="fas fa-sort sort-icon"></i>
+                                </div>
+                            </th>
                             <th class="sortable" data-column="product_image" width="8%">
                                 <div class="th-content">
                                     <span>Image</span>
@@ -649,6 +943,9 @@ try {
                     <tbody>
                         <?php foreach ($products as $product): ?>
                             <tr>
+                                <td>
+                                    <strong class="text-muted">#<?= htmlspecialchars($product['id']) ?></strong>
+                                </td>
                                 <td>
                                     <img src="<?= UPLOAD_URL ?>/<?= htmlspecialchars($product['product_image'] ?? '') ?>" 
                                          alt="Product Image" 
@@ -765,6 +1062,8 @@ try {
             <?php endif; ?>
         </div>
     </div>
+            </div>
+        </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -933,3 +1232,4 @@ function toggleDisplayOption(checkbox, productId, type) {
 <?php
 include INCLUDES_PATH . '/templates/admin_footer.php';
 ?>
+

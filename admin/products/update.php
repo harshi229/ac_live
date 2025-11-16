@@ -39,7 +39,12 @@ $category_id = intval($_POST['category_id'] ?? 0);
 $sub_category_id = intval($_POST['sub_category_id'] ?? 0);
 $model_name = trim($_POST['model_name'] ?? '');
 $model_number = trim($_POST['model_number'] ?? '');
+$star_rating = intval($_POST['star_rating'] ?? 0);
 $energy_rating = trim($_POST['energy_rating'] ?? '');
+$warranty_years = intval($_POST['warranty_years'] ?? 1);
+$warranty_compressor_5 = isset($_POST['warranty_compressor_5']) ? 1 : 0;
+$warranty_compressor_10 = isset($_POST['warranty_compressor_10']) ? 1 : 0;
+$warranty_pcb_5 = isset($_POST['warranty_pcb_5']) ? 1 : 0;
 $description = trim($_POST['description'] ?? '');
 $show_on_homepage = isset($_POST['show_on_homepage']) ? 1 : 0;
 $show_on_product_page = isset($_POST['show_on_product_page']) ? 1 : 0;
@@ -73,6 +78,10 @@ if (empty($model_name)) {
 
 if (empty($model_number)) {
     $errors[] = 'Model number is required.';
+}
+
+if ($star_rating <= 0 || $star_rating > 5) {
+    $errors[] = 'Please select a valid star rating (1-5).';
 }
 
 if (empty($energy_rating)) {
@@ -169,7 +178,12 @@ try {
         'sub_category_id' => $sub_category_id,
         'model_name' => $model_name,
         'model_number' => $model_number,
+        'star_rating' => $star_rating,
         'energy_rating' => $energy_rating,
+        'warranty_years' => $warranty_years,
+        'warranty_compressor_5' => $warranty_compressor_5,
+        'warranty_compressor_10' => $warranty_compressor_10,
+        'warranty_pcb_5' => $warranty_pcb_5,
         'description' => $description,
         'show_on_homepage' => $show_on_homepage,
         'show_on_product_page' => $show_on_product_page,

@@ -521,6 +521,7 @@ function renderProducts(products, totalProducts, totalPages, currentPage) {
                     <span class="spec-item"><i class="fas fa-snowflake"></i> ${product.capacity}</span>
                     <span class="spec-item"><i class="fas fa-star"></i> ${product.star_rating} Star</span>
                     ${product.inverter === 'Yes' ? '<span class="spec-item"><i class="fas fa-bolt"></i> Inverter</span>' : ''}
+                    <span class="spec-item"><i class="fas fa-shield-alt"></i> ${formatWarranty(product)}</span>
                 </div>
                 <div class="product-list-description">
                     ${product.description ? product.description.substring(0, 150) + '...' : ''}
@@ -560,6 +561,39 @@ function getStarRating(rating) {
         stars += `<i class="fas fa-star${i <= rating ? '' : '-o'}"></i>`;
     }
     return stars;
+}
+
+/**
+ * Format warranty display (concise for listing)
+ */
+function formatWarranty(product) {
+    if (!product) return '1 Year';
+    
+    let warrantyDisplay = '';
+    const warrantyYears = product.warranty_years || 0;
+    
+    if (warrantyYears > 0) {
+        warrantyDisplay = warrantyYears + 'Y Full';
+        const additional = [];
+        
+        if (product.warranty_compressor_5) {
+            additional.push('5Y Comp');
+        }
+        if (product.warranty_compressor_10) {
+            additional.push('10Y Comp');
+        }
+        if (product.warranty_pcb_5) {
+            additional.push('5Y PCB');
+        }
+        
+        if (additional.length > 0) {
+            warrantyDisplay += ' + ' + additional.join(' + ');
+        }
+    } else {
+        warrantyDisplay = (product.warranty_years || 1) + ' Year';
+    }
+    
+    return warrantyDisplay;
 }
 
 // ============================================================================

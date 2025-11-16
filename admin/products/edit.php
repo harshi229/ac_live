@@ -161,11 +161,69 @@ if (!$product) {
         </div>
 
         <div class="mb-3">
+            <label for="star_rating" class="form-label">Star Rating <span class="required">*</span></label>
+            <select class="form-select" name="star_rating" id="star_rating" required>
+                <option value="">Select Rating</option>
+                <option value="1" <?= (isset($product['star_rating']) && $product['star_rating'] == '1') ? 'selected' : '' ?>>1 Star</option>
+                <option value="2" <?= (isset($product['star_rating']) && $product['star_rating'] == '2') ? 'selected' : '' ?>>2 Star</option>
+                <option value="3" <?= (isset($product['star_rating']) && $product['star_rating'] == '3') ? 'selected' : '' ?>>3 Star</option>
+                <option value="4" <?= (isset($product['star_rating']) && $product['star_rating'] == '4') ? 'selected' : '' ?>>4 Star</option>
+                <option value="5" <?= (isset($product['star_rating']) && $product['star_rating'] == '5') ? 'selected' : '' ?>>5 Star</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="energy_rating" class="form-label">Energy Rating:</label>
             <input type="text" class="form-control" name="energy_rating" id="energy_rating" 
                    value="<?php echo htmlspecialchars($product['energy_rating'] ?? ''); ?>" 
                    placeholder="e.g., 5 Star, 3 Star" required>
             <div class="form-text">Enter the energy efficiency rating (e.g., 5 Star, 3 Star)</div>
+        </div>
+
+        <!-- Warranty -->
+        <div class="mb-3">
+            <label class="form-label">Warranty Details <span class="required">*</span></label>
+            
+            <!-- Full Product Warranty -->
+            <div class="mb-2">
+                <label for="warranty_years" class="form-label small">Full Product Warranty (Years)</label>
+                <input type="number" class="form-control" name="warranty_years" id="warranty_years" 
+                       value="<?php echo htmlspecialchars($product['warranty_years'] ?? '1'); ?>" 
+                       min="1" max="10" required>
+                <div class="form-text small">Default: 1 year full warranty</div>
+            </div>
+            
+            <!-- Warranty Checkboxes -->
+            <div class="warranty-checkboxes">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="warranty_compressor_5" id="warranty_compressor_5" value="1"
+                           <?= (isset($product['warranty_compressor_5']) && $product['warranty_compressor_5']) ? 'checked' : '' ?>>
+                    <label class="form-check-label" for="warranty_compressor_5">
+                        5-Year Compressor Warranty
+                    </label>
+                </div>
+                
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="warranty_compressor_10" id="warranty_compressor_10" value="1"
+                           <?= (isset($product['warranty_compressor_10']) && $product['warranty_compressor_10']) ? 'checked' : '' ?>>
+                    <label class="form-check-label" for="warranty_compressor_10">
+                        10-Year Compressor Warranty
+                    </label>
+                </div>
+                
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="warranty_pcb_5" id="warranty_pcb_5" value="1"
+                           <?= (isset($product['warranty_pcb_5']) && $product['warranty_pcb_5']) ? 'checked' : '' ?>>
+                    <label class="form-check-label" for="warranty_pcb_5">
+                        5-Year PCB Warranty
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-text small mt-2">
+                <strong>Note:</strong> Non-inverter products typically have 1 year full + 5 years compressor. 
+                Inverter products typically have 1 year full + 5 years PCB + 10 years compressor.
+            </div>
         </div>
 
         <div class="mb-3">
@@ -537,6 +595,38 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate discount on page load if values exist
     calculateDiscount();
+    
+    // Auto-check warranty boxes based on inverter type (if inverter field exists)
+    const inverterSelect = document.getElementById('inverter');
+    const warrantyCompressor5 = document.getElementById('warranty_compressor_5');
+    const warrantyCompressor10 = document.getElementById('warranty_compressor_10');
+    const warrantyPcb5 = document.getElementById('warranty_pcb_5');
+    
+    if (inverterSelect && warrantyCompressor5 && warrantyCompressor10 && warrantyPcb5) {
+        function updateWarrantyBoxes() {
+            const inverterType = inverterSelect.value;
+            
+            if (inverterType === 'No') {
+                // Non-inverter: 1 year full + 5 years compressor
+                warrantyCompressor5.checked = true;
+                warrantyCompressor10.checked = false;
+                warrantyPcb5.checked = false;
+            } else if (inverterType === 'Yes') {
+                // Inverter: 1 year full + 5 years PCB + 10 years compressor
+                warrantyCompressor5.checked = false;
+                warrantyCompressor10.checked = true;
+                warrantyPcb5.checked = true;
+            }
+        }
+        
+        // Update warranty boxes when inverter type changes
+        inverterSelect.addEventListener('change', updateWarrantyBoxes);
+        
+        // Update on page load if inverter type is already selected
+        if (inverterSelect.value) {
+            updateWarrantyBoxes();
+        }
+    }
 });
 </script>
 

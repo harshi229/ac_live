@@ -32,6 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $original_price = floatval($_POST['original_price']);
     $discount_percentage = floatval($_POST['discount_percentage']);
     $warranty_years = intval($_POST['warranty_years']);
+    $warranty_compressor_5 = isset($_POST['warranty_compressor_5']) ? 1 : 0;
+    $warranty_compressor_10 = isset($_POST['warranty_compressor_10']) ? 1 : 0;
+    $warranty_pcb_5 = isset($_POST['warranty_pcb_5']) ? 1 : 0;
     $amc_available = isset($_POST['amc_available']) ? 1 : 0;
     $show_on_homepage = isset($_POST['show_on_homepage']) ? 1 : 0;
     $show_on_product_page = isset($_POST['show_on_product_page']) ? 1 : 0;
@@ -96,15 +99,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $discount_amount = $original_price > 0 ? $original_price - $price : 0;
                 
                 // Insert product
-                $sql = "INSERT INTO products (brand_id, category_id, sub_category_id, product_name, model_name, model_number, inverter, star_rating, energy_rating, capacity, price, original_price, discount_percentage, discount_amount, stock, warranty_years, installation, amc_available, description, product_image, status, show_on_homepage, show_on_product_page) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'No', ?, ?, ?, 'active', ?, ?)";
+                $sql = "INSERT INTO products (brand_id, category_id, sub_category_id, product_name, model_name, model_number, inverter, star_rating, energy_rating, capacity, price, original_price, discount_percentage, discount_amount, stock, warranty_years, warranty_compressor_5, warranty_compressor_10, warranty_pcb_5, installation, amc_available, description, product_image, status, show_on_homepage, show_on_product_page) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, 'No', ?, ?, ?, 'active', ?, ?)";
                 
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([
                     $brand_id, $category_id, $sub_category_id, $product_name, $model_name, 
                     $model_number, $inverter, $star_rating, $energy_rating, $capacity, $price, 
                     $original_price, $discount_percentage, $discount_amount, 
-                    $warranty_years, $amc_available, $description, $image_name,
+                    $warranty_years, $warranty_compressor_5, $warranty_compressor_10, $warranty_pcb_5, 
+                    $amc_available, $description, $image_name,
                     $show_on_homepage, $show_on_product_page
                 ]);
 
@@ -317,7 +321,10 @@ try {
                         <label for="star_rating" class="form-label">Star Rating <span class="required">*</span></label>
                         <select class="form-select" name="star_rating" id="star_rating" required>
                             <option value="">Select Rating</option>
+                            <option value="1" <?= (isset($_POST['star_rating']) && $_POST['star_rating'] == '1') ? 'selected' : '' ?>>1 Star</option>
+                            <option value="2" <?= (isset($_POST['star_rating']) && $_POST['star_rating'] == '2') ? 'selected' : '' ?>>2 Star</option>
                             <option value="3" <?= (isset($_POST['star_rating']) && $_POST['star_rating'] == '3') ? 'selected' : '' ?>>3 Star</option>
+                            <option value="4" <?= (isset($_POST['star_rating']) && $_POST['star_rating'] == '4') ? 'selected' : '' ?>>4 Star</option>
                             <option value="5" <?= (isset($_POST['star_rating']) && $_POST['star_rating'] == '5') ? 'selected' : '' ?>>5 Star</option>
                         </select>
                     </div>
@@ -387,14 +394,48 @@ try {
 
                     <!-- Warranty -->
                     <div class="mb-3">
-                        <label for="warranty_years" class="form-label">Warranty (Years) <span class="required">*</span></label>
-                        <select class="form-select" name="warranty_years" id="warranty_years" required>
-                            <option value="">Select Warranty</option>
-                            <option value="1" <?= (isset($_POST['warranty_years']) && $_POST['warranty_years'] == '1') ? 'selected' : '' ?>>1 Year</option>
-                            <option value="2" <?= (isset($_POST['warranty_years']) && $_POST['warranty_years'] == '2') ? 'selected' : '' ?>>2 Years</option>
-                            <option value="3" <?= (isset($_POST['warranty_years']) && $_POST['warranty_years'] == '3') ? 'selected' : '' ?>>3 Years</option>
-                            <option value="5" <?= (isset($_POST['warranty_years']) && $_POST['warranty_years'] == '5') ? 'selected' : '' ?>>5 Years</option>
-                        </select>
+                        <label class="form-label">Warranty Details <span class="required">*</span></label>
+                        
+                        <!-- Full Product Warranty -->
+                        <div class="mb-2">
+                            <label for="warranty_years" class="form-label small">Full Product Warranty (Years)</label>
+                            <input type="number" class="form-control" name="warranty_years" id="warranty_years" 
+                                   value="<?= isset($_POST['warranty_years']) ? htmlspecialchars($_POST['warranty_years']) : '1' ?>" 
+                                   min="1" max="10" required>
+                            <div class="form-text small">Default: 1 year full warranty</div>
+                        </div>
+                        
+                        <!-- Warranty Checkboxes -->
+                        <div class="warranty-checkboxes">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="warranty_compressor_5" id="warranty_compressor_5" value="1"
+                                       <?= (isset($_POST['warranty_compressor_5']) || (isset($_POST['inverter']) && $_POST['inverter'] == 'No')) ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="warranty_compressor_5">
+                                    5-Year Compressor Warranty
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="warranty_compressor_10" id="warranty_compressor_10" value="1"
+                                       <?= (isset($_POST['warranty_compressor_10']) || (isset($_POST['inverter']) && $_POST['inverter'] == 'Yes')) ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="warranty_compressor_10">
+                                    10-Year Compressor Warranty
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="warranty_pcb_5" id="warranty_pcb_5" value="1"
+                                       <?= (isset($_POST['warranty_pcb_5']) || (isset($_POST['inverter']) && $_POST['inverter'] == 'Yes')) ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="warranty_pcb_5">
+                                    5-Year PCB Warranty
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-text small mt-2">
+                            <strong>Note:</strong> Non-inverter products typically have 1 year full + 5 years compressor. 
+                            Inverter products typically have 1 year full + 5 years PCB + 10 years compressor.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -599,6 +640,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners
     originalPriceInput.addEventListener('input', calculateDiscount);
     sellingPriceInput.addEventListener('input', calculateDiscount);
+    
+    // Calculate discount on page load if values exist
+    calculateDiscount();
+    
+    // Auto-check warranty boxes based on inverter type
+    const inverterSelect = document.getElementById('inverter');
+    const warrantyCompressor5 = document.getElementById('warranty_compressor_5');
+    const warrantyCompressor10 = document.getElementById('warranty_compressor_10');
+    const warrantyPcb5 = document.getElementById('warranty_pcb_5');
+    
+    function updateWarrantyBoxes() {
+        const inverterType = inverterSelect.value;
+        
+        if (inverterType === 'No') {
+            // Non-inverter: 1 year full + 5 years compressor
+            warrantyCompressor5.checked = true;
+            warrantyCompressor10.checked = false;
+            warrantyPcb5.checked = false;
+        } else if (inverterType === 'Yes') {
+            // Inverter: 1 year full + 5 years PCB + 10 years compressor
+            warrantyCompressor5.checked = false;
+            warrantyCompressor10.checked = true;
+            warrantyPcb5.checked = true;
+        }
+    }
+    
+    // Update warranty boxes when inverter type changes
+    if (inverterSelect) {
+        inverterSelect.addEventListener('change', updateWarrantyBoxes);
+        
+        // Update on page load if inverter type is already selected
+        if (inverterSelect.value) {
+            updateWarrantyBoxes();
+        }
+    }
 });
 </script>
 
